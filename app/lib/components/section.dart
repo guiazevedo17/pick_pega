@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 
 class Section extends StatefulWidget {
   final String title;
-  final List<Widget> widgets;
+  final Widget widget;
 
-  const Section(this.title, this.widgets, {super.key});
+  const Section(this.title, this.widget, {super.key});
 
   @override
   State<Section> createState() => _SectionState();
@@ -31,7 +31,7 @@ class _SectionState extends State<Section> {
           height: 70,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
-            itemBuilder: (context, index) => widget.widgets[index],
+            itemBuilder: (context, index) => widget.widget,
           ),
         )
       ],
