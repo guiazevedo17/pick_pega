@@ -19,7 +19,7 @@ class _SearchRestaurantState extends State<SearchRestaurant> {
     return Scaffold(
       backgroundColor: const Color(0xFFF8F8F8),
       body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.max,
         children: [
           //App Bar
           Padding(
@@ -35,7 +35,7 @@ class _SearchRestaurantState extends State<SearchRestaurant> {
                       height: 46,
                       child: Image.asset('assets/images/logo.png')),
 
-                  // Barra de Pesquisa
+                  // Search Bar
                   Expanded(
                     child: Padding(
                       padding: const EdgeInsets.fromLTRB(16.0, 0, 10.0, 0),
@@ -54,7 +54,7 @@ class _SearchRestaurantState extends State<SearchRestaurant> {
                     ),
                   ),
 
-                  // Botão de Localização
+                  // Location Button
                   Container(
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
@@ -73,25 +73,18 @@ class _SearchRestaurantState extends State<SearchRestaurant> {
             ),
           ),
 
-          // Restaurantes Próximos
-          const Section('Restaurantes Próximos', Restaurant()),
+          const Column(
+            children: [
+              // Resturantes Próximos
+              Section('Restaurantes Próximos', Restaurant()),
 
-          // space
-          const SizedBox(
-            height: 50,
+              // Sugestões
+              Section('Sugestões', Sugestion()),
+
+              // Resturantes Próximos
+              Section('No precinho', Promo()),
+            ],
           ),
-
-          // Sugestões
-          const Section('Sugestões', Sugestion()),
-
-          // space
-          const SizedBox(
-            height: 50,
-          ),
-
-          // 'Promoções'
-          //Section('No precinho'),
-          const Section('Sugestões', Promo()),
         ],
       ),
     );

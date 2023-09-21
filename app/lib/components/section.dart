@@ -30,6 +30,7 @@ class _SectionState extends State<Section> {
         SizedBox(
           height: 70,
           child: ListView.builder(
+            shrinkWrap: true,
             scrollDirection: Axis.horizontal,
             itemBuilder: (context, index) => widget.widget,
           ),

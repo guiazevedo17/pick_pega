@@ -11,20 +11,19 @@ class Sugestion extends StatelessWidget {
       width: 200,
       height: 130,
       decoration: BoxDecoration(
-          color: Color(0xFFE8E8E8), borderRadius: BorderRadius.circular(10)),
+          color: const Color(0xFFE8E8E8),
+          borderRadius: BorderRadius.circular(10)),
       child: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
+        child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
           // Logo do Restaurante
           FittedBox(
             child: Image.asset('assets/images/sow.png'),
           ),
 
           // Título do Restaurante
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8.0),
+          const Padding(
+            padding: EdgeInsets.symmetric(vertical: 8.0),
             child: Text(
               'Sow',
               style: TextStyle(
@@ -36,9 +35,9 @@ class Sugestion extends StatelessWidget {
           ),
 
           // Informações do Restaurante
-          Row(
+          const Row(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: const [
+            children: [
               Padding(
                 padding: EdgeInsets.only(right: 2.0),
                 child: Icon(
