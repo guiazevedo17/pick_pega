@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class Promo extends StatelessWidget {
-  const Promo({
+class Sale extends StatelessWidget {
+  const Sale({
     super.key,
   });
 
@@ -10,19 +10,22 @@ class Promo extends StatelessWidget {
     return Container(
       width: MediaQuery.of(context).size.width * 0.4,
       height: MediaQuery.of(context).size.height * 0.5,
-      margin: const EdgeInsets.only(right: 10),
+      margin: const EdgeInsets.only(right: 15),
       decoration: BoxDecoration(
           color: const Color(0xFFE8E8E8),
           borderRadius: BorderRadius.circular(10)),
       child:
           Column(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-        // SAle Product Picture
+        // Sale Product Picture
         SizedBox(
           width: double.infinity,
           height: MediaQuery.of(context).size.height * 0.11,
-          child: Image.asset(
-            'assets/images/tacos.png',
-            fit: BoxFit.cover,
+          child: ClipRRect(
+            borderRadius: const BorderRadius.vertical(top: Radius.circular(10)),
+            child: Image.asset(
+              'assets/images/tacos.png',
+              fit: BoxFit.cover,
+            ),
           ),
         ),
 
@@ -40,6 +43,8 @@ class Promo extends StatelessWidget {
                   color: Color(0xFF333333),
                 ),
               ),
+
+              // Price in Sale
               Text(
                 'RS 20,00',
                 style: TextStyle(
@@ -50,18 +55,26 @@ class Promo extends StatelessWidget {
             ],
           ),
         ),
+
+        // Restaurant Info
         Padding(
-          padding: const EdgeInsets.only(top: 4.0),
+          padding: const EdgeInsets.only(top: 4.0, right: 16, left: 16),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
+              // Restaurant Logo
               SizedBox(
                 width: 30,
                 height: 30,
-                child: Image.asset('assets/images/restaurant.png'),
+                child: Image.asset(
+                  'assets/images/restaurant.png',
+                  fit: BoxFit.cover,
+                ),
               ),
+
+              // Restaurant Name
               const Text(
-                'Naural Drink',
+                'Natural Drink',
                 textAlign: TextAlign.start,
                 style: TextStyle(
                   fontSize: 12,
@@ -71,18 +84,21 @@ class Promo extends StatelessWidget {
             ],
           ),
         ),
+
+        // Distance Info
         const Padding(
           padding: EdgeInsets.symmetric(vertical: 4.0),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Padding(
-                padding: EdgeInsets.only(right: 2.0),
+                padding: EdgeInsets.only(right: 4.0),
                 child: Icon(
                   Icons.location_pin,
                   size: 14,
                 ),
               ),
+              // Distance
               Text(
                 '0.5km',
                 style: TextStyle(fontSize: 12, color: Color(0xFF333333)),

@@ -21,12 +21,12 @@ class _HomepageState extends State<Homepage> {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisSize: MainAxisSize.max,
         children: [
-          // GeralContainer
+          // General Container
           Expanded(
             child: Container(
               width: double.infinity,
               margin: EdgeInsets.symmetric(
-                vertical: MediaQuery.of(context).size.height * 0.2,
+                vertical: MediaQuery.of(context).size.height * 0.22,
                 horizontal: MediaQuery.of(context).size.width * 0.1,
               ),
               decoration: BoxDecoration(
@@ -34,7 +34,7 @@ class _HomepageState extends State<Homepage> {
                 color: const Color(0xFFF8F8F8),
               ),
 
-              // Container Conteudo
+              // Container Content
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Column(

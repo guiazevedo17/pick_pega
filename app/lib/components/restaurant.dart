@@ -7,14 +7,12 @@ class Restaurant extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: Container(
-        width: 70,
-        margin: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-        decoration: BoxDecoration(borderRadius: BorderRadius.circular(100)),
-        child: FittedBox(
-          child: Image.asset('assets/images/restaurant.png'),
-        ),
+    return Container(
+      width: MediaQuery.of(context).size.width * 0.2,
+      height: MediaQuery.of(context).size.height * 0.08,
+      decoration: BoxDecoration(borderRadius: BorderRadius.circular(100)),
+      child: FittedBox(
+        child: Image.asset('assets/images/restaurant.png'),
       ),
     );
   }

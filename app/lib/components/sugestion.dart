@@ -2,29 +2,35 @@ import 'package:flutter/material.dart';
 
 class Sugestion extends StatelessWidget {
   const Sugestion({
-    super.key,
-  });
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
       width: 200,
       height: 130,
+      margin: const EdgeInsets.only(right: 15),
       decoration: BoxDecoration(
           color: const Color(0xFFE8E8E8),
           borderRadius: BorderRadius.circular(10)),
       child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-          // Logo do Restaurante
-          FittedBox(
-            child: Image.asset('assets/images/sow.png'),
-          ),
+        padding: const EdgeInsets.all(12.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            // Restaurant Logo
+            SizedBox(
+              width: 60,
+              height: 60,
+              child: Image.asset(
+                'assets/images/sow.png',
+                fit: BoxFit.cover,
+              ),
+            ),
 
-          // Título do Restaurante
-          const Padding(
-            padding: EdgeInsets.symmetric(vertical: 8.0),
-            child: Text(
+            // Restaurant Name
+            const Text(
               'Sow',
               style: TextStyle(
                 fontSize: 16,
@@ -32,48 +38,65 @@ class Sugestion extends StatelessWidget {
                 color: Color(0xFF333333),
               ),
             ),
-          ),
 
-          // Informações do Restaurante
-          const Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Padding(
-                padding: EdgeInsets.only(right: 2.0),
-                child: Icon(
-                  Icons.location_pin,
-                  size: 14,
+            // Restaurant Infos
+            const Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                // Distance km
+                Row(
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.only(right: 2.0),
+                      child: Icon(
+                        Icons.location_pin,
+                        size: 14,
+                      ),
+                    ),
+                    Text(
+                      '2.3km',
+                      style: TextStyle(fontSize: 12, color: Color(0xFF333333)),
+                    ),
+                  ],
                 ),
-              ),
-              Text(
-                '2.3km',
-                style: TextStyle(fontSize: 12, color: Color(0xFF333333)),
-              ),
-              Padding(
-                padding: EdgeInsets.only(left: 8, right: 2.0),
-                child: Icon(
-                  Icons.run_circle_outlined,
-                  size: 14,
+
+                // Walking Time
+                Row(
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.only(left: 8, right: 2.0),
+                      child: Icon(
+                        Icons.run_circle_outlined,
+                        size: 14,
+                      ),
+                    ),
+                    Text(
+                      '20min',
+                      style: TextStyle(fontSize: 12, color: Color(0xFF333333)),
+                    ),
+                  ],
                 ),
-              ),
-              Text(
-                '20min',
-                style: TextStyle(fontSize: 12, color: Color(0xFF333333)),
-              ),
-              Padding(
-                padding: EdgeInsets.only(left: 8, right: 2.0),
-                child: Icon(
-                  Icons.car_crash_outlined,
-                  size: 14,
+
+                // Driving Time
+                Row(
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.only(left: 8, right: 2.0),
+                      child: Icon(
+                        Icons.car_crash_outlined,
+                        size: 14,
+                      ),
+                    ),
+                    Text(
+                      '5min',
+                      style: TextStyle(fontSize: 12, color: Color(0xFF333333)),
+                    ),
+                  ],
                 ),
-              ),
-              Text(
-                '5min',
-                style: TextStyle(fontSize: 12, color: Color(0xFF333333)),
-              ),
-            ],
-          )
-        ]),
+              ],
+            )
+          ],
+        ),
       ),
     );
   }
