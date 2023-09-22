@@ -8,18 +8,31 @@ class Promo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 150,
-      height: 160,
+      width: MediaQuery.of(context).size.width * 0.4,
+      height: MediaQuery.of(context).size.height * 0.5,
+      margin: const EdgeInsets.only(right: 10),
       decoration: BoxDecoration(
           color: const Color(0xFFE8E8E8),
           borderRadius: BorderRadius.circular(10)),
-      child: Column(children: [
-        Image.asset('assets/images/tacos.png'),
+      child:
+          Column(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+        // SAle Product Picture
+        SizedBox(
+          width: double.infinity,
+          height: MediaQuery.of(context).size.height * 0.11,
+          child: Image.asset(
+            'assets/images/tacos.png',
+            fit: BoxFit.cover,
+          ),
+        ),
+
+        // Sale Details
         const Padding(
           padding: EdgeInsets.only(top: 4.0),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
+              // Price BEFORE Sale
               Text(
                 'RS 32,00',
                 style: TextStyle(
