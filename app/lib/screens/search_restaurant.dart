@@ -63,16 +63,21 @@ class _SearchRestaurantState extends State<SearchRestaurant> {
                     ),
 
                     // Location Button
-                    Container(
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: const Color(0xFFF8BD36)),
-                      child: const SizedBox(
-                        width: 40,
-                        height: 40,
-                        child: Icon(
-                          Icons.location_pin,
-                          color: Color(0xFFF8F8F8),
+                    GestureDetector(
+                      onTap: () {
+                        
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: const Color(0xFFF8BD36)),
+                        child: const SizedBox(
+                          width: 40,
+                          height: 40,
+                          child: Icon(
+                            Icons.location_pin,
+                            color: Color(0xFFF8F8F8),
+                          ),
                         ),
                       ),
                     )
@@ -81,29 +86,35 @@ class _SearchRestaurantState extends State<SearchRestaurant> {
               ),
             ),
 
+            // Section Contents
             Expanded(
               child: SizedBox(
                 width: double.infinity,
                 child: Column(
                   children: [
-                    Section('Restaurantes Próximos', Restaurant(),
+
+                    // Close Restaurants Section
+                    Section('Restaurantes Próximos', const Restaurant(),
                         MediaQuery.of(context).size.height * 0.08),
+                    
+                    // Sugestions Section               
                     Padding(
                       padding: EdgeInsets.only(
                         top: MediaQuery.of(context).size.height * 0.05,
                         bottom: MediaQuery.of(context).size.height * 0.05,
                       ),
-                      child: Section('Sugestões', Sugestion(),
+                      child: Section('Sugestões', const Sugestion(),
                           MediaQuery.of(context).size.height * 0.18),
                     ),
-                    Section('No precinho', Sale(),
+                    
+                    // Sales Section
+                    Section('No precinho', const Sale(),
                         MediaQuery.of(context).size.height * 0.23)
                   ],
                 ),
               ),
             )
 
-            // Content / Sections
           ],
         ),
       ),
