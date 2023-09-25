@@ -143,33 +143,39 @@ class _HomepageState extends State<Homepage> {
                         ),
 
                         // Search Button
-                        Container(
-                          width: 100,
-                          height: 80,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: const Color(0xFFF8BD36),
-                          ),
-                          child: const Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              // QR Code Icon
-                              Icon(
-                                Icons.search,
-                                color: Color(0xFFF8F8F8),
-                              ),
-
-                              Text(
-                                'Buscar',
-                                style: TextStyle(
-                                  fontFamily: 'Quicksand',
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.of(context)
+                                .pushReplacementNamed('/search_restaurant');
+                          },
+                          child: Container(
+                            width: 100,
+                            height: 80,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: const Color(0xFFF8BD36),
+                            ),
+                            child: const Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                // QR Code Icon
+                                Icon(
+                                  Icons.search,
                                   color: Color(0xFFF8F8F8),
                                 ),
-                              )
-                            ],
+
+                                Text(
+                                  'Buscar',
+                                  style: TextStyle(
+                                    fontFamily: 'Quicksand',
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                    color: Color(0xFFF8F8F8),
+                                  ),
+                                )
+                              ],
+                            ),
                           ),
                         )
                       ],

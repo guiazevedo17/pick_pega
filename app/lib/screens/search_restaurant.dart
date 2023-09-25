@@ -1,19 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:pick_pega/components/sale.dart';
 
-import 'package:pick_pega/components/restaurant.dart';
+import 'package:pick_pega/components/close_restaurant.dart';
 import 'package:pick_pega/components/sugestion.dart';
 
 import '../components/section.dart';
 
-class SearchRestaurant extends StatefulWidget {
+class SearchRestaurant extends StatelessWidget {
   const SearchRestaurant({Key? key}) : super(key: key);
 
-  @override
-  State<SearchRestaurant> createState() => _SearchRestaurantState();
-}
-
-class _SearchRestaurantState extends State<SearchRestaurant> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -65,7 +60,7 @@ class _SearchRestaurantState extends State<SearchRestaurant> {
                     // Location Button
                     GestureDetector(
                       onTap: () {
-                        
+                        Navigator.of(context).pushReplacementNamed('/location');
                       },
                       child: Container(
                         decoration: BoxDecoration(
@@ -92,12 +87,11 @@ class _SearchRestaurantState extends State<SearchRestaurant> {
                 width: double.infinity,
                 child: Column(
                   children: [
-
                     // Close Restaurants Section
-                    Section('Restaurantes Próximos', const Restaurant(),
+                    Section('Restaurantes Próximos', const CloseRestaurant(),
                         MediaQuery.of(context).size.height * 0.08),
-                    
-                    // Sugestions Section               
+
+                    // Sugestions Section
                     Padding(
                       padding: EdgeInsets.only(
                         top: MediaQuery.of(context).size.height * 0.05,
@@ -106,7 +100,7 @@ class _SearchRestaurantState extends State<SearchRestaurant> {
                       child: Section('Sugestões', const Sugestion(),
                           MediaQuery.of(context).size.height * 0.18),
                     ),
-                    
+
                     // Sales Section
                     Section('No precinho', const Sale(),
                         MediaQuery.of(context).size.height * 0.23)
@@ -114,10 +108,20 @@ class _SearchRestaurantState extends State<SearchRestaurant> {
                 ),
               ),
             )
-
           ],
         ),
       ),
     );
   }
+
+  // List of Close Restaurants
+  // getCloseRestaurants() => return List<Restaurant()>
+
+  // List of Sugestions
+  // getSugestions() => return List<Sugestion()>
+
+  // List of Sales
+  // getSales() => return List<Sale()>
+
+
 }

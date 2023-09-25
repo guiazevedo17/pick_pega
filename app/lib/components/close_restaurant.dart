@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class Restaurant extends StatelessWidget {
-  const Restaurant({
+class CloseRestaurant extends StatelessWidget {
+  const CloseRestaurant({
     super.key,
   });
 
