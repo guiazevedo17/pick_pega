@@ -49,9 +49,10 @@ class SearchRestaurant extends StatelessWidget {
                           child: const TextField(
                             textAlignVertical: TextAlignVertical.center,
                             decoration: InputDecoration(
-                                border: InputBorder.none,
-                                hintText: 'Buscar...',
-                                prefixIcon: Icon(Icons.search)),
+                              border: InputBorder.none,
+                              hintText: 'Buscar...',
+                              prefixIcon: Icon(Icons.search),
+                            ),
                           ),
                         ),
                       ),
@@ -122,6 +123,4 @@ class SearchRestaurant extends StatelessWidget {
 
   // List of Sales
   // getSales() => return List<Sale()>
-
-
 }

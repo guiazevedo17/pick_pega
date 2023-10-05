@@ -58,7 +58,7 @@ class _HomepageState extends State<Homepage> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              'Bem vindo',
+                              'Bem - vindo',
                               style: TextStyle(
                                   color: Color(0xFF333333),
                                   fontSize: 24,

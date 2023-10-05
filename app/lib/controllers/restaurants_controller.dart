@@ -15,6 +15,7 @@ class RestaurantsController extends ChangeNotifier {
       Position position = await _currentPosition();
       lat = position.latitude;
       long = position.longitude;
+
     } catch (e) {
       error = e.toString();
     }
@@ -38,9 +39,10 @@ class RestaurantsController extends ChangeNotifier {
     if (permission == LocationPermission.denied) {
       permission =
           await Geolocator.requestPermission(); // Request permission again
-      if (permission ==
-          LocationPermission.denied) // In case the request is denied again
+      if (permission == LocationPermission.denied) {
+        // In case the request is denied again
         return Future.error('Você precisa autorizar o acesso a localização');
+      }
     }
 
     if (permission == LocationPermission.deniedForever) {

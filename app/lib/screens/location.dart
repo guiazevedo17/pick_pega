@@ -10,19 +10,21 @@ class LocationScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Location'),
-      ),
       body: ChangeNotifierProvider<RestaurantsController>(
           create: (context) => RestaurantsController(),
           child: Builder(builder: (context) {
             final location = context.watch<RestaurantsController>();
+
+            if (location.lat == 0.0 && location.long == 0.0) {
+              return const Center(child: CircularProgressIndicator());
+            }
 
             return GoogleMap(
               initialCameraPosition: CameraPosition(
                 target: LatLng(location.lat, location.long),
                 zoom: 18,
               ),
+              myLocationButtonEnabled: true,
             );
           })),
     );
