@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pick_pega/styles/color.dart';
 
 class MenuProduct extends StatelessWidget {
   const MenuProduct({
@@ -10,16 +11,14 @@ class MenuProduct extends StatelessWidget {
     return Container(
       width: double.infinity,
       decoration: BoxDecoration(
-          color: const Color(0xFFEAEAEA),
-          borderRadius: BorderRadius.circular(10)),
+          color: offWhite, borderRadius: BorderRadius.circular(10)),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Expanded(
             flex: 2,
             child: Padding(
-              padding: const EdgeInsets.fromLTRB(
-                  8.0, 4.0, 0.0, 4.0),
+              padding: const EdgeInsets.fromLTRB(8.0, 4.0, 0.0, 4.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -31,8 +30,7 @@ class MenuProduct extends StatelessWidget {
                         fontWeight: FontWeight.bold),
                   ),
                   const Padding(
-                    padding: EdgeInsets.only(
-                        top: 4.0, bottom: 8.0),
+                    padding: EdgeInsets.only(top: 4.0, bottom: 8.0),
                     child: Text(
                       'Aprox. 300g',
                       style: TextStyle(
@@ -44,8 +42,7 @@ class MenuProduct extends StatelessWidget {
                   Row(
                     children: [
                       Padding(
-                        padding:
-                            const EdgeInsets.only(right: 4.0),
+                        padding: const EdgeInsets.only(right: 4.0),
                         child: Image.asset(
                           'assets/icons/money.png',
                           scale: 1.2,
@@ -61,8 +58,7 @@ class MenuProduct extends StatelessWidget {
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(
-                            left: 36.0, right: 4.0),
+                        padding: const EdgeInsets.only(left: 36.0, right: 4.0),
                         child: Image.asset(
                           'assets/icons/timer.png',
                           scale: 1.2,
@@ -86,8 +82,7 @@ class MenuProduct extends StatelessWidget {
           Expanded(
             flex: 1,
             child: SizedBox(
-              height:
-                  MediaQuery.of(context).size.height * 0.1,
+              height: MediaQuery.of(context).size.height * 0.1,
               child: ClipRRect(
                 borderRadius: const BorderRadius.only(
                     topRight: Radius.circular(10),
@@ -98,7 +93,7 @@ class MenuProduct extends StatelessWidget {
                 ),
               ),
             ),
-          )
+          ),
         ],
       ),
     );

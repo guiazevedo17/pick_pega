@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pick_pega/styles/color.dart';
 
 class OrderProduct extends StatelessWidget {
   const OrderProduct({
@@ -10,7 +11,7 @@ class OrderProduct extends StatelessWidget {
     return Container(
       width: double.infinity,
       decoration: BoxDecoration(
-          color: const Color(0xFFEAEAEA),
+          color: offWhite,
           borderRadius: BorderRadius.circular(10)),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,

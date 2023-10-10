@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
+// import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
+import 'package:pick_pega/styles/color.dart';
 
 class Homepage extends StatefulWidget {
   const Homepage({super.key});
@@ -31,7 +32,7 @@ class _HomepageState extends State<Homepage> {
               ),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),
-                color: const Color(0xFFF8F8F8),
+                color: white,
               ),
 
               // Container Content
@@ -101,31 +102,31 @@ class _HomepageState extends State<Homepage> {
                           onTap: () async {
                             // Scann QR Code
 
-                            String code =
-                                await FlutterBarcodeScanner.scanBarcode(
-                              "#FFFFFF",
-                              "Cancelar",
-                              false,
-                              ScanMode.QR,
-                            );
-                            setState(() =>
-                                ticket = code != '-1' ? code : 'Não validado');
+                            // String code =
+                            //     await FlutterBarcodeScanner.scanBarcode(
+                            //   "#FFFFFF",
+                            //   "Cancelar",
+                            //   false,
+                            //   ScanMode.QR,
+                            // );
+                            // setState(() =>
+                            //     ticket = code != '-1' ? code : 'Não validado');
                           },
                           child: Container(
                             width: 100,
                             height: 80,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
-                              color: const Color(0xFFF8BD36),
+                              color: actionYellow,
                             ),
-                            child: const Column(
+                            child: Column(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 // QR Code Icon
                                 Icon(
                                   Icons.qr_code,
-                                  color: Color(0xFFF8F8F8),
+                                  color: white,
                                 ),
 
                                 Text(
@@ -134,7 +135,7 @@ class _HomepageState extends State<Homepage> {
                                     fontFamily: 'Quicksand',
                                     fontSize: 16,
                                     fontWeight: FontWeight.bold,
-                                    color: Color(0xFFF8F8F8),
+                                    color: white,
                                   ),
                                 )
                               ],
@@ -153,16 +154,16 @@ class _HomepageState extends State<Homepage> {
                             height: 80,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
-                              color: const Color(0xFFF8BD36),
+                              color: actionYellow,
                             ),
-                            child: const Column(
+                            child: Column(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 // QR Code Icon
                                 Icon(
                                   Icons.search,
-                                  color: Color(0xFFF8F8F8),
+                                  color: white,
                                 ),
 
                                 Text(
@@ -171,7 +172,7 @@ class _HomepageState extends State<Homepage> {
                                     fontFamily: 'Quicksand',
                                     fontSize: 16,
                                     fontWeight: FontWeight.bold,
-                                    color: Color(0xFFF8F8F8),
+                                    color: white,
                                   ),
                                 )
                               ],

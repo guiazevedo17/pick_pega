@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pick_pega/styles/color.dart';
 
 class Category extends StatelessWidget {
   final String name;
@@ -11,7 +12,7 @@ class Category extends StatelessWidget {
       width: 100,
       margin: const EdgeInsets.only(right: 10),
       decoration: BoxDecoration(
-        color: const Color(0xFFE8E8E8),
+        color: offWhite,
         borderRadius: BorderRadius.circular(10),
       ),
       child: Center(

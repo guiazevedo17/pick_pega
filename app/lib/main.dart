@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 // import 'package:pick_pega/repositories/restaurants_repository.dart';
 import 'package:pick_pega/screens/bag.dart';
 import 'package:pick_pega/screens/homepage.dart';
+import 'package:pick_pega/screens/order.dart';
 import 'package:pick_pega/screens/restaurant_menu.dart';
 import 'package:pick_pega/screens/search_restaurant.dart';
 // import 'package:provider/provider.dart';
@@ -35,13 +36,14 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Pick Pega',
       debugShowCheckedModeBanner: false,
-      initialRoute: '/bag',
+      initialRoute: '/order',
       routes: {
         '/homepage': (context) => const Homepage(),
         '/search_restaurant': (context) => const SearchRestaurant(),
         '/location': (context) => const LocationScreen(),
         '/restaurant_menu': (context) => const RestaurantMenu(),
         '/bag': (context) => const BagScreen(),
+        '/order': (context) => const OrderScreen(),
       },
     );
   }

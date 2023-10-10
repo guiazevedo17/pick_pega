@@ -3,6 +3,7 @@ import 'package:pick_pega/components/sale.dart';
 
 import 'package:pick_pega/components/close_restaurant.dart';
 import 'package:pick_pega/components/sugestion.dart';
+import 'package:pick_pega/styles/color.dart';
 
 import '../components/section.dart';
 
@@ -12,7 +13,7 @@ class SearchRestaurant extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF8F8F8),
+      backgroundColor: white,
       body: SizedBox(
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
@@ -44,7 +45,7 @@ class SearchRestaurant extends StatelessWidget {
                         padding: const EdgeInsets.fromLTRB(16.0, 0, 10.0, 0),
                         child: Container(
                           decoration: BoxDecoration(
-                              color: const Color(0xFFEAEAEA),
+                              color: lightgrey,
                               borderRadius: BorderRadius.circular(20)),
                           child: const TextField(
                             textAlignVertical: TextAlignVertical.center,
@@ -61,18 +62,18 @@ class SearchRestaurant extends StatelessWidget {
                     // Location Button
                     GestureDetector(
                       onTap: () {
-                        Navigator.of(context).pushReplacementNamed('/location');
+                        Navigator.of(context).pushNamed('/location');
                       },
                       child: Container(
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
-                            color: const Color(0xFFF8BD36)),
-                        child: const SizedBox(
+                            color: actionYellow),
+                        child: SizedBox(
                           width: 40,
                           height: 40,
                           child: Icon(
                             Icons.location_pin,
-                            color: Color(0xFFF8F8F8),
+                            color: white,
                           ),
                         ),
                       ),
@@ -99,7 +100,7 @@ class SearchRestaurant extends StatelessWidget {
                         bottom: MediaQuery.of(context).size.height * 0.05,
                       ),
                       child: Section('Sugestões', const Sugestion(),
-                          MediaQuery.of(context).size.height * 0.18),
+                          MediaQuery.of(context).size.height * 0.19),
                     ),
 
                     // Sales Section

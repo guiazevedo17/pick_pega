@@ -10,26 +10,33 @@ class BagScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF8F8F8),
+      backgroundColor: white,
       body: Stack(
         children: [
           // Exit Bag Button
           Positioned(
             top: 0,
             left: 0,
-            child: Container(
-              width: 40,
-              height: 40,
-              margin: EdgeInsets.only(
-                top: MediaQuery.of(context).size.height * 0.06,
-                left: 8,
-              ),
-              decoration: BoxDecoration(
-                  color: actionYellow, borderRadius: BorderRadius.circular(20)),
-              child: const Icon(
-                Icons.keyboard_arrow_down_rounded,
-                color: Colors.white,
-                size: 24,
+            child: GestureDetector(
+              onTap: () {
+                Navigator.of(context).pop();
+              },
+              child: Container(
+                width: 40,
+                height: 40,
+                margin: EdgeInsets.only(
+                  top: MediaQuery.of(context).size.height * 0.06,
+                  left: 8,
+                ),
+                decoration: BoxDecoration(
+                  color: actionYellow,
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Icon(
+                  Icons.arrow_back_ios_rounded,
+                  color: white,
+                  size: 20,
+                ),
               ),
             ),
           ),

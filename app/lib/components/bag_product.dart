@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pick_pega/styles/color.dart';
 
 class BagProduct extends StatefulWidget {
   const BagProduct({
@@ -18,8 +19,9 @@ class _BagProductState extends State<BagProduct> {
       width: double.infinity,
       margin: const EdgeInsets.only(bottom: 10.0),
       decoration: BoxDecoration(
-          color: const Color(0xFFEAEAEA),
-          borderRadius: BorderRadius.circular(10)),
+        color: offWhite,
+        borderRadius: BorderRadius.circular(10),
+      ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -74,7 +76,7 @@ class _BagProductState extends State<BagProduct> {
               child: Container(
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),
-                    color: const Color(0xFFF8BD36)),
+                    color: actionYellow),
                 child: Padding(
                   padding: const EdgeInsets.symmetric(vertical: 2.0),
                   child: Row(
@@ -84,32 +86,32 @@ class _BagProductState extends State<BagProduct> {
                         onTap: () => setState(() {
                           qntd--;
                         }),
-                        child: const Padding(
-                          padding: EdgeInsets.only(left: 6.0),
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 6.0),
                           child: Icon(
                             Icons.remove,
-                            color: Colors.white,
+                            color: white,
                             size: 16,
                           ),
                         ),
                       ),
                       Text(
                         qntd.toString(),
-                        style: const TextStyle(
+                        style: TextStyle(
                             fontFamily: 'Quicksand',
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
-                            color: Colors.white),
+                            color: white),
                       ),
                       GestureDetector(
                         onTap: () => setState(() {
                           qntd++;
                         }),
-                        child: const Padding(
-                          padding: EdgeInsets.only(right: 6.0),
+                        child: Padding(
+                          padding: const EdgeInsets.only(right: 6.0),
                           child: Icon(
                             Icons.add,
-                            color: Colors.white,
+                            color: white,
                             size: 16,
                           ),
                         ),

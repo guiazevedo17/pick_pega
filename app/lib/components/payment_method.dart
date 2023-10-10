@@ -17,7 +17,9 @@ class PaymentMethod extends StatelessWidget {
       width: MediaQuery.of(context).size.width * 0.29,
       height: MediaQuery.of(context).size.height * 0.12,
       decoration: BoxDecoration(
-          color: offWhite, borderRadius: BorderRadius.circular(15)),
+        color: offWhite,
+        borderRadius: BorderRadius.circular(15),
+      ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,

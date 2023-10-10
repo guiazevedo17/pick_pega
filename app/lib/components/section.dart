@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pick_pega/styles/color.dart';
 
 class Section extends StatelessWidget {
   final String title;
@@ -17,8 +18,9 @@ class Section extends StatelessWidget {
           padding: const EdgeInsets.fromLTRB(16, 0, 0, 8),
           child: Text(
             title,
-            style: const TextStyle(
-              color: Color(0xFF333333),
+            style: TextStyle(
+              color: black,
+              fontFamily: 'Quicksand',
               fontSize: 18,
               fontWeight: FontWeight.bold,
             ),

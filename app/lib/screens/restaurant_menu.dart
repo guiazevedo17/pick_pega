@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:pick_pega/components/menu_product.dart';
+import 'package:pick_pega/styles/color.dart';
 
 import '../components/category.dart';
 // import '../components/menu_product.dart';
@@ -15,20 +17,25 @@ class RestaurantMenu extends StatelessWidget {
           Positioned(
             top: 0,
             left: 0,
-            child: Container(
-              width: 40,
-              height: 40,
-              decoration: BoxDecoration(
-                  color: const Color(0xFFF8BD36),
-                  borderRadius: BorderRadius.circular(20)),
-              margin: EdgeInsets.only(
-                top: MediaQuery.of(context).size.height * 0.06,
-                left: 8,
-              ),
-              child: const Icon(
-                Icons.arrow_back_ios_new_rounded,
-                color: Colors.white,
-                size: 20,
+            child: GestureDetector(
+              onTap: () {
+                Navigator.of(context).pop();
+              },
+              child: Container(
+                width: 40,
+                height: 40,
+                decoration: BoxDecoration(
+                    color: actionYellow,
+                    borderRadius: BorderRadius.circular(20)),
+                margin: EdgeInsets.only(
+                  top: MediaQuery.of(context).size.height * 0.06,
+                  left: 8,
+                ),
+                child: Icon(
+                  Icons.arrow_back_ios_new_rounded,
+                  color: white,
+                  size: 20,
+                ),
               ),
             ),
           ),
@@ -65,7 +72,7 @@ class RestaurantMenu extends StatelessWidget {
                   child: Container(
                     height: MediaQuery.of(context).size.height * 0.03,
                     decoration: BoxDecoration(
-                        color: const Color(0xFFEAEAEA),
+                        color: lightgrey,
                         borderRadius: BorderRadius.circular(20)),
                     child: const TextField(
                       maxLines: 1,
@@ -136,6 +143,8 @@ class RestaurantMenu extends StatelessWidget {
                       ),
                     ),
 
+                    const MenuProduct(),
+
                     // Products List
                     // Category Name
                     // const Text(
@@ -155,6 +164,16 @@ class RestaurantMenu extends StatelessWidget {
             ),
           ),
         ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.of(context).pushNamed('/bag');
+        },
+        backgroundColor: actionYellow,
+        child: Icon(
+          Icons.shopping_cart_outlined,
+          color: white,
+        ),
       ),
     );
   }
