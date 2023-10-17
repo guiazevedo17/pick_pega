@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_config/flutter_config.dart';
 import 'package:pick_pega/repositories/restaurants_repository.dart';
-import 'package:pick_pega/screens/homepage.dart';
 import 'package:pick_pega/screens/payment.dart';
 import 'package:pick_pega/screens/product_selected.dart';
 import 'package:pick_pega/screens/search_restaurant.dart';
@@ -31,7 +30,6 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       initialRoute: '/payment',
       routes: {
-        '/homepage': (context) => const Homepage(),
         '/search_restaurant': (context) => const SearchRestaurant(),
         '/location': (context) => const LocationScreen(),
         '/product_selected': (context) => const ProductSelected(),
