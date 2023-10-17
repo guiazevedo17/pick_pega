@@ -36,7 +36,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Pick Pega',
       debugShowCheckedModeBanner: false,
-      initialRoute: '/order',
+      initialRoute: '/homepage',
       routes: {
         '/homepage': (context) => const Homepage(),
         '/search_restaurant': (context) => const SearchRestaurant(),
