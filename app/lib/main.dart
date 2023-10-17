@@ -10,6 +10,8 @@ import 'package:pick_pega/screens/search_restaurant.dart';
 // import 'package:provider/provider.dart';
 
 import 'screens/location.dart';
+import 'screens/payment.dart';
+import 'screens/product_selected.dart';
 
 void main() async {
   // WidgetsFlutterBinding.ensureInitialized();
@@ -38,10 +40,13 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       initialRoute: '/homepage',
       routes: {
+        '/homepage': (context) => const Homepage(),
         '/search_restaurant': (context) => const SearchRestaurant(),
         '/location': (context) => const LocationScreen(),
         '/restaurant_menu': (context) => const RestaurantMenu(),
+        '/product_selected': (context) => const ProductSelected(),
         '/bag': (context) => const BagScreen(),
+        '/payment': (context) => const Payment(),
         '/order': (context) => const OrderScreen(),
       },
     );
