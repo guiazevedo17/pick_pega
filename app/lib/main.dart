@@ -38,7 +38,6 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       initialRoute: '/homepage',
       routes: {
-        '/homepage': (context) => const Homepage(),
         '/search_restaurant': (context) => const SearchRestaurant(),
         '/location': (context) => const LocationScreen(),
         '/restaurant_menu': (context) => const RestaurantMenu(),

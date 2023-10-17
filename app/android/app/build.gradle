@@ -24,10 +24,11 @@ if (flutterVersionName == null) {
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
-// apply from: project(':flutter_config').properties.getPath() + "dotenv.gradle"
+// //apply from: project(':flutter_config').properties.getPath() + "dotenv.gradle"
 
 android {
     namespace "com.pega.pick.pick_pega"
+    compileSdkVersion 33
     compileSdkVersion 33
     ndkVersion flutter.ndkVersion
 
