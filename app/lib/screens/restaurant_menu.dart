@@ -143,7 +143,12 @@ class RestaurantMenu extends StatelessWidget {
                       ),
                     ),
 
-                    const MenuProduct(),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).pushNamed('/product_selected');
+                      },
+                      child: const MenuProduct(),
+                    ),
 
                     // Products List
                     // Category Name

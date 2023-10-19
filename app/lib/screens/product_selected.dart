@@ -18,8 +18,7 @@ class _ProductSelectedState extends State<ProductSelected> {
 
   void _decrementCounter() {
     setState(() {
-      if(_counter > 0)
-        _counter--;
+      if (_counter > 0) _counter--;
     });
   }
 
@@ -46,7 +45,9 @@ class _ProductSelectedState extends State<ProductSelected> {
                   child: Image.asset('assets/images/productSelected.png',
                       fit: BoxFit.cover)),
               GestureDetector(
-                onTap: () {},
+                onTap: () {
+                  Navigator.of(context).pop();
+                },
                 child: Container(
                     margin: EdgeInsets.only(top: 8.0, left: 10.0),
                     width: 48,
@@ -229,10 +230,11 @@ class _ProductSelectedState extends State<ProductSelected> {
                 alignment: Alignment.bottomCenter,
                 child: GestureDetector(
                   onTap: () {
+                    Navigator.of(context).pushNamed('/bag');
                     // Ação do botão
                   },
                   child: Padding(
-                    padding: EdgeInsets.only(
+                    padding: const EdgeInsets.only(
                         top: 12, bottom: 16, left: 16, right: 16),
                     child: Container(
                       width: double.infinity,

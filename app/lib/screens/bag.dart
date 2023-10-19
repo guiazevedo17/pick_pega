@@ -222,7 +222,7 @@ class BagScreen extends StatelessWidget {
                   padding: const EdgeInsets.all(16.0),
                   child: ElevatedButton(
                     onPressed: () {
-                      Navigator.of(context).pushNamed('/order');
+                      Navigator.of(context).pushNamed('/payment');
                     },
                     style: ElevatedButton.styleFrom(
                       minimumSize: Size(MediaQuery.of(context).size.width, 50),

@@ -8,10 +8,8 @@ class Payment extends StatefulWidget {
 }
 
 class _PaymentState extends State<Payment> {
-
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       body: SafeArea(
         child: Column(
@@ -24,7 +22,8 @@ class _PaymentState extends State<Payment> {
               height: 48,
               child: Image.asset('assets/images/buttonBack.png'),
             ),
-            Center( // Centralize o texto
+            Center(
+              // Centralize o texto
               child: Container(
                 child: const Text(
                   'Crédito',
@@ -38,12 +37,12 @@ class _PaymentState extends State<Payment> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(left: 16,right: 16,top: 141),
+              padding: const EdgeInsets.only(left: 16, right: 16, top: 141),
               child: Container(
-                child:  Column(
+                child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                     const Text(
+                    const Text(
                       'Nome',
                       style: TextStyle(
                         fontFamily: 'Quicksand',
@@ -52,19 +51,25 @@ class _PaymentState extends State<Payment> {
                         color: Colors.black,
                       ),
                     ),
-                    const SizedBox(height: 11,),
+                    const SizedBox(
+                      height: 11,
+                    ),
                     TextField(
                       decoration: InputDecoration(
                         filled: true,
                         fillColor: Color(0xFFEAEAEA), // Cor EAEAEA
-                        contentPadding: EdgeInsets.symmetric(horizontal: 16.0), // Padding lateral de 16px
-                        border: OutlineInputBorder( // Borda ao redor do TextField
+                        contentPadding: EdgeInsets.symmetric(
+                            horizontal: 16.0), // Padding lateral de 16px
+                        border: OutlineInputBorder(
+                          // Borda ao redor do TextField
                           borderRadius: BorderRadius.circular(8.0),
-                          borderSide: BorderSide.none,// Borda circular de 8px
+                          borderSide: BorderSide.none, // Borda circular de 8px
                         ),
                       ),
                     ),
-                    const SizedBox(height: 16,),
+                    const SizedBox(
+                      height: 16,
+                    ),
                     const Text(
                       'Número',
                       style: TextStyle(
@@ -74,19 +79,25 @@ class _PaymentState extends State<Payment> {
                         color: Colors.black,
                       ),
                     ),
-                    SizedBox(height: 11,),
+                    SizedBox(
+                      height: 11,
+                    ),
                     TextField(
                       decoration: InputDecoration(
                         filled: true,
                         fillColor: Color(0xFFEAEAEA), // Cor EAEAEA
-                        contentPadding: EdgeInsets.symmetric(horizontal: 16.0), // Padding lateral de 16px
-                        border: OutlineInputBorder( // Borda ao redor do TextField
+                        contentPadding: EdgeInsets.symmetric(
+                            horizontal: 16.0), // Padding lateral de 16px
+                        border: OutlineInputBorder(
+                          // Borda ao redor do TextField
                           borderRadius: BorderRadius.circular(8.0),
-                          borderSide: BorderSide.none,// Borda circular de 8px
+                          borderSide: BorderSide.none, // Borda circular de 8px
                         ),
                       ),
                     ),
-                    SizedBox(height: 16,),
+                    SizedBox(
+                      height: 16,
+                    ),
                     Row(
                       children: [
                         Expanded(
@@ -107,10 +118,14 @@ class _PaymentState extends State<Payment> {
                                   decoration: InputDecoration(
                                     filled: true,
                                     fillColor: Color(0xFFEAEAEA), // Cor EAEAEA
-                                    contentPadding: EdgeInsets.symmetric(horizontal: 16.0), // Padding lateral de 16px
-                                    border: OutlineInputBorder( // Borda ao redor do TextField
+                                    contentPadding: EdgeInsets.symmetric(
+                                        horizontal:
+                                            16.0), // Padding lateral de 16px
+                                    border: OutlineInputBorder(
+                                      // Borda ao redor do TextField
                                       borderRadius: BorderRadius.circular(8.0),
-                                      borderSide: BorderSide.none,// Borda circular de 8px
+                                      borderSide: BorderSide
+                                          .none, // Borda circular de 8px
                                     ),
                                   ),
                                 ),
@@ -118,7 +133,9 @@ class _PaymentState extends State<Payment> {
                             ),
                           ),
                         ),
-                        SizedBox(width: 16,),
+                        SizedBox(
+                          width: 16,
+                        ),
                         Expanded(
                           child: Container(
                             child: Column(
@@ -137,10 +154,14 @@ class _PaymentState extends State<Payment> {
                                   decoration: InputDecoration(
                                     filled: true,
                                     fillColor: Color(0xFFEAEAEA), // Cor EAEAEA
-                                    contentPadding: EdgeInsets.symmetric(horizontal: 16.0), // Padding lateral de 16px
-                                    border: OutlineInputBorder( // Borda ao redor do TextField
+                                    contentPadding: EdgeInsets.symmetric(
+                                        horizontal:
+                                            16.0), // Padding lateral de 16px
+                                    border: OutlineInputBorder(
+                                      // Borda ao redor do TextField
                                       borderRadius: BorderRadius.circular(8.0),
-                                      borderSide: BorderSide.none,// Borda circular de 8px
+                                      borderSide: BorderSide
+                                          .none, // Borda circular de 8px
                                     ),
                                   ),
                                 ),
@@ -157,7 +178,7 @@ class _PaymentState extends State<Payment> {
                           const Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                               Text(
+                              Text(
                                 'Total',
                                 style: TextStyle(
                                   fontFamily: 'Quicksand',
@@ -166,7 +187,7 @@ class _PaymentState extends State<Payment> {
                                   color: Colors.black,
                                 ),
                               ),
-                               Text(
+                              Text(
                                 'R\$ 20,00',
                                 style: TextStyle(
                                   fontFamily: 'Quicksand',
@@ -177,10 +198,10 @@ class _PaymentState extends State<Payment> {
                               ),
                             ],
                           ),
-
                           GestureDetector(
                             onTap: () {
                               // Ação do botão
+                              Navigator.of(context).pushNamed('/order');
                             },
                             child: Container(
                               width: double.infinity,
@@ -213,16 +234,13 @@ class _PaymentState extends State<Payment> {
                         ],
                       ),
                     )
-
                   ],
                 ),
-
               ),
             )
           ],
         ),
       ),
     );
-
   }
 }
