@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../styles/color.dart';
+
 class ProductSelected extends StatefulWidget {
   const ProductSelected({Key? key}) : super(key: key);
 
@@ -24,14 +26,6 @@ class _ProductSelectedState extends State<ProductSelected> {
 
   @override
   Widget build(BuildContext context) {
-    List<String> ingredientes = [
-      'Calabresa',
-      'Queijo',
-      'Cebola',
-      'Tomate',
-      'Molho de tomate'
-    ];
-
     return Scaffold(
       body: SafeArea(
         child: Column(
@@ -49,7 +43,7 @@ class _ProductSelectedState extends State<ProductSelected> {
                   Navigator.of(context).pop();
                 },
                 child: Container(
-                    margin: EdgeInsets.only(top: 8.0, left: 10.0),
+                    margin: const EdgeInsets.only(top: 8.0, left: 8.0),
                     width: 48,
                     height: 48,
                     child: Image.asset('assets/images/buttonBack.png')),
@@ -67,78 +61,196 @@ class _ProductSelectedState extends State<ProductSelected> {
                 ),
               ),
             ),
+
             Container(
-              width: 120,
-              height: 25,
+              width: MediaQuery.of(context).size.width * 0.3,
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                color: const Color(0xFFF8BD36),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.2),
-                    spreadRadius: 0,
-                    blurRadius: 2,
-                    offset: Offset(0, 2),
-                  ),
-                ],
-              ),
-              child: Row(
-                mainAxisSize: MainAxisSize.max,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  IconButton(
-                    icon: const Icon(Icons.remove,
-                        size: 13,
-                        // Defina o tamanho do ícone desejado
-                        color: Colors.white),
-                    onPressed: () {
-                      _decrementCounter();
-                    },
-                  ),
-                  Text(
-                    '$_counter',
-                    style: const TextStyle(
-                      fontFamily: 'Quicksand',
-                      fontSize: 13,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
-                  ),
-                  IconButton(
-                    icon: const Icon(Icons.add,
-                        size: 13,
-                        // Defina o tamanho do ícone desejado
-                        color: Colors.white),
-                    onPressed: () {
-                      _incrementCounter();
-                    },
-                  ),
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(
-                  left: 16, right: 16, bottom: 25, top: 56),
-              child: Container(
-                alignment: Alignment.topLeft,
-                child: const Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  borderRadius: BorderRadius.circular(20), color: actionYellow),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 2.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
-                      'Pastel de Calabresa',
-                      style: TextStyle(
-                        fontFamily: 'Quicksand',
-                        fontSize: 22,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
+                    GestureDetector(
+                      onTap: () => _decrementCounter(),
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 6.0),
+                        child: Icon(
+                          Icons.remove,
+                          color: white,
+                          size: 16,
+                        ),
                       ),
                     ),
                     Text(
-                      'Aproximadamente 300 g',
+                      _counter.toString(),
+                      style: TextStyle(
+                          fontFamily: 'Quicksand',
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: white),
+                    ),
+                    GestureDetector(
+                      onTap: () => _incrementCounter(),
+                      child: Padding(
+                        padding: const EdgeInsets.only(right: 6.0),
+                        child: Icon(
+                          Icons.add,
+                          color: white,
+                          size: 16,
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            ),
+
+            // Container(
+            //   width: 120,
+            //   height: 25,
+            //   decoration: BoxDecoration(
+            //     borderRadius: BorderRadius.circular(10),
+            //     color: const Color(0xFFF8BD36),
+            //     boxShadow: [
+            //       BoxShadow(
+            //         color: Colors.black.withOpacity(0.2),
+            //         spreadRadius: 0,
+            //         blurRadius: 2,
+            //         offset: const Offset(0, 2),
+            //       ),
+            //     ],
+            //   ),
+
+            //   child: Row(
+            //     mainAxisSize: MainAxisSize.max,
+            //     crossAxisAlignment: CrossAxisAlignment.center,
+            //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //     children: [
+            //       // Minus
+            //       IconButton(
+            //         icon: const Icon(Icons.remove,
+            //             size: 13,
+            //             // Defina o tamanho do ícone desejado
+            //             color: Colors.white),
+            //         onPressed: () {
+            //           _decrementCounter();
+            //         },
+            //       ),
+            //       // Qntd
+            //       Text(
+            //         '$_counter',
+            //         style: const TextStyle(
+            //           fontFamily: 'Quicksand',
+            //           fontSize: 13,
+            //           fontWeight: FontWeight.bold,
+            //           color: Colors.white,
+            //         ),
+            //       ),
+            //       // Add
+            //       IconButton(
+            //         icon: const Icon(Icons.add,
+            //             size: 13,
+            //             // Defina o tamanho do ícone desejado
+            //             color: Colors.white),
+            //         onPressed: () {
+            //           _incrementCounter();
+            //         },
+            //       ),
+            //     ],
+            //   ),
+            // ),
+
+            // Product Information
+            const Expanded(
+              flex: 2,
+              child: Padding(
+                padding: EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0),
+                child: SizedBox(
+                  width: double.infinity,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // Product Name
+                          Text(
+                            'Pastel de Calabresa',
+                            style: TextStyle(
+                              fontFamily: 'Quicksand',
+                              fontSize: 22,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black,
+                            ),
+                          ),
+
+                          // Product Description
+                          Text(
+                            'Aproximadamente 300 g',
+                            style: TextStyle(
+                              fontFamily: 'Quicksand',
+                              fontSize: 14,
+                              fontWeight: FontWeight.normal,
+                              color: Colors.black,
+                            ),
+                          ),
+                        ],
+                      ),
+
+                      // Ingredientes
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // Ingredientes Title
+                          Text(
+                            'Ingredientes',
+                            style: TextStyle(
+                              fontFamily: 'Quicksand',
+                              fontSize: 22,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black,
+                            ),
+                          ),
+
+                          // Ingredientes Description
+                          Text(
+                            'Calabresa, Ovo, ...',
+                            style: TextStyle(
+                              fontFamily: 'Quicksand',
+                              fontSize: 14,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+
+            // Time to Prepare
+            Expanded(
+              flex: 1,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 16.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(right: 4.0),
+                      child: Image.asset(
+                        'assets/images/timer.png',
+                        width: 18,
+                        height: 18,
+                      ),
+                    ),
+                    const Text(
+                      '10 min',
                       style: TextStyle(
                         fontFamily: 'Quicksand',
-                        fontSize: 14,
+                        fontSize: 16,
                         fontWeight: FontWeight.normal,
                         color: Colors.black,
                       ),
@@ -147,123 +259,37 @@ class _ProductSelectedState extends State<ProductSelected> {
                 ),
               ),
             ),
+
+            // Total Price
+            const Text(
+              'R\$ 20,00',
+              style: TextStyle(
+                  fontFamily: 'Quicksand',
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold),
+            ),
+
+            // Add to Bag Button
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: Container(
-                alignment: Alignment.topLeft,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      'Ingredientes',
-                      style: TextStyle(
-                        fontFamily: 'Quicksand',
-                        fontSize: 22,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
-                      ),
-                    ),
-                    ListView.builder(
-                      shrinkWrap: true,
-                      // Para limitar a altura ao conteúdo
-                      itemCount: ingredientes.length,
-                      // Substitua "ingredientes" pela sua lista de ingredientes
-                      itemBuilder: (BuildContext context, int index) {
-                        return Text(
-                          ingredientes[index], // Obtém o ingrediente da lista
-                          style: const TextStyle(
-                            fontFamily: 'Quicksand',
-                            fontSize: 14,
-                            fontWeight: FontWeight.normal,
-                            color: Colors.black,
-                          ),
-                        );
-                      },
-                    ),
-                  ],
+              padding: const EdgeInsets.all(16.0),
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.of(context).pushNamed('/bag');
+                },
+                style: ElevatedButton.styleFrom(
+                  minimumSize: Size(MediaQuery.of(context).size.width, 50),
+                  backgroundColor: actionYellow,
+                  elevation: 0,
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(15)),
+                  ),
                 ),
-              ),
-            ),
-            SizedBox(
-              height: 15,
-            ),
-            Container(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(right: 4.0),
-                    child: Image.asset(
-                      'assets/images/timer.png',
-                      width: 25,
-                      height: 25,
-                    ),
-                  ),
-                  const Text(
-                    '10 min',
-                    style: TextStyle(
-                      fontFamily: 'Quicksand',
-                      fontSize: 18,
-                      fontWeight: FontWeight.normal,
-                      color: Colors.black,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            const Expanded(
-              child: Align(
-                alignment: Alignment.bottomCenter,
-                child: Text(
-                  'R\$ 20,00',
+                child: const Text(
+                  'Adicionar ao Carrinho',
                   style: TextStyle(
-                    fontFamily: 'Quicksand',
-                    fontSize: 22,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
-                  ),
-                ),
-              ),
-            ),
-            Expanded(
-              child: Align(
-                alignment: Alignment.bottomCenter,
-                child: GestureDetector(
-                  onTap: () {
-                    Navigator.of(context).pushNamed('/bag');
-                    // Ação do botão
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.only(
-                        top: 12, bottom: 16, left: 16, right: 16),
-                    child: Container(
-                      width: double.infinity,
-                      height: 50,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(15),
-                        color: Color(0xFFF8BD36),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.2),
-                            spreadRadius: 0,
-                            blurRadius: 2,
-                            offset: Offset(0, 2),
-                          ),
-                        ], // Cor de fundo laranja
-                      ),
-                      child: const Center(
-                        child: Text(
-                          'Adicionar ao carrinho',
-                          style: TextStyle(
-                            fontFamily: 'Quicksand',
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
+                      fontFamily: 'Quicksand',
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold),
                 ),
               ),
             ),
