@@ -18,11 +18,16 @@ class _PaymentState extends State<Payment> {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.max,
           children: [
-            Container(
-              margin: const EdgeInsets.only(top: 8.0, left: 8.0),
-              width: 48,
-              height: 48,
-              child: Image.asset('assets/images/buttonBack.png'),
+            GestureDetector(
+              onTap: () {
+                Navigator.of(context).pop();
+              },
+              child: Container(
+                margin: const EdgeInsets.only(top: 8.0, left: 8.0),
+                width: 48,
+                height: 48,
+                child: Image.asset('assets/images/buttonBack.png'),
+              ),
             ),
             Center(
               // Centralize o texto
