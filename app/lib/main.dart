@@ -1,5 +1,7 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'firebase_options.dart';
 // import 'package:flutter_config/flutter_config.dart';
 // import 'package:pick_pega/repositories/restaurants_repository.dart';
 import 'package:pick_pega/screens/bag.dart';
@@ -14,8 +16,12 @@ import 'screens/payment.dart';
 import 'screens/product_selected.dart';
 
 void main() async {
-  // WidgetsFlutterBinding.ensureInitialized();
+  WidgetsFlutterBinding.ensureInitialized();
   // await FlutterConfig.loadEnvVariables();
+
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
 
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
     statusBarBrightness: Brightness.light,
