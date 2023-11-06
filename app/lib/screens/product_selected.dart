@@ -10,7 +10,10 @@ class ProductSelected extends StatefulWidget {
 }
 
 class _ProductSelectedState extends State<ProductSelected> {
+  final int _price = 10;
   int _counter = 0; // Declaração da variável _counter
+
+  String _priceShowed = '0';
 
   void _incrementCounter() {
     setState(() {
@@ -21,6 +24,12 @@ class _ProductSelectedState extends State<ProductSelected> {
   void _decrementCounter() {
     setState(() {
       if (_counter > 0) _counter--;
+    });
+  }
+
+  void _updatePrice() {
+    setState(() {
+      _priceShowed = (_price * _counter).toString();
     });
   }
 
@@ -72,7 +81,10 @@ class _ProductSelectedState extends State<ProductSelected> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     GestureDetector(
-                      onTap: () => _decrementCounter(),
+                      onTap: () {
+                        _decrementCounter();
+                        _updatePrice();
+                      },
                       child: Padding(
                         padding: const EdgeInsets.only(left: 6.0),
                         child: Icon(
@@ -91,7 +103,10 @@ class _ProductSelectedState extends State<ProductSelected> {
                           color: white),
                     ),
                     GestureDetector(
-                      onTap: () => _incrementCounter(),
+                      onTap: () {
+                        _incrementCounter();
+                        _updatePrice();
+                      },
                       child: Padding(
                         padding: const EdgeInsets.only(right: 6.0),
                         child: Icon(
@@ -105,61 +120,6 @@ class _ProductSelectedState extends State<ProductSelected> {
                 ),
               ),
             ),
-
-            // Container(
-            //   width: 120,
-            //   height: 25,
-            //   decoration: BoxDecoration(
-            //     borderRadius: BorderRadius.circular(10),
-            //     color: const Color(0xFFF8BD36),
-            //     boxShadow: [
-            //       BoxShadow(
-            //         color: Colors.black.withOpacity(0.2),
-            //         spreadRadius: 0,
-            //         blurRadius: 2,
-            //         offset: const Offset(0, 2),
-            //       ),
-            //     ],
-            //   ),
-
-            //   child: Row(
-            //     mainAxisSize: MainAxisSize.max,
-            //     crossAxisAlignment: CrossAxisAlignment.center,
-            //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            //     children: [
-            //       // Minus
-            //       IconButton(
-            //         icon: const Icon(Icons.remove,
-            //             size: 13,
-            //             // Defina o tamanho do ícone desejado
-            //             color: Colors.white),
-            //         onPressed: () {
-            //           _decrementCounter();
-            //         },
-            //       ),
-            //       // Qntd
-            //       Text(
-            //         '$_counter',
-            //         style: const TextStyle(
-            //           fontFamily: 'Quicksand',
-            //           fontSize: 13,
-            //           fontWeight: FontWeight.bold,
-            //           color: Colors.white,
-            //         ),
-            //       ),
-            //       // Add
-            //       IconButton(
-            //         icon: const Icon(Icons.add,
-            //             size: 13,
-            //             // Defina o tamanho do ícone desejado
-            //             color: Colors.white),
-            //         onPressed: () {
-            //           _incrementCounter();
-            //         },
-            //       ),
-            //     ],
-            //   ),
-            // ),
 
             // Product Information
             const Expanded(
@@ -261,12 +221,27 @@ class _ProductSelectedState extends State<ProductSelected> {
             ),
 
             // Total Price
-            const Text(
-              'R\$ 20,00',
-              style: TextStyle(
-                  fontFamily: 'Quicksand',
-                  fontSize: 22,
-                  fontWeight: FontWeight.bold),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text(
+                    'Total',
+                    style: TextStyle(
+                        fontFamily: 'Quicksand',
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold),
+                  ),
+                  Text(
+                    'R\$ $_priceShowed',
+                    style: const TextStyle(
+                        fontFamily: 'Quicksand',
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
             ),
 
             // Add to Bag Button
