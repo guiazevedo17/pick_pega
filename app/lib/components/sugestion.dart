@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:pick_pega/styles/color.dart';
 
+
 class Sugestion extends StatelessWidget {
-  const Sugestion({
-    Key? key,
+
+  final String name;
+
+  const Sugestion(
+    this.name,{
+    Key? key
   }) : super(key: key);
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -30,8 +37,8 @@ class Sugestion extends StatelessWidget {
             ),
 
             // Restaurant Name
-            const Text(
-              'Sow',
+            Text(
+              name,
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,

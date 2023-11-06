@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:pick_pega/components/close_restaurant.dart';
+import 'package:pick_pega/components/sale.dart';
+import 'package:pick_pega/components/sugestion.dart';
 import 'package:pick_pega/styles/color.dart';
+
+import '../models/restaurant.dart';
 
 class Section extends StatelessWidget {
   final String title;
-  final Widget widget;
+  final List restaurants;
   final double size;
 
-  const Section(this.title, this.widget, this.size, {super.key});
+  const Section(this.title, this.restaurants, this.size, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +38,16 @@ class Section extends StatelessWidget {
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
             padding: const EdgeInsets.only(left: 16),
-            itemBuilder: (context, index) => widget,
+            itemCount: restaurants.length,
+            itemBuilder: (context, index) {
+              if (size == MediaQuery.of(context).size.height * 0.08)
+                return CloseRestaurant();
+              else if (size == MediaQuery.of(context).size.height * 0.19)
+                return Sugestion(restaurants[index].name);
+              else
+                return Sale();
+
+            },
           ),
         )
       ],
