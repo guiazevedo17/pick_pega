@@ -12,6 +12,7 @@ import 'package:pick_pega/screens/order.dart';
 import 'package:pick_pega/screens/restaurant_menu.dart';
 import 'package:pick_pega/screens/search_restaurant.dart';
 // import 'package:provider/provider.dart';
+import 'models/product.dart';
 import 'screens/location.dart';
 import 'screens/payment.dart';
 import 'screens/product_selected.dart';
@@ -62,8 +63,9 @@ class MyApp extends StatelessWidget {
             return MaterialPageRoute(
                 builder: (context) => RestaurantMenu(restaurant));
           case '/product_selected':
+            final Product product = settings.arguments as Product;
             return MaterialPageRoute(
-                builder: (context) => const ProductSelected());
+                builder: (context) => ProductSelected(product));
           case '/bag':
             return MaterialPageRoute(builder: (context) => const BagScreen());
           case '/payment':

@@ -55,7 +55,7 @@ class MenuProduct extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        '${product.price}',
+                        'R\$ ${product.price}',
                         style: const TextStyle(
                           fontFamily: 'Quicksand',
                           fontSize: 13,
@@ -71,7 +71,7 @@ class MenuProduct extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        '${product.time}',
+                        '${product.time} min',
                         style: const TextStyle(
                           fontFamily: 'Quicksand',
                           fontSize: 13,

@@ -1,19 +1,21 @@
 import 'package:flutter/material.dart';
 
+import '../models/product.dart';
 import '../styles/color.dart';
 
 class ProductSelected extends StatefulWidget {
-  const ProductSelected({Key? key}) : super(key: key);
+  final Product product;
+
+  const ProductSelected(this.product, {Key? key}) : super(key: key);
 
   @override
   State<ProductSelected> createState() => _ProductSelectedState();
 }
 
 class _ProductSelectedState extends State<ProductSelected> {
-  final int _price = 10;
   int _counter = 0; // Declaração da variável _counter
 
-  String _priceShowed = '0';
+  double _priceShowed = 0;
 
   void _incrementCounter() {
     setState(() {
@@ -29,7 +31,7 @@ class _ProductSelectedState extends State<ProductSelected> {
 
   void _updatePrice() {
     setState(() {
-      _priceShowed = (_price * _counter).toString();
+      _priceShowed = widget.product.price * _counter;
     });
   }
 
@@ -43,10 +45,11 @@ class _ProductSelectedState extends State<ProductSelected> {
           mainAxisSize: MainAxisSize.max,
           children: [
             Stack(alignment: Alignment.topLeft, children: [
-              Container(
+              SizedBox(
+                  width: double.infinity,
                   height: MediaQuery.of(context).size.height * 0.315,
-                  child: Image.asset('assets/images/productSelected.png',
-                      fit: BoxFit.cover)),
+                  child:
+                      Image.network(widget.product.picture, fit: BoxFit.cover)),
               GestureDetector(
                 onTap: () {
                   Navigator.of(context).pop();
@@ -67,11 +70,11 @@ class _ProductSelectedState extends State<ProductSelected> {
                 ),
               )
             ]),
-            const Padding(
-              padding: EdgeInsets.symmetric(vertical: 13.0),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 13.0),
               child: Text(
-                'R\$ 10,00',
-                style: TextStyle(
+                'R\$ ${widget.product.price}',
+                style: const TextStyle(
                   fontFamily: 'Quicksand',
                   fontSize: 20,
                   fontWeight: FontWeight.w600,
@@ -131,10 +134,10 @@ class _ProductSelectedState extends State<ProductSelected> {
             ),
 
             // Product Information
-            const Expanded(
+            Expanded(
               flex: 2,
               child: Padding(
-                padding: EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0),
+                padding: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0),
                 child: SizedBox(
                   width: double.infinity,
                   child: Column(
@@ -146,8 +149,8 @@ class _ProductSelectedState extends State<ProductSelected> {
                         children: [
                           // Product Name
                           Text(
-                            'Pastel de Calabresa',
-                            style: TextStyle(
+                            widget.product.name,
+                            style: const TextStyle(
                               fontFamily: 'Quicksand',
                               fontSize: 22,
                               fontWeight: FontWeight.bold,
@@ -157,8 +160,8 @@ class _ProductSelectedState extends State<ProductSelected> {
 
                           // Product Description
                           Text(
-                            'Aproximadamente 300 g',
-                            style: TextStyle(
+                            widget.product.description,
+                            style: const TextStyle(
                               fontFamily: 'Quicksand',
                               fontSize: 14,
                               fontWeight: FontWeight.normal,
@@ -169,7 +172,7 @@ class _ProductSelectedState extends State<ProductSelected> {
                       ),
 
                       // Ingredientes
-                      Column(
+                      const Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           // Ingredientes Title
@@ -215,9 +218,9 @@ class _ProductSelectedState extends State<ProductSelected> {
                         height: 18,
                       ),
                     ),
-                    const Text(
-                      '10 min',
-                      style: TextStyle(
+                    Text(
+                      '${widget.product.time} min',
+                      style: const TextStyle(
                         fontFamily: 'Quicksand',
                         fontSize: 16,
                         fontWeight: FontWeight.normal,
@@ -243,7 +246,7 @@ class _ProductSelectedState extends State<ProductSelected> {
                         fontWeight: FontWeight.bold),
                   ),
                   Text(
-                    'R\$ $_priceShowed',
+                    'R\$ ${_priceShowed.toStringAsFixed(2)}',
                     style: const TextStyle(
                         fontFamily: 'Quicksand',
                         fontSize: 22,

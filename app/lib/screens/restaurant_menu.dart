@@ -41,12 +41,9 @@ class _RestaurantMenuState extends State<RestaurantMenu> {
 
       categoriesData.forEach((category, items) {
         List<Product> products = [];
-        print('antes if - $items');
         if (items is List) {
-          print('dentro if - $items');
 
           for (var item in items) {
-            print('dentro for - $item');
 
             var prod = Product(
               restaurantId: item['restaurantId'],
@@ -59,9 +56,7 @@ class _RestaurantMenuState extends State<RestaurantMenu> {
               time: item['time'],
               picture: item['picture'],
             );
-            print('product - $prod');
             products.add(prod);
-
           }
         }
 
@@ -71,7 +66,6 @@ class _RestaurantMenuState extends State<RestaurantMenu> {
         );
 
         categories.add(cat);
-        print('category - ${cat.name}');
       });
 
       // Azevedo's solution
@@ -111,7 +105,6 @@ class _RestaurantMenuState extends State<RestaurantMenu> {
           } else if (snapshot.hasError) {
             return Center(child: Text('Erro: ${snapshot.error}'));
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            print(snapshot.data);
             return const Center(child: Text('Nenhum produto disponível.'));
           } else {
             List<Category> categories = snapshot.data!;
@@ -241,8 +234,10 @@ class _RestaurantMenuState extends State<RestaurantMenu> {
                     // Products List
                     SliverList(
                       delegate: SliverChildBuilderDelegate((context, index) {
-                        return  MenuCategory(categories[index].name, categories[index].products);
-                      }),
+                        return MenuCategory(
+                            categories[index].name, categories[index].products);
+                      },
+                      childCount: categories.length),
                     )
                   ],
                 ),

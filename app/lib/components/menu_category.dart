@@ -38,12 +38,16 @@ class MenuCategory extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 16),
           shrinkWrap: true,
           itemCount: products.length,
-          itemBuilder: (context, index) => GestureDetector(
-              onTap: () => Navigator.of(context).pushNamed('/product_selected'),
-              child: Padding(
-                padding: const EdgeInsets.only(bottom: 10.0),
-                child: MenuProduct(products[index]),
-              )),
+          itemBuilder: (context, index) {
+            print('product[$index] - length ${products.length}');
+            return GestureDetector(
+                onTap: () => Navigator.of(context)
+                    .pushNamed('/product_selected', arguments: products[index]),
+                child: Padding(
+                  padding: const EdgeInsets.only(bottom: 10.0),
+                  child: MenuProduct(products[index]),
+                ));
+          },
         )
       ],
     );
