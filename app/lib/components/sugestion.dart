@@ -5,9 +5,9 @@ import 'package:pick_pega/styles/color.dart';
 class Sugestion extends StatelessWidget {
 
   final String name;
-
+  final String photo;
   const Sugestion(
-    this.name,{
+    this.name,this.photo,{
     Key? key
   }) : super(key: key);
 
@@ -30,8 +30,8 @@ class Sugestion extends StatelessWidget {
             SizedBox(
               width: 60,
               height: 60,
-              child: Image.asset(
-                'assets/images/sow.png',
+              child: Image.network(
+                photo,
                 fit: BoxFit.cover,
               ),
             ),

@@ -9,9 +9,10 @@ import '../models/restaurant.dart';
 class Section extends StatelessWidget {
   final String title;
   final List restaurants;
+
   final double size;
 
-  const Section(this.title, this.restaurants, this.size, {super.key});
+  const Section(this.title, this.restaurants, this.size,{super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -40,10 +41,15 @@ class Section extends StatelessWidget {
             padding: const EdgeInsets.only(left: 16),
             itemCount: restaurants.length,
             itemBuilder: (context, index) {
-              if (size == MediaQuery.of(context).size.height * 0.08)
-                return CloseRestaurant();
-              else if (size == MediaQuery.of(context).size.height * 0.19)
-                return Sugestion(restaurants[index].name);
+              if (size == MediaQuery.of(context).size.height * 0.08) {
+
+                return CloseRestaurant(restaurants[index].photo);
+              }
+              else if (size == MediaQuery.of(context).size.height * 0.19) {
+
+                return Sugestion(
+                    restaurants[index].name, restaurants[index].photo);
+              }
               else
                 return Sale();
 
