@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:pick_pega/models/product.dart';
 import 'package:pick_pega/styles/color.dart';
 
 class MenuProduct extends StatelessWidget {
-  const MenuProduct({
+  final Product product;
+
+  const MenuProduct(
+    this.product, {
     super.key,
   });
 
@@ -22,18 +26,18 @@ class MenuProduct extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
-                    'Pastel de Calabresa',
-                    style: TextStyle(
+                  Text(
+                    product.name,
+                    style: const TextStyle(
                         fontFamily: 'Quicksand',
                         fontSize: 16,
                         fontWeight: FontWeight.bold),
                   ),
-                  const Padding(
-                    padding: EdgeInsets.only(top: 4.0, bottom: 8.0),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 4.0, bottom: 8.0),
                     child: Text(
-                      'Aprox. 300g',
-                      style: TextStyle(
+                      product.description,
+                      style: const TextStyle(
                         fontFamily: 'Quicksand',
                         fontSize: 13,
                       ),
@@ -50,9 +54,9 @@ class MenuProduct extends StatelessWidget {
                           height: 16,
                         ),
                       ),
-                      const Text(
-                        'RS 10,00',
-                        style: TextStyle(
+                      Text(
+                        '${product.price}',
+                        style: const TextStyle(
                           fontFamily: 'Quicksand',
                           fontSize: 13,
                         ),
@@ -66,9 +70,9 @@ class MenuProduct extends StatelessWidget {
                           height: 16,
                         ),
                       ),
-                      const Text(
-                        '10 min',
-                        style: TextStyle(
+                      Text(
+                        '${product.time}',
+                        style: const TextStyle(
                           fontFamily: 'Quicksand',
                           fontSize: 13,
                         ),
@@ -87,8 +91,8 @@ class MenuProduct extends StatelessWidget {
                 borderRadius: const BorderRadius.only(
                     topRight: Radius.circular(10),
                     bottomRight: Radius.circular(10)),
-                child: Image.asset(
-                  'assets/images/pastel.png',
+                child: Image.network(
+                  product.picture,
                   fit: BoxFit.cover,
                 ),
               ),

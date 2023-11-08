@@ -52,10 +52,19 @@ class _ProductSelectedState extends State<ProductSelected> {
                   Navigator.of(context).pop();
                 },
                 child: Container(
-                    margin: const EdgeInsets.only(top: 8.0, left: 8.0),
-                    width: 48,
-                    height: 48,
-                    child: Image.asset('assets/images/buttonBack.png')),
+                  margin: const EdgeInsets.only(top: 8.0, left: 8.0),
+                  width: 40,
+                  height: 40,
+                  decoration: BoxDecoration(
+                    color: actionYellow,
+                    borderRadius: BorderRadius.circular(100),
+                  ),
+                  child: Icon(
+                    Icons.arrow_back_ios_rounded,
+                    color: white,
+                    size: 20,
+                  ),
+                ),
               )
             ]),
             const Padding(

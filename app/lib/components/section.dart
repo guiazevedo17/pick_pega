@@ -40,13 +40,17 @@ class Section extends StatelessWidget {
             padding: const EdgeInsets.only(left: 16),
             itemCount: restaurants.length,
             itemBuilder: (context, index) {
-              if (size == MediaQuery.of(context).size.height * 0.08)
-                return CloseRestaurant();
-              else if (size == MediaQuery.of(context).size.height * 0.19)
+              if (size == MediaQuery.of(context).size.height * 0.08) {
+                return GestureDetector(
+                  onTap: () =>
+                      Navigator.of(context).pushNamed('/restaurant_menu', arguments: restaurants[index]),
+                  child: const CloseRestaurant(),
+                );
+              } else if (size == MediaQuery.of(context).size.height * 0.19) {
                 return Sugestion(restaurants[index].name);
-              else
-                return Sale();
-
+              } else {
+                return const Sale();
+              }
             },
           ),
         )

@@ -25,12 +25,10 @@ class BagScreen extends StatelessWidget {
                 child: Container(
                   width: 40,
                   height: 40,
-                  margin: EdgeInsets.only(
-                    left: 8,
-                  ),
+                  margin: const EdgeInsets.only(left: 8, top: 8),
                   decoration: BoxDecoration(
                     color: actionYellow,
-                    borderRadius: BorderRadius.circular(20),
+                    borderRadius: BorderRadius.circular(100),
                   ),
                   child: Icon(
                     Icons.arrow_back_ios_rounded,
@@ -48,8 +46,9 @@ class BagScreen extends StatelessWidget {
               child: Container(
                 width: 40,
                 height: 40,
-                margin: EdgeInsets.only(
+                margin: const EdgeInsets.only(
                   right: 8,
+                  top: 8,
                 ),
                 decoration: BoxDecoration(
                   color: actionYellow,

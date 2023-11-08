@@ -9,7 +9,7 @@ import 'package:http/http.dart' as http;
 import '../components/section.dart';
 
 class SearchRestaurant extends StatefulWidget {
-  SearchRestaurant({Key? key}) : super(key: key);
+  const SearchRestaurant({Key? key}) : super(key: key);
 
   @override
   State<SearchRestaurant> createState() => _SearchRestaurantState();
@@ -37,16 +37,14 @@ class _SearchRestaurantState extends State<SearchRestaurant> {
         return Restaurant(
           uid: restaurantMap['uid'],
           name: restaurantMap['name'],
-          email: restaurantMap['email'],
-          password: restaurantMap['password'],
+          category: restaurantMap['category'],
           address: Address(
-            zip: restaurantMap['address[zip]'],
-            number: restaurantMap['address[number]'],
-            uf: restaurantMap['address[uf]'],
-            city: restaurantMap['address[city]'],
-            street: restaurantMap['address[street]'],
-            neighborhood: restaurantMap['address[neighborhood]']
-          ),
+              zip: restaurantMap['address[zip]'],
+              number: restaurantMap['address[number]'],
+              uf: restaurantMap['address[uf]'],
+              city: restaurantMap['address[city]'],
+              street: restaurantMap['address[street]'],
+              neighborhood: restaurantMap['address[neighborhood]']),
           lat: restaurantMap['lat'],
           lng: restaurantMap['lng'],
           photo: restaurantMap['photo'],
@@ -54,7 +52,6 @@ class _SearchRestaurantState extends State<SearchRestaurant> {
       }).toList();
 
       return restaurants;
-    
     } else {
       // Se a solicitação falhar, você pode lidar com o erro aqui.
       print('Request failed with status: ${response.statusCode}');
@@ -70,37 +67,17 @@ class _SearchRestaurantState extends State<SearchRestaurant> {
         future: getAllRestaurants(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-
             return Center(child: CircularProgressIndicator());
-
           } else if (snapshot.hasError) {
-
             return Center(child: Text('Erro: ${snapshot.error}'));
-
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-
             return const Center(child: Text('Nenhum restaurante disponível.'));
-
           } else {
             List<Restaurant> restaurants = snapshot.data!;
 
-            List<Restaurant> closeRestaurants = [];
-
-            List<Restaurant> sales = []; // ou List<Product>
-
-            for (var restaurant in restaurants){
-
-            }
-
             return SizedBox(
-              width: MediaQuery
-                  .of(context)
-                  .size
-                  .width,
-              height: MediaQuery
-                  .of(context)
-                  .size
-                  .height,
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height,
               child: Column(
                 mainAxisSize: MainAxisSize.max,
                 children: [
@@ -109,14 +86,8 @@ class _SearchRestaurantState extends State<SearchRestaurant> {
                     padding: const EdgeInsets.symmetric(horizontal: 16),
                     child: Container(
                       margin: EdgeInsets.only(
-                        top: MediaQuery
-                            .of(context)
-                            .size
-                            .height * 0.1,
-                        bottom: MediaQuery
-                            .of(context)
-                            .size
-                            .height * 0.05,
+                        top: MediaQuery.of(context).size.height * 0.1,
+                        bottom: MediaQuery.of(context).size.height * 0.05,
                       ),
                       child: Row(
                         mainAxisSize: MainAxisSize.max,
@@ -132,7 +103,8 @@ class _SearchRestaurantState extends State<SearchRestaurant> {
                           // Search Bar
                           Expanded(
                             child: Padding(
-                              padding: const EdgeInsets.fromLTRB(16.0, 0, 10.0, 0),
+                              padding:
+                                  const EdgeInsets.fromLTRB(16.0, 0, 10.0, 0),
                               child: Container(
                                 decoration: BoxDecoration(
                                     color: lightgrey,
@@ -181,36 +153,21 @@ class _SearchRestaurantState extends State<SearchRestaurant> {
                         children: [
                           // Close Restaurants Section
                           Section('Restaurantes Próximos', restaurants,
-                              MediaQuery
-                                  .of(context)
-                                  .size
-                                  .height * 0.08),
+                              MediaQuery.of(context).size.height * 0.08),
 
                           // Sugestions Section
                           Padding(
                             padding: EdgeInsets.only(
-                              top: MediaQuery
-                                  .of(context)
-                                  .size
-                                  .height * 0.05,
-                              bottom: MediaQuery
-                                  .of(context)
-                                  .size
-                                  .height * 0.05,
+                              top: MediaQuery.of(context).size.height * 0.05,
+                              bottom: MediaQuery.of(context).size.height * 0.05,
                             ),
                             child: Section('Sugestões', restaurants,
-                                MediaQuery
-                                    .of(context)
-                                    .size
-                                    .height * 0.19),
+                                MediaQuery.of(context).size.height * 0.19),
                           ),
 
                           // Sales Section
                           Section('No precinho', restaurants,
-                              MediaQuery
-                                  .of(context)
-                                  .size
-                                  .height * 0.23)
+                              MediaQuery.of(context).size.height * 0.23)
                         ],
                       ),
                     ),
@@ -224,129 +181,3 @@ class _SearchRestaurantState extends State<SearchRestaurant> {
     );
   }
 }
-// body: SizedBox(
-//   width: MediaQuery
-//       .of(context)
-//       .size
-//       .width,
-//   height: MediaQuery
-//       .of(context)
-//       .size
-//       .height,
-//   child: Column(
-//     mainAxisSize: MainAxisSize.max,
-//     children: [
-//       //App Bar
-//       Padding(
-//         padding: const EdgeInsets.symmetric(horizontal: 16),
-//         child: Container(
-//           margin: EdgeInsets.only(
-//             top: MediaQuery
-//                 .of(context)
-//                 .size
-//                 .height * 0.1,
-//             bottom: MediaQuery
-//                 .of(context)
-//                 .size
-//                 .height * 0.05,
-//           ),
-//           child: Row(
-//             mainAxisSize: MainAxisSize.max,
-//             mainAxisAlignment: MainAxisAlignment.center,
-//             crossAxisAlignment: CrossAxisAlignment.center,
-//             children: [
-//               // Logo
-//               SizedBox(
-//                   width: 40,
-//                   height: 46,
-//                   child: Image.asset('assets/images/logo.png')),
-//
-//               // Search Bar
-//               Expanded(
-//                 child: Padding(
-//                   padding: const EdgeInsets.fromLTRB(16.0, 0, 10.0, 0),
-//                   child: Container(
-//                     decoration: BoxDecoration(
-//                         color: lightgrey,
-//                         borderRadius: BorderRadius.circular(20)),
-//                     child: const TextField(
-//                       textAlignVertical: TextAlignVertical.center,
-//                       decoration: InputDecoration(
-//                         border: InputBorder.none,
-//                         hintText: 'Buscar...',
-//                         prefixIcon: Icon(Icons.search),
-//                       ),
-//                     ),
-//                   ),
-//                 ),
-//               ),
-//
-//               // Location Button
-//               GestureDetector(
-//                 onTap: () {
-//                   Navigator.of(context).pushNamed('/location');
-//                 },
-//                 child: Container(
-//                   decoration: BoxDecoration(
-//                       borderRadius: BorderRadius.circular(10),
-//                       color: actionYellow),
-//                   child: SizedBox(
-//                     width: 40,
-//                     height: 40,
-//                     child: Icon(
-//                       Icons.location_pin,
-//                       color: white,
-//                     ),
-//                   ),
-//                 ),
-//               )
-//             ],
-//           ),
-//         ),
-//       ),
-//
-//       // Section Contents
-//       Expanded(
-//         child: SizedBox(
-//           width: double.infinity,
-//           child: Column(
-//             children: [
-//               // Close Restaurants Section
-//               Section('Restaurantes Próximos', restaurants,
-//                   MediaQuery
-//                       .of(context)
-//                       .size
-//                       .height * 0.08),
-//
-//               // Sugestions Section
-//               Padding(
-//                 padding: EdgeInsets.only(
-//                   top: MediaQuery
-//                       .of(context)
-//                       .size
-//                       .height * 0.05,
-//                   bottom: MediaQuery
-//                       .of(context)
-//                       .size
-//                       .height * 0.05,
-//                 ),
-//                 child: Section('Sugestões', restaurants,
-//                     MediaQuery
-//                         .of(context)
-//                         .size
-//                         .height * 0.19),
-//               ),
-//
-//               // Sales Section
-//               Section('No precinho', restaurants,
-//                   MediaQuery
-//                       .of(context)
-//                       .size
-//                       .height * 0.23)
-//             ],
-//           ),
-//         ),
-//       )
-//     ],
-//   ),
-// ),
