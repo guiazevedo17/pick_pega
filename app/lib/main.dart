@@ -4,14 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pick_pega/models/restaurant.dart';
 import 'firebase_options.dart';
-// import 'package:flutter_config/flutter_config.dart';
-// import 'package:pick_pega/repositories/restaurants_repository.dart';
 import 'package:pick_pega/screens/bag.dart';
 import 'package:pick_pega/screens/homepage.dart';
 import 'package:pick_pega/screens/order.dart';
 import 'package:pick_pega/screens/restaurant_menu.dart';
 import 'package:pick_pega/screens/search_restaurant.dart';
-// import 'package:provider/provider.dart';
 import 'models/product.dart';
 import 'screens/location.dart';
 import 'screens/payment.dart';
@@ -25,7 +22,7 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   FirebaseFirestore.instance.settings =
-      Settings(host: 'localhost:8080', sslEnabled: false);
+      const Settings(host: 'localhost:8080', sslEnabled: false);
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
     statusBarBrightness: Brightness.light,
     statusBarIconBrightness: Brightness.light,
