@@ -61,7 +61,6 @@ class _SearchRestaurantState extends State<SearchRestaurant> {
         closeRes = proximos;
 
         print('ENTROU NO funcCloseRestaurants $closeRes');
-
       }).catchError((error) {
         print("Erro ao calcular os restaurantes próximos: $error");
       });
@@ -76,8 +75,7 @@ class _SearchRestaurantState extends State<SearchRestaurant> {
   }
 
   pegarPosicao() async {
-    LocationPermission permission;
-    permission = await Geolocator.requestPermission();
+    LocationPermission permission = await Geolocator.requestPermission();
     Position position = await Geolocator.getCurrentPosition();
     latitude = position.latitude;
     longitude = position.longitude;
