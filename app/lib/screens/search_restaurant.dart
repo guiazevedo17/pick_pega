@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 
 import 'package:pick_pega/models/address.dart';
 import 'package:pick_pega/models/restaurant.dart';
@@ -16,6 +17,10 @@ class SearchRestaurant extends StatefulWidget {
 }
 
 class _SearchRestaurantState extends State<SearchRestaurant> {
+  double? latitude;
+  double? longitude;
+  List<Restaurant> closeRes = [];
+  List<Restaurant> sugestionRes = [];
   Future<List<Restaurant>> getAllRestaurants() async {
     final uri = Uri.parse(
         'https://southamerica-east1-pick-pega.cloudfunctions.net/api/getAllRestaurants');
@@ -51,12 +56,54 @@ class _SearchRestaurantState extends State<SearchRestaurant> {
         );
       }).toList();
 
+      funcCloseRestaurants(-22.8346193, -47.0560734, restaurants).then((proximos) {
+        closeRes = proximos;
+
+        // for (var restaurante in proximos) {
+        //   // print("Nome: ${restaurante.name}");
+        //   // print("Latitude: ${restaurante.lat}");
+        //   // print("Longitude: ${restaurante.lng}");
+        //   closeRes.add(restaurante);
+        // }
+
+      }).catchError((error) {
+        print("Erro ao calcular os restaurantes próximos: $error");
+      });
+      print(closeRes);
+
+      print("TESTE: $restaurants");
       return restaurants;
     } else {
       // Se a solicitação falhar, você pode lidar com o erro aqui.
       print('Request failed with status: ${response.statusCode}');
       return [];
     }
+  }
+
+  pegarPosicao() async {
+    LocationPermission permission;
+    permission = await Geolocator.requestPermission();
+    Position position = await Geolocator.getCurrentPosition();
+    latitude = position.latitude;
+    longitude = position.longitude;
+    print(position);
+  }
+
+  Future<List<Restaurant>> funcCloseRestaurants(double lat, double lng,List<Restaurant> allRestaurants) async {
+    List<Restaurant> closeRestaurants = [];
+    sugestionRes = allRestaurants;
+    for (var restaurant in allRestaurants) {
+      double distancia = await Geolocator.distanceBetween(
+        lat, lng, restaurant.lat ?? 0, restaurant.lng ?? 0,
+      );
+
+      if (distancia <= 2000) { // 2 km em metros
+        closeRestaurants.add(restaurant);
+        sugestionRes.remove(restaurant);
+      }
+    }
+
+    return closeRestaurants;
   }
 
   @override
@@ -152,7 +199,7 @@ class _SearchRestaurantState extends State<SearchRestaurant> {
                       child: Column(
                         children: [
                           // Close Restaurants Section
-                          Section('Restaurantes Próximos', restaurants,
+                          Section('Restaurantes Próximos', closeRes,
                               MediaQuery.of(context).size.height * 0.08),
 
                           // Sugestions Section
@@ -161,7 +208,7 @@ class _SearchRestaurantState extends State<SearchRestaurant> {
                               top: MediaQuery.of(context).size.height * 0.05,
                               bottom: MediaQuery.of(context).size.height * 0.05,
                             ),
-                            child: Section('Sugestões', restaurants,
+                            child: Section('Sugestões', sugestionRes,
                                 MediaQuery.of(context).size.height * 0.19),
                           ),
 

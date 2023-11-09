@@ -9,9 +9,10 @@ import '../models/restaurant.dart';
 class Section extends StatelessWidget {
   final String title;
   final List restaurants;
+
   final double size;
 
-  const Section(this.title, this.restaurants, this.size, {super.key});
+  const Section(this.title, this.restaurants, this.size,{super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -44,10 +45,10 @@ class Section extends StatelessWidget {
                 return GestureDetector(
                   onTap: () =>
                       Navigator.of(context).pushNamed('/restaurant_menu', arguments: restaurants[index]),
-                  child: const CloseRestaurant(),
+                  child: CloseRestaurant(restaurants[index].photo),
                 );
               } else if (size == MediaQuery.of(context).size.height * 0.19) {
-                return Sugestion(restaurants[index].name);
+                return Sugestion(restaurants[index]);
               } else {
                 return const Sale();
               }
