@@ -42,9 +42,7 @@ class _RestaurantMenuState extends State<RestaurantMenu> {
       categoriesData.forEach((category, items) {
         List<Product> products = [];
         if (items is List) {
-
           for (var item in items) {
-
             var prod = Product(
               restaurantId: item['restaurantId'],
               category: item['category'],
@@ -118,7 +116,7 @@ class _RestaurantMenuState extends State<RestaurantMenu> {
                       backgroundColor: white,
                       elevation: 0,
                       pinned: true,
-                      expandedHeight: MediaQuery.of(context).size.height * 0.3,
+                      expandedHeight: MediaQuery.of(context).size.height * 0.35,
                       flexibleSpace: FlexibleSpaceBar(
                         background: Padding(
                           padding: EdgeInsets.only(
@@ -235,9 +233,10 @@ class _RestaurantMenuState extends State<RestaurantMenu> {
                     SliverList(
                       delegate: SliverChildBuilderDelegate((context, index) {
                         return MenuCategory(
-                            categories[index].name, categories[index].products);
-                      },
-                      childCount: categories.length),
+                          categories[index].name,
+                          categories[index].products,
+                        );
+                      }, childCount: categories.length),
                     )
                   ],
                 ),

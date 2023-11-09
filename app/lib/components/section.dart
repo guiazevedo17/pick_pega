@@ -12,7 +12,7 @@ class Section extends StatelessWidget {
 
   final double size;
 
-  const Section(this.title, this.restaurants, this.size,{super.key});
+  const Section(this.title, this.restaurants, this.size, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -42,13 +42,22 @@ class Section extends StatelessWidget {
             itemCount: restaurants.length,
             itemBuilder: (context, index) {
               if (size == MediaQuery.of(context).size.height * 0.08) {
+                print('photo -> ${restaurants[index].photo}');
                 return GestureDetector(
-                  onTap: () =>
-                      Navigator.of(context).pushNamed('/restaurant_menu', arguments: restaurants[index]),
+                  onTap: () => Navigator.of(context).pushNamed(
+                    '/restaurant_menu',
+                    arguments: restaurants[index],
+                  ),
                   child: CloseRestaurant(restaurants[index].photo),
                 );
               } else if (size == MediaQuery.of(context).size.height * 0.19) {
-                return Sugestion(restaurants[index]);
+                return GestureDetector(
+                  onTap: () => Navigator.of(context).pushNamed(
+                    '/restaurant_menu',
+                    arguments: restaurants[index],
+                  ),
+                  child: Sugestion(restaurants[index]),
+                );
               } else {
                 return const Sale();
               }

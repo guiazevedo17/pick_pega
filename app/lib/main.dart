@@ -33,11 +33,11 @@ void main() async {
       //   create: (context) => RestaurantsRepository(),
       //   child: const MyApp(),
       // ),
-      MyApp());
+      const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  MyApp({super.key});
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {

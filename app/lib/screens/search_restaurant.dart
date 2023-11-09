@@ -56,20 +56,15 @@ class _SearchRestaurantState extends State<SearchRestaurant> {
         );
       }).toList();
 
-      funcCloseRestaurants(-22.8346193, -47.0560734, restaurants).then((proximos) {
+      funcCloseRestaurants(-22.8346193, -47.0560734, restaurants)
+          .then((proximos) {
         closeRes = proximos;
 
-        // for (var restaurante in proximos) {
-        //   // print("Nome: ${restaurante.name}");
-        //   // print("Latitude: ${restaurante.lat}");
-        //   // print("Longitude: ${restaurante.lng}");
-        //   closeRes.add(restaurante);
-        // }
+        print('ENTROU NO funcCloseRestaurants $closeRes');
 
       }).catchError((error) {
         print("Erro ao calcular os restaurantes próximos: $error");
       });
-      print(closeRes);
 
       print("TESTE: $restaurants");
       return restaurants;
@@ -89,20 +84,26 @@ class _SearchRestaurantState extends State<SearchRestaurant> {
     print(position);
   }
 
-  Future<List<Restaurant>> funcCloseRestaurants(double lat, double lng,List<Restaurant> allRestaurants) async {
+  Future<List<Restaurant>> funcCloseRestaurants(
+      double lat, double lng, List<Restaurant> allRestaurants) async {
     List<Restaurant> closeRestaurants = [];
     sugestionRes = allRestaurants;
     for (var restaurant in allRestaurants) {
       double distancia = await Geolocator.distanceBetween(
-        lat, lng, restaurant.lat ?? 0, restaurant.lng ?? 0,
+        lat,
+        lng,
+        restaurant.lat ?? 0,
+        restaurant.lng ?? 0,
       );
 
-      if (distancia <= 2000) { // 2 km em metros
+      if (distancia <= 2000) {
+        // 2 km em metros
         closeRestaurants.add(restaurant);
         sugestionRes.remove(restaurant);
       }
     }
 
+    print('closeRestaurants - $closeRestaurants');
     return closeRestaurants;
   }
 
@@ -114,7 +115,7 @@ class _SearchRestaurantState extends State<SearchRestaurant> {
         future: getAllRestaurants(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
             return Center(child: Text('Erro: ${snapshot.error}'));
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {

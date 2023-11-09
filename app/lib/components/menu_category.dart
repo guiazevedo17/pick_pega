@@ -39,7 +39,6 @@ class MenuCategory extends StatelessWidget {
           shrinkWrap: true,
           itemCount: products.length,
           itemBuilder: (context, index) {
-            print('product[$index] - length ${products.length}');
             return GestureDetector(
                 onTap: () => Navigator.of(context)
                     .pushNamed('/product_selected', arguments: products[index]),
