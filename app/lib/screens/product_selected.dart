@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../models/product.dart';
+import '../models/shopping_bag.dart';
 import '../styles/color.dart';
 
 class ProductSelected extends StatefulWidget {
@@ -13,9 +15,17 @@ class ProductSelected extends StatefulWidget {
 }
 
 class _ProductSelectedState extends State<ProductSelected> {
-  int _counter = 0; // Declaração da variável _counter
+  int _counter = 1; // Declaração da variável _counter
 
-  double _priceShowed = 0;
+  late double _priceShowed = widget.product.price;
+
+  late ShoppingBag bag;
+
+  @override
+  void initState() {
+    super.initState();
+    bag = context.read<ShoppingBag>();
+  }
 
   void _incrementCounter() {
     setState(() {
@@ -25,7 +35,7 @@ class _ProductSelectedState extends State<ProductSelected> {
 
   void _decrementCounter() {
     setState(() {
-      if (_counter > 0) _counter--;
+      if (_counter > 1) _counter--;
     });
   }
 
@@ -261,7 +271,45 @@ class _ProductSelectedState extends State<ProductSelected> {
               padding: const EdgeInsets.all(16.0),
               child: ElevatedButton(
                 onPressed: () {
-                  Navigator.of(context).pushNamed('/bag');
+
+                  for(int i = 0; i < _counter; i++){
+                    bag.addToBag(widget.product);
+                  }
+
+                  print('Sacola de Produtos - ${bag.products}');
+
+                  showDialog(
+                    context: context,
+                    barrierDismissible: false,
+                    builder: (context) => AlertDialog(
+                      content: const Text(
+                        'Produto adicionado a Sacola',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontFamily: 'Quicksand',
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      actions: [
+                        // Okay
+                        IconButton(
+                          onPressed: () {
+                            // Pop to the Product Selected Screen
+                            Navigator.of(context).pop();
+
+                            // Pop to the Restaurant Menu Screen
+                            Navigator.of(context).pop();
+                          },
+                          icon: Icon(
+                            Icons.done,
+                            color: actionYellow,
+                          ),
+                        )
+                      ],
+                      actionsAlignment: MainAxisAlignment.center,
+                    ),
+                  );
                 },
                 style: ElevatedButton.styleFrom(
                   minimumSize: Size(MediaQuery.of(context).size.width, 50),

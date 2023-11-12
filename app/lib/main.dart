@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pick_pega/models/restaurant.dart';
+import 'package:provider/provider.dart';
 import 'firebase_options.dart';
 import 'package:pick_pega/screens/bag.dart';
 import 'package:pick_pega/screens/homepage.dart';
@@ -10,6 +11,7 @@ import 'package:pick_pega/screens/order.dart';
 import 'package:pick_pega/screens/restaurant_menu.dart';
 import 'package:pick_pega/screens/search_restaurant.dart';
 import 'models/product.dart';
+import 'models/shopping_bag.dart';
 import 'screens/location.dart';
 import 'screens/payment.dart';
 import 'screens/product_selected.dart';
@@ -21,19 +23,21 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
   FirebaseFirestore.instance.settings =
       const Settings(host: 'localhost:8080', sslEnabled: false);
+      
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
     statusBarBrightness: Brightness.light,
     statusBarIconBrightness: Brightness.light,
   ));
 
   runApp(
-      // ChangeNotifierProvider<RestaurantsRepository>(
-      //   create: (context) => RestaurantsRepository(),
-      //   child: const MyApp(),
-      // ),
-      const MyApp());
+    ChangeNotifierProvider(
+      create: (context) => ShoppingBag(),
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -71,16 +75,6 @@ class MyApp extends StatelessWidget {
             return MaterialPageRoute(builder: (context) => const OrderScreen());
         }
       },
-      // routes: {
-      // '/homepage': (context) => const Homepage(),
-      // '/search_restaurant': (context) => const SearchRestaurant(),
-      // '/location': (context) => const LocationScreen(),
-      // '/restaurant_menu': (context) => RestaurantMenu(Restaurant()),
-      // '/product_selected': (context) => const ProductSelected(),
-      // '/bag': (context) => const BagScreen(),
-      // '/payment': (context) => const Payment(),
-      // '/order': (context) => const OrderScreen(),
-      // },
     );
   }
 }

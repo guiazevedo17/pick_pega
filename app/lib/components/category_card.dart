@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:pick_pega/models/product.dart';
 import 'package:pick_pega/styles/color.dart';
 
 import '../models/category.dart';
@@ -20,7 +19,7 @@ class RestaurantCategory extends SliverPersistentHeaderDelegate {
         padding: const EdgeInsets.only(left: 16),
         scrollDirection: Axis.horizontal,
         itemCount: categories.length,
-        itemBuilder: (context, index) => CategoryCard(categories[index].name!),
+        itemBuilder: (context, index) => CategoryCard(categories[index].name),
       ),
     );
   }

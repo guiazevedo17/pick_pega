@@ -1,9 +1,7 @@
 import 'dart:convert';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:pick_pega/components/menu_category.dart';
-import 'package:pick_pega/components/menu_product.dart';
 import 'package:pick_pega/models/product.dart';
 import 'package:pick_pega/styles/color.dart';
 import 'package:http/http.dart' as http;

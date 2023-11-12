@@ -1,8 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:pick_pega/models/product.dart';
 import 'package:pick_pega/styles/color.dart';
+import 'package:provider/provider.dart';
+
+import '../models/shopping_bag.dart';
 
 class BagProduct extends StatefulWidget {
-  const BagProduct({
+  final Product product;
+
+  const BagProduct(
+    this.product, {
     super.key,
   });
 
@@ -11,7 +18,20 @@ class BagProduct extends StatefulWidget {
 }
 
 class _BagProductState extends State<BagProduct> {
-  int qntd = 0;
+  late int qntd = 0;
+  late ShoppingBag shoopingBag;
+
+  @override
+  void initState() {
+    super.initState();
+    shoopingBag = context.read<ShoppingBag>();
+
+    for (var prod in shoopingBag.products) {
+      if (prod == widget.product) {
+        qntd++;
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,32 +54,32 @@ class _BagProductState extends State<BagProduct> {
                 borderRadius: const BorderRadius.only(
                     topLeft: Radius.circular(10),
                     bottomLeft: Radius.circular(10)),
-                child: Image.asset(
-                  'assets/images/pastel.png',
+                child: Image.network(
+                  widget.product.picture,
                   fit: BoxFit.cover,
                 ),
               ),
             ),
           ),
-          const Expanded(
+          Expanded(
             flex: 2,
             child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 8.0),
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Pastel de Calabresa',
-                    style: TextStyle(
+                    widget.product.name,
+                    style: const TextStyle(
                         fontFamily: 'Quicksand',
                         fontSize: 16,
                         fontWeight: FontWeight.bold),
                   ),
                   Padding(
-                    padding: EdgeInsets.only(top: 4.0),
+                    padding: const EdgeInsets.only(top: 4.0),
                     child: Text(
-                      'RS 10,00',
-                      style: TextStyle(
+                      'R\$ ${widget.product.price}',
+                      style: const TextStyle(
                         fontFamily: 'Quicksand',
                         fontSize: 14,
                       ),

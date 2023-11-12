@@ -4,7 +4,6 @@ class Product {
   String itemId;
   String name;
   String description;
-  // String ingredients;
   double price;
   int time;
   String picture;
@@ -14,7 +13,6 @@ class Product {
     required this.category,
     required this.itemId,
     required this.name,
-    // required this.ingredients,
     required this.description,
     required this.price,
     required this.time,
@@ -23,15 +21,13 @@ class Product {
 
   factory Product.fromJson(Map<String, dynamic> json) {
     return Product(
-      restaurantId: json['restaurantId'],
-      category: json['category'],
-      itemId: json['itemId'],
-      name: json['name'],
-      description: json['description'],
-      // ingredients: json['ingredients'],
-      price: json['price'],
-      time: json['time'],
-      picture: json['picture']
-    );
+        restaurantId: json['restaurantId'],
+        category: json['category'],
+        itemId: json['itemId'],
+        name: json['name'],
+        description: json['description'],
+        price: json['price'],
+        time: json['time'],
+        picture: json['picture']);
   }
 }
