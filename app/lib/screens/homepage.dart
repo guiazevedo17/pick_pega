@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:pick_pega/styles/color.dart';
 
 class Homepage extends StatefulWidget {
@@ -10,23 +9,7 @@ class Homepage extends StatefulWidget {
 }
 
 class _HomepageState extends State<Homepage> {
-  String result = '';
-  final GlobalKey qrKey = GlobalKey();
-  QRViewController? controller;
-  @override
-  void dispose() {
-    controller?.dispose();
-    super.dispose();
-  }
 
-  void _onQRViewCreated(QRViewController controller) {
-    this.controller = controller;
-    controller.scannedDataStream.listen((scanData) {
-      setState(() {
-        result = scanData.code!;
-      });
-    });
-  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -114,7 +97,8 @@ class _HomepageState extends State<Homepage> {
                         // QR Code Button
                         GestureDetector(
                           onTap: () {
-
+                            Navigator.of(context)
+                                .pushReplacementNamed('/qrcode');
                           },
                           child: Container(
                             width: 100,
