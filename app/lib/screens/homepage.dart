@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-// import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
+import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:pick_pega/styles/color.dart';
 
 class Homepage extends StatefulWidget {
@@ -11,8 +10,23 @@ class Homepage extends StatefulWidget {
 }
 
 class _HomepageState extends State<Homepage> {
-  String ticket = '';
+  String result = '';
+  final GlobalKey qrKey = GlobalKey();
+  QRViewController? controller;
+  @override
+  void dispose() {
+    controller?.dispose();
+    super.dispose();
+  }
 
+  void _onQRViewCreated(QRViewController controller) {
+    this.controller = controller;
+    controller.scannedDataStream.listen((scanData) {
+      setState(() {
+        result = scanData.code!;
+      });
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -99,18 +113,8 @@ class _HomepageState extends State<Homepage> {
                       children: [
                         // QR Code Button
                         GestureDetector(
-                          onTap: () async {
-                            // Scann QR Code
+                          onTap: () {
 
-                            // String code =
-                            //     await FlutterBarcodeScanner.scanBarcode(
-                            //   "#FFFFFF",
-                            //   "Cancelar",
-                            //   false,
-                            //   ScanMode.QR,
-                            // );
-                            // setState(() =>
-                            //     ticket = code != '-1' ? code : 'Não validado');
                           },
                           child: Container(
                             width: 100,
