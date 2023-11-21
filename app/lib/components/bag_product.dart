@@ -104,7 +104,79 @@ class _BagProductState extends State<BagProduct> {
                     children: [
                       GestureDetector(
                         onTap: () => setState(() {
-                          qntd--;
+                          if (qntd > 1) {
+                            qntd--;
+                            shoopingBag.reduceProduct(widget.product);
+                          } else {
+                            showDialog(
+                              context: context,
+                              barrierDismissible: false,
+                              builder: (context) => AlertDialog(
+                                contentPadding:
+                                    const EdgeInsets.fromLTRB(10, 20, 10, 25),
+                                actionsPadding:
+                                    const EdgeInsets.fromLTRB(10, 25, 10, 15),
+                                content: const Text(
+                                  'Deseja realmente EXCLUIR este Item da Sacola?',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontFamily: 'Quicksand',
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                actions: [
+                                  // Cancel
+                                  OutlinedButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    style: OutlinedButton.styleFrom(
+                                      elevation: 0,
+                                      foregroundColor: actionYellow,
+                                      side: BorderSide(color: actionYellow),
+                                      minimumSize: Size(
+                                          MediaQuery.of(context).size.width *
+                                              0.3,
+                                          40),
+                                    ),
+                                    child: const Text(
+                                      'Cancelar',
+                                      style: TextStyle(
+                                          fontFamily: 'Quicksand',
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ),
+
+                                  // Remove Item from Bag
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      shoopingBag.reduceProduct(widget.product);
+                                      shoopingBag.deleteFromBag(widget.product);
+                                      Navigator.of(context).pop();
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                        elevation: 0,
+                                        foregroundColor: white,
+                                        backgroundColor: deleteRed,
+                                        minimumSize: Size(
+                                            MediaQuery.of(context).size.width *
+                                                0.3,
+                                            40)),
+                                    child: const Text(
+                                      'Excluir',
+                                      style: TextStyle(
+                                          fontFamily: 'Quicksand',
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ),
+                                ],
+                                actionsAlignment: MainAxisAlignment.spaceEvenly,
+                              ),
+                            );
+                          }
                         }),
                         child: Padding(
                           padding: const EdgeInsets.only(left: 6.0),
@@ -126,6 +198,8 @@ class _BagProductState extends State<BagProduct> {
                       GestureDetector(
                         onTap: () => setState(() {
                           qntd++;
+
+                          shoopingBag.addToBag(widget.product);
                         }),
                         child: Padding(
                           padding: const EdgeInsets.only(right: 6.0),

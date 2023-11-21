@@ -7,3 +7,4 @@ Color actionYellow = const Color(0xFFF8BD36);
 Color lightYellow = const Color(0xFFEBD381);
 Color lightBlue = const Color(0xFF818FEB);
 Color black = const Color(0xFF333333);
+Color deleteRed = const Color(0xFFF83636);

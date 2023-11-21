@@ -13,7 +13,7 @@ import 'package:pick_pega/screens/search_restaurant.dart';
 import 'models/product.dart';
 import 'models/shopping_bag.dart';
 import 'screens/location.dart';
-import 'screens/payment.dart';
+import 'screens/card_payment.dart';
 import 'screens/product_selected.dart';
 
 void main() async {
@@ -26,7 +26,7 @@ void main() async {
 
   FirebaseFirestore.instance.settings =
       const Settings(host: 'localhost:8080', sslEnabled: false);
-      
+
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
     statusBarBrightness: Brightness.light,
     statusBarIconBrightness: Brightness.light,
@@ -69,8 +69,10 @@ class MyApp extends StatelessWidget {
                 builder: (context) => ProductSelected(product));
           case '/bag':
             return MaterialPageRoute(builder: (context) => const BagScreen());
-          case '/payment':
-            return MaterialPageRoute(builder: (context) => const Payment());
+          case '/card_payment':
+            final String payment = settings.arguments as String;
+            return MaterialPageRoute(
+                builder: (context) => CardPayment(payment));
           case '/order':
             return MaterialPageRoute(builder: (context) => const OrderScreen());
         }

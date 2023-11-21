@@ -16,6 +16,10 @@ class BagScreen extends StatefulWidget {
 class _BagScreenState extends State<BagScreen> {
   late ShoppingBag shoppingBag;
 
+  int selectedIndex = -1;
+
+  final List<String> paymentMethods = ['Pix', 'Crédito', 'Débito'];
+
   @override
   void initState() {
     super.initState();
@@ -192,6 +196,7 @@ class _BagScreenState extends State<BagScreen> {
                               ),
 
                               // Payment Methods
+                              // Title
                               const Padding(
                                 padding: EdgeInsets.only(bottom: 8.0),
                                 child: Text(
@@ -203,17 +208,82 @@ class _BagScreenState extends State<BagScreen> {
                                 ),
                               ),
 
-                              const Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  PaymentMethod('assets/icons/pix.png', 'Pix'),
-                                  PaymentMethod(
-                                      'assets/icons/card.png', 'Crédito'),
-                                  PaymentMethod(
-                                      'assets/icons/card.png', 'Débito'),
-                                ],
-                              ),
+                              // Methods
+                              // Row(
+                              //   mainAxisAlignment:
+                              //       MainAxisAlignment.spaceBetween,
+                              //   children: [
+                              //     InkWell(
+                              //         onTap: () {
+                              //           setState(() {
+                              //             if (selectedPayment == 0) {
+                              //               selectedPayment = 1;
+                              //               pix = true;
+                              //             } else if (selectedPayment == 1) {
+                              //               selectedPayment = 0;
+                              //               pix = false;
+                              //             }
+                              //           });
+                              //         },
+                              //         child: PaymentMethod(
+                              //             'assets/icons/pix.png', 'Pix', pix)),
+                              //     InkWell(
+                              //       onTap: () {
+                              //         setState(() {
+                              //           if (selectedPayment == 0) {
+                              //             selectedPayment = 2;
+                              //             credit = true;
+                              //           } else if (selectedPayment == 2) {
+                              //             selectedPayment = 0;
+                              //             credit = false;
+                              //           }
+                              //         });
+                              //       },
+                              //       child: PaymentMethod(
+                              //           'assets/icons/card.png',
+                              //           'Crédito',
+                              //           credit),
+                              //     ),
+                              //     InkWell(
+                              //       onTap: () {
+                              //         setState(() {
+                              //           if (selectedPayment == 0) {
+                              //             selectedPayment = 3;
+                              //             debit = true;
+                              //           } else if (selectedPayment == 3) {
+                              //             selectedPayment = 0;
+                              //             debit = false;
+                              //           }
+                              //         });
+                              //       },
+                              //       child: PaymentMethod(
+                              //           'assets/icons/card.png',
+                              //           'Débito',
+                              //           debit),
+                              //     ),
+                              //   ],
+                              // ),
+                              SizedBox(
+                                height:
+                                    MediaQuery.of(context).size.height * 0.12,
+                                child: ListView.builder(
+                                  scrollDirection: Axis.horizontal,
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  itemCount: paymentMethods.length,
+                                  itemBuilder: (context, index) {
+                                    return InkWell(
+                                        onTap: () {
+                                          setState(() {
+                                            selectedIndex = index;
+                                          });
+                                        },
+                                        child: PaymentMethod(
+                                          paymentMethods[index],
+                                          selectedIndex == index,
+                                        ));
+                                  },
+                                ),
+                              )
                             ],
                           ),
                         ),
@@ -234,7 +304,7 @@ class _BagScreenState extends State<BagScreen> {
                                 fontWeight: FontWeight.bold),
                           ),
                           Text(
-                            'R\$ ${shoppingBag.totalPrice}',
+                            'R\$ ${shoppingBag.totalPrice.toStringAsFixed(2)}',
                             style: const TextStyle(
                                 fontFamily: 'Quicksand',
                                 fontSize: 22,
@@ -249,7 +319,10 @@ class _BagScreenState extends State<BagScreen> {
                       padding: const EdgeInsets.all(16.0),
                       child: ElevatedButton(
                         onPressed: () {
-                          Navigator.of(context).pushNamed('/payment');
+                          if (selectedIndex > -1) {
+                            Navigator.of(context).pushNamed('/card_payment',
+                                arguments: paymentMethods[selectedIndex]);
+                          }
                         },
                         style: ElevatedButton.styleFrom(
                           minimumSize:

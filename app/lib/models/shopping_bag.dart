@@ -22,8 +22,16 @@ class ShoppingBag extends ChangeNotifier {
     updateTotalPrice();
   }
 
-  void deleteFromBag(Product product) {
+  void reduceProduct(Product product) {
     products.remove(product);
+
+    if (products.contains(product)) {
+      updateTotalPrice();
+    }
+  }
+
+  void deleteFromBag(Product product) {
+    bag.remove(product);
 
     updateTotalPrice();
   }

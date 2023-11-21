@@ -271,8 +271,7 @@ class _ProductSelectedState extends State<ProductSelected> {
               padding: const EdgeInsets.all(16.0),
               child: ElevatedButton(
                 onPressed: () {
-
-                  for(int i = 0; i < _counter; i++){
+                  for (int i = 0; i < _counter; i++) {
                     bag.addToBag(widget.product);
                   }
 

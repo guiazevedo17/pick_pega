@@ -2,14 +2,10 @@ import 'package:flutter/material.dart';
 
 import '../styles/color.dart';
 
-class Payment extends StatefulWidget {
-  const Payment({Key? key}) : super(key: key);
+class CardPayment extends StatelessWidget {
+  final String paymentMethod;
+  const CardPayment(this.paymentMethod, {Key? key}) : super(key: key);
 
-  @override
-  State<Payment> createState() => _PaymentState();
-}
-
-class _PaymentState extends State<Payment> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,15 +27,13 @@ class _PaymentState extends State<Payment> {
             ),
             Center(
               // Centralize o texto
-              child: Container(
-                child: const Text(
-                  'Crédito',
-                  style: TextStyle(
-                    fontFamily: 'Quicksand',
-                    fontSize: 22,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
-                  ),
+              child: Text(
+                paymentMethod,
+                style: const TextStyle(
+                  fontFamily: 'Quicksand',
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
                 ),
               ),
             ),
@@ -216,6 +210,7 @@ class _PaymentState extends State<Payment> {
               padding: const EdgeInsets.all(16.0),
               child: ElevatedButton(
                 onPressed: () {
+                  makeNewOrder();
                   Navigator.of(context).pushNamed('/order');
                 },
                 style: ElevatedButton.styleFrom(
@@ -239,5 +234,9 @@ class _PaymentState extends State<Payment> {
         ),
       ),
     );
+  }
+  
+  // Create a New Order
+  void makeNewOrder() {
   }
 }
