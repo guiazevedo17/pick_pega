@@ -42,12 +42,12 @@ class _RestaurantMenuState extends State<RestaurantMenu> {
         if (items is List) {
           for (var item in items) {
             var prod = Product(
+              active: item['active'],
               restaurantId: item['restaurantId'],
               category: item['category'],
               itemId: item['itemId'],
               name: item['name'],
               description: item['description'],
-              // ingredients: item['ingredients'],
               price: item['price'],
               time: item['time'],
               picture: item['picture'],
@@ -63,24 +63,6 @@ class _RestaurantMenuState extends State<RestaurantMenu> {
 
         categories.add(cat);
       });
-
-      // Azevedo's solution
-
-      // final payload = jsonBody['payload'];
-
-      // final categoriesJson = payload['categories'];
-
-      // print('categoriesJson - $categoriesJson');
-
-      // List<Map<String, dynamic>> listOfCategories =
-      //     List<Map<String, dynamic>>.from(categoriesJson);
-
-      // List<Category> categories = listOfCategories.map((categoryMap) {
-      //   return Category(
-      //       name: categoryMap['name'], products: categoryMap['products']);
-      // }).toList();
-
-      // print(categories);
 
       return categories;
     } else {

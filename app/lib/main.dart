@@ -7,9 +7,10 @@ import 'package:provider/provider.dart';
 import 'firebase_options.dart';
 import 'package:pick_pega/screens/bag.dart';
 import 'package:pick_pega/screens/homepage.dart';
-import 'package:pick_pega/screens/order.dart';
+import 'package:pick_pega/screens/order_screen.dart';
 import 'package:pick_pega/screens/restaurant_menu.dart';
 import 'package:pick_pega/screens/search_restaurant.dart';
+import 'models/order.dart';
 import 'models/product.dart';
 import 'models/shopping_bag.dart';
 import 'screens/location.dart';
@@ -74,7 +75,8 @@ class MyApp extends StatelessWidget {
             return MaterialPageRoute(
                 builder: (context) => CardPayment(payment));
           case '/order':
-            return MaterialPageRoute(builder: (context) => const OrderScreen());
+            final OrderModel order = settings.arguments as OrderModel;
+            return MaterialPageRoute(builder: (context) => OrderScreen(order));
         }
       },
     );

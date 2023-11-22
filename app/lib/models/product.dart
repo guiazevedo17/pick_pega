@@ -1,4 +1,5 @@
 class Product {
+  bool active;
   String restaurantId;
   String category;
   String itemId;
@@ -7,8 +8,10 @@ class Product {
   double price;
   int time;
   String picture;
+  int? qntd;
 
   Product({
+    required this.active,
     required this.restaurantId,
     required this.category,
     required this.itemId,
@@ -17,10 +20,12 @@ class Product {
     required this.price,
     required this.time,
     required this.picture,
+    this.qntd
   });
 
   factory Product.fromJson(Map<String, dynamic> json) {
     return Product(
+        active: json['active'],
         restaurantId: json['restaurantId'],
         category: json['category'],
         itemId: json['itemId'],

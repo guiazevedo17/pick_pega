@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:pick_pega/models/product.dart';
 
 class ShoppingBag extends ChangeNotifier {
-  final List<Product> products = [];
-  final List<Product> bag = [];
-  double totalPrice = 0;
+  final List<Product> products = []; // coca, coca, calabreso
+  final List<Product> bag = []; // coca, calabreso
+  late double totalPrice;
 
   void updateBag() {
     for (var prod in products) {
@@ -44,5 +44,17 @@ class ShoppingBag extends ChangeNotifier {
     }
 
     notifyListeners();
+  }
+
+  int updateTotalTime() {
+    int totalTime = 0;
+
+    for (var item in bag) {
+      if (item.time > totalTime) {
+        totalTime = item.time;
+      }
+    }
+
+    return totalTime;
   }
 }

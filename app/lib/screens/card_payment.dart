@@ -1,13 +1,47 @@
 import 'package:flutter/material.dart';
+import 'package:pick_pega/models/order.dart';
+import 'package:provider/provider.dart';
 
+import '../models/shopping_bag.dart';
 import '../styles/color.dart';
 
-class CardPayment extends StatelessWidget {
+class CardPayment extends StatefulWidget {
   final String paymentMethod;
   const CardPayment(this.paymentMethod, {Key? key}) : super(key: key);
 
   @override
+  State<CardPayment> createState() => _CardPaymentState();
+}
+
+class _CardPaymentState extends State<CardPayment> {
+  late TextEditingController _nameController;
+  late TextEditingController _numberController;
+  late TextEditingController _expiryDateController;
+  late TextEditingController _cvvController;
+
+  @override
+  void initState() {
+    super.initState();
+    _nameController = TextEditingController();
+    _numberController = TextEditingController();
+    _expiryDateController = TextEditingController();
+    _cvvController = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _numberController.dispose();
+    _expiryDateController.dispose();
+    _cvvController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    late ShoppingBag shoppingBag;
+    shoppingBag = context.read<ShoppingBag>();
+
     return Scaffold(
       body: SafeArea(
         child: Column(
@@ -28,7 +62,7 @@ class CardPayment extends StatelessWidget {
             Center(
               // Centralize o texto
               child: Text(
-                paymentMethod,
+                widget.paymentMethod,
                 style: const TextStyle(
                   fontFamily: 'Quicksand',
                   fontSize: 22,
@@ -57,6 +91,7 @@ class CardPayment extends StatelessWidget {
                       height: 11,
                     ),
                     TextField(
+                      controller: _nameController,
                       decoration: InputDecoration(
                         filled: true,
                         fillColor: const Color(0xFFEAEAEA), // Cor EAEAEA
@@ -85,6 +120,7 @@ class CardPayment extends StatelessWidget {
                       height: 11,
                     ),
                     TextField(
+                      controller: _numberController,
                       decoration: InputDecoration(
                         filled: true,
                         fillColor: const Color(0xFFEAEAEA), // Cor EAEAEA
@@ -103,37 +139,36 @@ class CardPayment extends StatelessWidget {
                     Row(
                       children: [
                         Expanded(
-                          child: Container(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const Text(
-                                  'Data',
-                                  style: TextStyle(
-                                    fontFamily: 'Quicksand',
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.normal,
-                                    color: Colors.black,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text(
+                                'Data',
+                                style: TextStyle(
+                                  fontFamily: 'Quicksand',
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.normal,
+                                  color: Colors.black,
+                                ),
+                              ),
+                              TextField(
+                                controller: _expiryDateController,
+                                decoration: InputDecoration(
+                                  filled: true,
+                                  fillColor:
+                                      const Color(0xFFEAEAEA), // Cor EAEAEA
+                                  contentPadding: const EdgeInsets.symmetric(
+                                      horizontal:
+                                          16.0), // Padding lateral de 16px
+                                  border: OutlineInputBorder(
+                                    // Borda ao redor do TextField
+                                    borderRadius: BorderRadius.circular(8.0),
+                                    borderSide: BorderSide
+                                        .none, // Borda circular de 8px
                                   ),
                                 ),
-                                TextField(
-                                  decoration: InputDecoration(
-                                    filled: true,
-                                    fillColor:
-                                        const Color(0xFFEAEAEA), // Cor EAEAEA
-                                    contentPadding: const EdgeInsets.symmetric(
-                                        horizontal:
-                                            16.0), // Padding lateral de 16px
-                                    border: OutlineInputBorder(
-                                      // Borda ao redor do TextField
-                                      borderRadius: BorderRadius.circular(8.0),
-                                      borderSide: BorderSide
-                                          .none, // Borda circular de 8px
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
                         ),
                         const SizedBox(
@@ -153,6 +188,7 @@ class CardPayment extends StatelessWidget {
                                 ),
                               ),
                               TextField(
+                                controller: _cvvController,
                                 decoration: InputDecoration(
                                   filled: true,
                                   fillColor: lightgrey, // Cor EAEAEA
@@ -178,12 +214,12 @@ class CardPayment extends StatelessWidget {
             ),
 
             // Total Price
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.0),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
+                  const Text(
                     'Total',
                     style: TextStyle(
                       fontFamily: 'Quicksand',
@@ -193,8 +229,8 @@ class CardPayment extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    'R\$ 20,00',
-                    style: TextStyle(
+                    'R\$ ${shoppingBag.totalPrice.toStringAsFixed(2)}',
+                    style: const TextStyle(
                       fontFamily: 'Quicksand',
                       fontSize: 22,
                       fontWeight: FontWeight.bold,
@@ -210,8 +246,47 @@ class CardPayment extends StatelessWidget {
               padding: const EdgeInsets.all(16.0),
               child: ElevatedButton(
                 onPressed: () {
-                  makeNewOrder();
-                  Navigator.of(context).pushNamed('/order');
+                  DateTime now = DateTime.now();
+                  String formattedDate = '${now.day}/${now.month}/${now.year}';
+                  String formattedTime = '${now.hour}:${now.minute}';
+                  String name;
+
+                  if (widget.paymentMethod == 'Pix') {
+                    name =
+                        'No Pix foi tão rápido que não pudemos nos conhecer melhor';
+                  } else {
+                    name = _nameController.text;
+                  }
+
+                  int totalNecessaryTime = shoppingBag.updateTotalTime();
+
+                  int qntd;
+
+                  for (var item in shoppingBag.bag) {
+                    qntd = 0;
+
+                    for (var prod in shoppingBag.products) {
+                      if (item == prod) {
+                        qntd++;
+                      }
+                    }
+
+                    item.qntd = qntd;
+                  }
+
+                  var order = OrderModel(
+                      status: 'Em espera',
+                      date: formattedDate,
+                      time: formattedTime,
+                      name: name,
+                      payment: widget.paymentMethod,
+                      products: shoppingBag.bag,
+                      necessaryTime: totalNecessaryTime,
+                      price: shoppingBag.totalPrice);
+
+                  makeNewOrder(order);
+
+                  Navigator.of(context).pushNamed('/order', arguments: order);
                 },
                 style: ElevatedButton.styleFrom(
                   minimumSize: Size(MediaQuery.of(context).size.width, 50),
@@ -235,8 +310,7 @@ class CardPayment extends StatelessWidget {
       ),
     );
   }
-  
+
   // Create a New Order
-  void makeNewOrder() {
-  }
+  void makeNewOrder(OrderModel order) {}
 }

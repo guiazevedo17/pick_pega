@@ -26,12 +26,6 @@ class _BagScreenState extends State<BagScreen> {
     shoppingBag = context.read<ShoppingBag>();
   }
 
-  void updateTotalPrice() {
-    setState(() {
-      shoppingBag.updateTotalPrice();
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Consumer<ShoppingBag>(
@@ -209,60 +203,6 @@ class _BagScreenState extends State<BagScreen> {
                               ),
 
                               // Methods
-                              // Row(
-                              //   mainAxisAlignment:
-                              //       MainAxisAlignment.spaceBetween,
-                              //   children: [
-                              //     InkWell(
-                              //         onTap: () {
-                              //           setState(() {
-                              //             if (selectedPayment == 0) {
-                              //               selectedPayment = 1;
-                              //               pix = true;
-                              //             } else if (selectedPayment == 1) {
-                              //               selectedPayment = 0;
-                              //               pix = false;
-                              //             }
-                              //           });
-                              //         },
-                              //         child: PaymentMethod(
-                              //             'assets/icons/pix.png', 'Pix', pix)),
-                              //     InkWell(
-                              //       onTap: () {
-                              //         setState(() {
-                              //           if (selectedPayment == 0) {
-                              //             selectedPayment = 2;
-                              //             credit = true;
-                              //           } else if (selectedPayment == 2) {
-                              //             selectedPayment = 0;
-                              //             credit = false;
-                              //           }
-                              //         });
-                              //       },
-                              //       child: PaymentMethod(
-                              //           'assets/icons/card.png',
-                              //           'Crédito',
-                              //           credit),
-                              //     ),
-                              //     InkWell(
-                              //       onTap: () {
-                              //         setState(() {
-                              //           if (selectedPayment == 0) {
-                              //             selectedPayment = 3;
-                              //             debit = true;
-                              //           } else if (selectedPayment == 3) {
-                              //             selectedPayment = 0;
-                              //             debit = false;
-                              //           }
-                              //         });
-                              //       },
-                              //       child: PaymentMethod(
-                              //           'assets/icons/card.png',
-                              //           'Débito',
-                              //           debit),
-                              //     ),
-                              //   ],
-                              // ),
                               SizedBox(
                                 height:
                                     MediaQuery.of(context).size.height * 0.12,

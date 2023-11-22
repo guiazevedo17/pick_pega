@@ -1,8 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:pick_pega/styles/color.dart';
 
+import '../models/product.dart';
+
 class OrderProduct extends StatelessWidget {
-  const OrderProduct({
+  final Product product;
+  final int qntd;
+
+  const OrderProduct(
+    this.product,
+    this.qntd, {
     super.key,
   });
 
@@ -26,32 +33,32 @@ class OrderProduct extends StatelessWidget {
                   borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(10),
                       bottomLeft: Radius.circular(10)),
-                  child: Image.asset(
-                    'assets/images/pastel.png',
+                  child: Image.network(
+                    product.picture,
                     fit: BoxFit.cover,
                   ),
                 ),
               ),
             ),
-            const Expanded(
+            Expanded(
               flex: 2,
               child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 8.0),
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Pastel de Calabresa',
-                      style: TextStyle(
+                      product.name,
+                      style: const TextStyle(
                           fontFamily: 'Quicksand',
                           fontSize: 16,
                           fontWeight: FontWeight.bold),
                     ),
                     Padding(
-                      padding: EdgeInsets.only(top: 4.0),
+                      padding: const EdgeInsets.only(top: 4.0),
                       child: Text(
-                        'RS 10,00',
-                        style: TextStyle(
+                        'RS ${product.price}',
+                        style: const TextStyle(
                           fontFamily: 'Quicksand',
                           fontSize: 14,
                         ),
@@ -61,12 +68,12 @@ class OrderProduct extends StatelessWidget {
                 ),
               ),
             ),
-            const Padding(
-              padding: EdgeInsets.only(right: 16.0),
+            Padding(
+              padding: const EdgeInsets.only(right: 16.0),
               child: Column(
                 children: [
-                  Text('2'),
-                  Text(
+                  Text(qntd.toString()),
+                  const Text(
                     'Qntd',
                   )
                 ],

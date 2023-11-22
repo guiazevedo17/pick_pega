@@ -1,10 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:pick_pega/components/order_product.dart';
+import 'package:pick_pega/models/order.dart';
 import 'package:pick_pega/styles/color.dart';
 import 'package:percent_indicator/percent_indicator.dart';
+import 'package:provider/provider.dart';
 
-class OrderScreen extends StatelessWidget {
-  const OrderScreen({super.key});
+import '../models/shopping_bag.dart';
+
+class OrderScreen extends StatefulWidget {
+  final OrderModel order;
+  const OrderScreen(
+    this.order, {
+    super.key,
+  });
+
+  @override
+  State<OrderScreen> createState() => _OrderScreenState();
+}
+
+class _OrderScreenState extends State<OrderScreen> {
+  late ShoppingBag shoppingBag;
+
+  @override
+  void initState() {
+    super.initState();
+    shoppingBag = context.read<ShoppingBag>();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -99,11 +120,21 @@ class OrderScreen extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: ListView.builder(
-                  shrinkWrap: true,
-                  padding: EdgeInsets.zero,
-                  scrollDirection: Axis.vertical,
-                  itemBuilder: (context, index) => const OrderProduct(),
-                ),
+                    shrinkWrap: true,
+                    padding: EdgeInsets.zero,
+                    scrollDirection: Axis.vertical,
+                    itemCount: shoppingBag.bag.length,
+                    itemBuilder: (context, index) {
+                      int qntd = 0;
+
+                      for (var prod in shoppingBag.products) {
+                        if (prod == shoppingBag.bag[index]) {
+                          qntd++;
+                        }
+                      }
+
+                      return OrderProduct(shoppingBag.bag[index], qntd);
+                    }),
               ),
             ),
 
@@ -126,19 +157,19 @@ class OrderScreen extends StatelessWidget {
                         // Order Date
                         SizedBox(
                           width: MediaQuery.of(context).size.width * 0.4,
-                          child: const Row(
+                          child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                '28/08/2023',
-                                style: TextStyle(
+                                widget.order.date,
+                                style: const TextStyle(
                                     fontFamily: 'Quicksand',
                                     fontSize: 15,
                                     fontWeight: FontWeight.w500),
                               ),
                               Text(
-                                '09:30h',
-                                style: TextStyle(
+                                widget.order.time,
+                                style: const TextStyle(
                                     fontFamily: 'Quicksand',
                                     fontSize: 15,
                                     fontWeight: FontWeight.w500),
@@ -147,7 +178,7 @@ class OrderScreen extends StatelessWidget {
                           ),
                         ),
 
-                        const Expanded(
+                        Expanded(
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
@@ -158,7 +189,7 @@ class OrderScreen extends StatelessWidget {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      Text(
+                                      const Text(
                                         'Nome',
                                         style: TextStyle(
                                             fontFamily: 'Quicksand',
@@ -166,8 +197,8 @@ class OrderScreen extends StatelessWidget {
                                             fontWeight: FontWeight.bold),
                                       ),
                                       Text(
-                                        'Guilherme Azevedo',
-                                        style: TextStyle(
+                                        widget.order.name,
+                                        style: const TextStyle(
                                             fontFamily: 'Quicksand',
                                             fontSize: 18,
                                             fontWeight: FontWeight.normal),
@@ -187,7 +218,7 @@ class OrderScreen extends StatelessWidget {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      Text(
+                                      const Text(
                                         'Pagamento',
                                         style: TextStyle(
                                             fontFamily: 'Quicksand',
@@ -195,8 +226,8 @@ class OrderScreen extends StatelessWidget {
                                             fontWeight: FontWeight.bold),
                                       ),
                                       Text(
-                                        'Crédito',
-                                        style: TextStyle(
+                                        widget.order.payment,
+                                        style: const TextStyle(
                                             fontFamily: 'Quicksand',
                                             fontSize: 18,
                                             fontWeight: FontWeight.normal),
@@ -209,7 +240,7 @@ class OrderScreen extends StatelessWidget {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      Text(
+                                      const Text(
                                         'Tempo',
                                         style: TextStyle(
                                             fontFamily: 'Quicksand',
@@ -217,8 +248,8 @@ class OrderScreen extends StatelessWidget {
                                             fontWeight: FontWeight.bold),
                                       ),
                                       Text(
-                                        '10:00 min',
-                                        style: TextStyle(
+                                        '${widget.order.necessaryTime} min',
+                                        style: const TextStyle(
                                             fontFamily: 'Quicksand',
                                             fontSize: 18,
                                             fontWeight: FontWeight.normal),
@@ -232,10 +263,10 @@ class OrderScreen extends StatelessWidget {
                         ),
 
                         // Total Price
-                        const Row(
+                        Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(
+                            const Text(
                               'Total',
                               style: TextStyle(
                                 fontFamily: 'Quicksand',
@@ -244,8 +275,8 @@ class OrderScreen extends StatelessWidget {
                               ),
                             ),
                             Text(
-                              'RS 26,00',
-                              style: TextStyle(
+                              'RS ${widget.order.price.toStringAsFixed(2)}',
+                              style: const TextStyle(
                                 fontFamily: 'Quicksand',
                                 fontSize: 22,
                                 fontWeight: FontWeight.bold,
