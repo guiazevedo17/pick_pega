@@ -5,6 +5,7 @@ import 'package:pick_pega/styles/color.dart';
 import 'package:provider/provider.dart';
 
 import '../components/payment_method.dart';
+import '../models/navigation_manager.dart';
 import '../models/shopping_bag.dart';
 
 class BagScreen extends StatefulWidget {
@@ -339,6 +340,7 @@ class _BagScreenState extends State<BagScreen> {
                           if (selectedIndex > -1) {
                             Navigator.of(context).pushNamed('/card_payment',
                                 arguments: paymentMethods[selectedIndex]);
+                            NavigationManager.history.add('/card_payment');
                           }
                         },
                         style: ElevatedButton.styleFrom(

@@ -19,6 +19,7 @@ class Restaurant {
    required this.photo,
   });
 
+
   // factory Restaurant.fromJson(Map<String, dynamic> json) {
   //   return Restaurant(
   //       uid: json['uid'],

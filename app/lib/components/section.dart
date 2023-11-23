@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:pick_pega/components/close_restaurant.dart';
 import 'package:pick_pega/components/sale.dart';
 import 'package:pick_pega/components/sugestion.dart';
+import 'package:pick_pega/models/product.dart';
 import 'package:pick_pega/styles/color.dart';
 
+import '../models/navigation_manager.dart';
 import '../models/restaurant.dart';
 
 class Section extends StatelessWidget {
@@ -42,24 +44,38 @@ class Section extends StatelessWidget {
             itemCount: restaurants.length,
             itemBuilder: (context, index) {
               if (size == MediaQuery.of(context).size.height * 0.08) {
-                print('photo -> ${restaurants[index].photo}');
                 return GestureDetector(
-                  onTap: () => Navigator.of(context).pushNamed(
-                    '/restaurant_menu',
-                    arguments: restaurants[index],
-                  ),
+                  onTap: () {
+                    Navigator.of(context).pushNamed(
+                      '/restaurant_menu',
+                      arguments: restaurants[index],
+                    );
+                    NavigationManager.history.add('/restaurant_menu');
+                  },
                   child: CloseRestaurant(restaurants[index].photo),
                 );
               } else if (size == MediaQuery.of(context).size.height * 0.19) {
                 return GestureDetector(
-                  onTap: () => Navigator.of(context).pushNamed(
-                    '/restaurant_menu',
-                    arguments: restaurants[index],
-                  ),
+                  onTap: () {
+                    Navigator.of(context).pushNamed(
+                      '/restaurant_menu',
+                      arguments: restaurants[index],
+                    );
+                    NavigationManager.history.add('/restaurant_menu');
+                  },
                   child: Sugestion(restaurants[index]),
                 );
               } else {
-                return const Sale();
+                return GestureDetector(
+                    onTap: () {
+
+                      Navigator.of(context).pushNamed(
+                        '/product_selected',
+                        arguments: restaurants[index],
+                      );
+                      NavigationManager.history.add('/product_selected');
+                    },
+                    child: const Sale());
               }
             },
           ),

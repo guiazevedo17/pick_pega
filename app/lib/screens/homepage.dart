@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 // import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:pick_pega/styles/color.dart';
 
+import '../models/navigation_manager.dart';
+
 class Homepage extends StatefulWidget {
   const Homepage({super.key});
 
@@ -148,6 +150,8 @@ class _HomepageState extends State<Homepage> {
                           onTap: () {
                             Navigator.of(context)
                                 .pushReplacementNamed('/search_restaurant');
+                            NavigationManager.history.add('/search_restaurant');
+
                           },
                           child: Container(
                             width: 100,

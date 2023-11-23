@@ -7,7 +7,9 @@ import 'package:pick_pega/models/address.dart';
 import 'package:pick_pega/models/restaurant.dart';
 import 'package:pick_pega/styles/color.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 import '../components/section.dart';
+import '../models/shopping_bag.dart';
 
 class SearchRestaurant extends StatefulWidget {
   const SearchRestaurant({Key? key}) : super(key: key);
@@ -21,6 +23,15 @@ class _SearchRestaurantState extends State<SearchRestaurant> {
   double? longitude;
   List<Restaurant> closeRes = [];
   List<Restaurant> sugestionRes = [];
+
+  late ShoppingBag shoppingBag;
+
+  @override
+  void initState() {
+    super.initState();
+    shoppingBag = context.read<ShoppingBag>();
+  }
+
   Future<List<Restaurant>> getAllRestaurants() async {
     final uri = Uri.parse(
         'https://southamerica-east1-pick-pega.cloudfunctions.net/api/getAllRestaurants');
@@ -212,7 +223,7 @@ class _SearchRestaurantState extends State<SearchRestaurant> {
                           ),
 
                           // Sales Section
-                          Section('No precinho', restaurants,
+                          Section('No precinho', shoppingBag.products,
                               MediaQuery.of(context).size.height * 0.23)
                         ],
                       ),

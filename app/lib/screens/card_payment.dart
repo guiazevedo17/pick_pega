@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pick_pega/models/order.dart';
 import 'package:provider/provider.dart';
 
+import '../models/navigation_manager.dart';
 import '../models/shopping_bag.dart';
 import '../styles/color.dart';
 
@@ -287,6 +288,7 @@ class _CardPaymentState extends State<CardPayment> {
                   makeNewOrder(order);
 
                   Navigator.of(context).pushNamed('/order', arguments: order);
+                  NavigationManager.history.add('/order');
                 },
                 style: ElevatedButton.styleFrom(
                   minimumSize: Size(MediaQuery.of(context).size.width, 50),

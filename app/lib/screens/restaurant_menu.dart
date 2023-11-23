@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:pick_pega/components/menu_category.dart';
+import 'package:pick_pega/models/navigation_manager.dart';
 import 'package:pick_pega/models/product.dart';
 import 'package:pick_pega/styles/color.dart';
 import 'package:http/http.dart' as http;
@@ -271,6 +272,7 @@ class _RestaurantMenuState extends State<RestaurantMenu> {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.of(context).pushNamed('/bag');
+          NavigationManager.history.add('/bag');
         },
         backgroundColor: actionYellow,
         child: SvgPicture.asset(
