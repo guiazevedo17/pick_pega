@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:pick_pega/models/order.dart';
 import 'package:provider/provider.dart';
-
+import 'package:http/http.dart' as http;
 import '../models/navigation_manager.dart';
 import '../models/shopping_bag.dart';
 import '../styles/color.dart';
+import 'dart:convert';
 
 class CardPayment extends StatefulWidget {
   final String paymentMethod;
@@ -15,6 +16,8 @@ class CardPayment extends StatefulWidget {
 }
 
 class _CardPaymentState extends State<CardPayment> {
+  late ShoppingBag shoppingBag;
+
   late TextEditingController _nameController;
   late TextEditingController _numberController;
   late TextEditingController _expiryDateController;
@@ -23,10 +26,35 @@ class _CardPaymentState extends State<CardPayment> {
   @override
   void initState() {
     super.initState();
+    shoppingBag = context.read<ShoppingBag>();
     _nameController = TextEditingController();
     _numberController = TextEditingController();
     _expiryDateController = TextEditingController();
     _cvvController = TextEditingController();
+  }
+
+  Future<OrderModel> createOrder(OrderModel order) async {
+    final response = await http.post(
+      Uri.parse(
+          'https://southamerica-east1-pick-pega.cloudfunctions.net/api/addNewOrder/${shoppingBag.restaurantId}'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(order
+          .toJson()), // Converte OrderModel para um mapa antes de codificar para JSON
+    );
+
+    if (response.statusCode == 200) {
+      print("ENTROU");
+      // Se o servidor retornar uma resposta 201 CREATED,
+      // então parseie o JSON.
+      return OrderModel.fromJson(
+          jsonDecode(response.body) as Map<String, dynamic>);
+    } else {
+      // Se o servidor não retornar uma resposta 201 CREATED,
+      // então lance uma exceção.
+      throw Exception('Falha ao criar pedido.');
+    }
   }
 
   @override
@@ -40,9 +68,6 @@ class _CardPaymentState extends State<CardPayment> {
 
   @override
   Widget build(BuildContext context) {
-    late ShoppingBag shoppingBag;
-    shoppingBag = context.read<ShoppingBag>();
-
     return Scaffold(
       body: SafeArea(
         child: Column(
@@ -273,6 +298,7 @@ class _CardPaymentState extends State<CardPayment> {
                     }
 
                     item.qntd = qntd;
+                    print("ITEM: ${item.name}    QUANT: ${item.qntd}");
                   }
 
                   var order = OrderModel(
@@ -285,7 +311,7 @@ class _CardPaymentState extends State<CardPayment> {
                       necessaryTime: totalNecessaryTime,
                       price: shoppingBag.totalPrice);
 
-                  makeNewOrder(order);
+                  createOrder(order);
 
                   Navigator.of(context).pushNamed('/order', arguments: order);
                   NavigationManager.history.add('/order');
@@ -312,7 +338,4 @@ class _CardPaymentState extends State<CardPayment> {
       ),
     );
   }
-
-  // Create a New Order
-  void makeNewOrder(OrderModel order) {}
 }

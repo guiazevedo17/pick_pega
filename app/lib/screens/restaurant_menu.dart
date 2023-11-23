@@ -35,6 +35,7 @@ class _RestaurantMenuState extends State<RestaurantMenu> {
 
     shoppingBag.restaurantPhoto = widget.restaurant.photo;
     shoppingBag.restaurantName = widget.restaurant.name;
+    shoppingBag.restaurantId = widget.restaurant.uid;
   }
 
   Future<List<Category>> getAllCategories() async {
