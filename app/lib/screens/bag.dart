@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:pick_pega/components/bag_product.dart';
 import 'package:pick_pega/styles/color.dart';
 import 'package:provider/provider.dart';
@@ -59,25 +60,101 @@ class _BagScreenState extends State<BagScreen> {
                 ),
               ),
 
-              // Empty Bag Button
+              // Clear Bag Button
               Positioned(
                 top: 0,
                 right: 0,
-                child: Container(
-                  width: 40,
-                  height: 40,
-                  margin: const EdgeInsets.only(
-                    right: 8,
-                    top: 8,
-                  ),
-                  decoration: BoxDecoration(
-                    color: actionYellow,
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: const Icon(
-                    Icons.delete_outline_outlined,
-                    color: Colors.white,
-                    size: 24,
+                child: GestureDetector(
+                  onTap: () {
+                    showDialog(
+                      context: context,
+                      barrierDismissible: false,
+                      builder: (context) => AlertDialog(
+                        contentPadding:
+                            const EdgeInsets.fromLTRB(20, 20, 20, 25),
+                        actionsPadding:
+                            const EdgeInsets.fromLTRB(10, 25, 10, 15),
+                        icon: SvgPicture.asset(
+                          'assets/icons/bag-error.svg',
+                          width: 100,
+                          height: 100,
+                        ),
+                        iconPadding: EdgeInsets.all(20),
+                        content: const Text(
+                          'Quer mesmo LIMPAR a Sacola?',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontFamily: 'Quicksand',
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        actions: [
+                          // Cancel
+                          OutlinedButton(
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            style: OutlinedButton.styleFrom(
+                              elevation: 0,
+                              foregroundColor: actionYellow,
+                              side: BorderSide(color: actionYellow),
+                              minimumSize: Size(
+                                  MediaQuery.of(context).size.width * 0.25, 40),
+                            ),
+                            child: const Text(
+                              'Cancelar',
+                              style: TextStyle(
+                                  fontFamily: 'Quicksand',
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ),
+
+                          // Remove Item from Bag
+                          ElevatedButton(
+                            onPressed: () {
+                              setState(() {
+                                shoppingBag.clearBag();
+                              });
+                              Navigator.of(context).pop();
+                            },
+                            style: ElevatedButton.styleFrom(
+                                elevation: 0,
+                                foregroundColor: white,
+                                backgroundColor: deleteRed,
+                                minimumSize: Size(
+                                    MediaQuery.of(context).size.width * 0.25,
+                                    40)),
+                            child: const Text(
+                              'Limpar',
+                              style: TextStyle(
+                                  fontFamily: 'Quicksand',
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                        ],
+                        actionsAlignment: MainAxisAlignment.spaceEvenly,
+                      ),
+                    );
+                  },
+                  child: Container(
+                    width: 40,
+                    height: 40,
+                    margin: const EdgeInsets.only(
+                      right: 8,
+                      top: 8,
+                    ),
+                    decoration: BoxDecoration(
+                      color: actionYellow,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: const Icon(
+                      Icons.delete_outline_outlined,
+                      color: Colors.white,
+                      size: 24,
+                    ),
                   ),
                 ),
               ),
@@ -99,21 +176,21 @@ class _BagScreenState extends State<BagScreen> {
                           // Restaurant Logo
                           Expanded(
                             flex: 1,
-                            child: Image.asset(
-                              'assets/images/restaurant.png',
+                            child: Image.network(
+                              shoppingBag.restaurantPhoto,
                               width: 70,
                               height: 70,
                             ),
                           ),
 
                           // Restaurant Name
-                          const Expanded(
+                          Expanded(
                             flex: 2,
                             child: Padding(
-                              padding: EdgeInsets.only(left: 16.0),
+                              padding: const EdgeInsets.only(left: 16.0),
                               child: Text(
-                                'Natural Drink',
-                                style: TextStyle(
+                                shoppingBag.restaurantName,
+                                style: const TextStyle(
                                     fontFamily: 'Quicksand',
                                     fontSize: 22,
                                     fontWeight: FontWeight.bold),
@@ -178,9 +255,9 @@ class _BagScreenState extends State<BagScreen> {
                                         size: 18,
                                       ),
                                     ),
-                                    const Text(
-                                      '10 min',
-                                      style: TextStyle(
+                                    Text(
+                                      '${shoppingBag.updateTotalTime()} min',
+                                      style: const TextStyle(
                                         fontFamily: 'Quicksand',
                                         fontSize: 14,
                                       ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 
 import '../models/product.dart';
@@ -19,12 +20,12 @@ class _ProductSelectedState extends State<ProductSelected> {
 
   late double _priceShowed = widget.product.price;
 
-  late ShoppingBag bag;
+  late ShoppingBag shoppingBag;
 
   @override
   void initState() {
     super.initState();
-    bag = context.read<ShoppingBag>();
+    shoppingBag = context.read<ShoppingBag>();
   }
 
   void _incrementCounter() {
@@ -272,15 +273,22 @@ class _ProductSelectedState extends State<ProductSelected> {
               child: ElevatedButton(
                 onPressed: () {
                   for (int i = 0; i < _counter; i++) {
-                    bag.addToBag(widget.product);
+                    shoppingBag.addToBag(widget.product);
                   }
 
-                  print('Sacola de Produtos - ${bag.products}');
+                  print('Sacola de Produtos - ${shoppingBag.products}');
 
                   showDialog(
                     context: context,
                     barrierDismissible: false,
                     builder: (context) => AlertDialog(
+                      contentPadding: const EdgeInsets.fromLTRB(20, 20, 20, 25),
+                      actionsPadding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                      icon: SvgPicture.asset(
+                        'assets/icons/bag-add.svg',
+                        width: 100,
+                        height: 100,
+                      ),
                       content: const Text(
                         'Produto adicionado a Sacola',
                         textAlign: TextAlign.center,

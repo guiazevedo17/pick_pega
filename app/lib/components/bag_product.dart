@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:pick_pega/models/product.dart';
 import 'package:pick_pega/styles/color.dart';
 import 'package:provider/provider.dart';
@@ -113,9 +114,14 @@ class _BagProductState extends State<BagProduct> {
                               barrierDismissible: false,
                               builder: (context) => AlertDialog(
                                 contentPadding:
-                                    const EdgeInsets.fromLTRB(10, 20, 10, 25),
+                                    const EdgeInsets.fromLTRB(20, 20, 20, 25),
                                 actionsPadding:
                                     const EdgeInsets.fromLTRB(10, 25, 10, 15),
+                                icon: SvgPicture.asset(
+                                  'assets/icons/bag-minus.svg',
+                                  width: 100,
+                                  height: 100,
+                                ),
                                 content: const Text(
                                   'Deseja realmente EXCLUIR este Item da Sacola?',
                                   textAlign: TextAlign.center,

@@ -46,8 +46,8 @@ class _OrderScreenState extends State<OrderScreen> {
                   // Restaurant Logo
                   Expanded(
                     flex: 1,
-                    child: Image.asset(
-                      'assets/images/restaurant.png',
+                    child: Image.network(
+                      shoppingBag.restaurantPhoto,
                       width: 70,
                       height: 70,
                     ),
@@ -59,7 +59,7 @@ class _OrderScreenState extends State<OrderScreen> {
                     child: Padding(
                       padding: const EdgeInsets.only(left: 16.0),
                       child: Text(
-                        'Natural Drink',
+                        shoppingBag.restaurantName,
                         style: TextStyle(
                             color: black,
                             fontFamily: 'Quicksand',

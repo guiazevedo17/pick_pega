@@ -1,14 +1,17 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:pick_pega/components/menu_category.dart';
 import 'package:pick_pega/models/product.dart';
 import 'package:pick_pega/styles/color.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 
 import '../components/category_card.dart';
 import '../models/category.dart';
 import '../models/restaurant.dart';
+import '../models/shopping_bag.dart';
 
 class RestaurantMenu extends StatefulWidget {
   final Restaurant restaurant;
@@ -21,6 +24,17 @@ class RestaurantMenu extends StatefulWidget {
 
 class _RestaurantMenuState extends State<RestaurantMenu> {
   List<Category> categories = [];
+
+  late ShoppingBag shoppingBag;
+
+  @override
+  void initState() {
+    super.initState();
+    shoppingBag = context.read<ShoppingBag>();
+
+    shoppingBag.restaurantPhoto = widget.restaurant.photo;
+    shoppingBag.restaurantName = widget.restaurant.name;
+  }
 
   Future<List<Category>> getAllCategories() async {
     final uri = Uri.parse(
@@ -259,9 +273,10 @@ class _RestaurantMenuState extends State<RestaurantMenu> {
           Navigator.of(context).pushNamed('/bag');
         },
         backgroundColor: actionYellow,
-        child: Icon(
-          Icons.shopping_cart_outlined,
-          color: white,
+        child: SvgPicture.asset(
+          'assets/icons/bag.svg',
+          // width: 100,
+          // height: 100,
         ),
       ),
     );
