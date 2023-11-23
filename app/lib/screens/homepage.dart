@@ -98,7 +98,8 @@ class _HomepageState extends State<Homepage> {
                         GestureDetector(
                           onTap: () {
                             Navigator.of(context)
-                                .pushReplacementNamed('/qrcode');
+                                .pushNamed('/qrcode');
+                            // NavigationManager.history.add('/qrode');
                           },
                           child: Container(
                             width: 100,
