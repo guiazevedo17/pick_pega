@@ -138,7 +138,7 @@ class _HomepageState extends State<Homepage> {
                         GestureDetector(
                           onTap: () {
                             Navigator.of(context)
-                                .pushReplacementNamed('/search_restaurant');
+                                .pushNamed('/search_restaurant');
                             NavigationManager.history.add('/search_restaurant');
 
                           },

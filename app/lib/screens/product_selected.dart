@@ -101,7 +101,7 @@ class _ProductSelectedState extends State<ProductSelected> {
           } else if (snapshot.hasError) {
             return Center(child: Text('Erro: ${snapshot.error}'));
           } else if (!snapshot.hasData) {
-            return const Center(child: Text('Nenhum produto disponível.'));
+            return const Center(child: Text('Restaurante não encontrado.'));
           } else {
             return SafeArea(
               child: Column(
@@ -303,8 +303,6 @@ class _ProductSelectedState extends State<ProductSelected> {
                           shoppingBag.addToBag(widget.product);
                         }
 
-                        print('Sacola de Produtos - ${shoppingBag.products}');
-
                         showDialog(
                           context: context,
                           barrierDismissible: false,
@@ -342,7 +340,6 @@ class _ProductSelectedState extends State<ProductSelected> {
 
                                     // Buscar restaurante por restaurantId, como no QR Code
 
-                                    print('restaurant - ${restaurant?.name}');
 
                                     if (restaurant != null) {
                                       Navigator.of(context).pushNamed(
@@ -350,9 +347,6 @@ class _ProductSelectedState extends State<ProductSelected> {
                                         arguments: restaurant,
                                       );
                                     }
-
-                                    print(
-                                        'depois do await - ${restaurant?.name}');
 
                                     NavigationManager.history
                                         .add('/restaurant_menu');

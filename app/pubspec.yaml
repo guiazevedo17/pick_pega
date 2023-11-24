@@ -46,9 +46,9 @@ dependencies:
   firebase_core: ^2.20.0
   google_maps_flutter: ^2.5.0
   geolocator: ^10.1.0
-  cloud_firestore: ^4.12.2
   cached_network_image: ^3.0.0
   flutter_svg: ^2.0.9
+  cloud_firestore: ^4.13.2
 dev_dependencies:
   flutter_test:
     sdk: flutter

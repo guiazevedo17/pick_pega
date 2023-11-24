@@ -135,10 +135,13 @@ class _SearchRestaurantState extends State<SearchRestaurant> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           // Logo
-                          SizedBox(
-                              width: 40,
-                              height: 46,
-                              child: Image.asset('assets/images/logo.png')),
+                          GestureDetector(
+                            onTap: () => Navigator.of(context).pop(),
+                            child: SizedBox(
+                                width: 40,
+                                height: 46,
+                                child: Image.asset('assets/images/logo.png')),
+                          ),
 
                           // Search Bar
                           Expanded(

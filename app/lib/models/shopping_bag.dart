@@ -11,40 +11,34 @@ class ShoppingBag extends ChangeNotifier {
   final List<Product> bag = []; // coca, calabreso
   double totalPrice = 0;
 
-  // ShoppingBag(
-  //   {
-
-  //   }
-  // );
-
-  // ShoppingBag(
-  //   {
-  //     required this.bag
-  //   }
-  // );
-  // Adicione este método para converter a instância de OrderModel em um mapa
-  // Map<String, dynamic> toJson() {
-  //   return {
-
-  //     'bag': bag.map((bag) => bag.toJson()).toList(),
-  //   };
-  // }
-
-  // // Adicione este método para criar uma instância de OrderModel a partir de um mapa
-  // factory ShoppingBag.fromJson(Map<String, dynamic> json) {
-  //   return ShoppingBag(
-  //     bag: (json['bag'] as List<dynamic>)
-  //         .map((bagJson) => Product.fromJson(bagJson))
-  //         .toList(),
-  //   );
-  // }
-
   void updateBag() {
-    for (var prod in products) {
-      if (!bag.contains(prod)) {
-        bag.add(prod);
-      }
+    bag.clear(); // Limpa a lista bag antes de atualizar
+
+  for (var prod in products) {
+    if (!bag.contains(prod)) {
+      bag.add(prod);
     }
+  }
+
+    print('--------------------------------------------');
+
+    print('%%% Tamanho da Sacola - ${bag.length} %%%');
+
+    int itemIndx = 0;
+    for (var item in bag) {
+      itemIndx++;
+      print('-> Item $itemIndx da Sacola - ${item.name}');
+    }
+
+    print('%%% Tamanho de Produtos - ${products.length} %%%');
+
+    int prodIndx = 0;
+    for (var prod in products) {
+      prodIndx++;
+      print('-> Item $prodIndx de Produtos - ${prod.name}');
+    }
+
+    print('--------------------------------------------');
   }
 
   void addToBag(Product product) {
