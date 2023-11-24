@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pick_pega/models/restaurant.dart';
 import 'package:provider/provider.dart';
+import 'package:pick_pega/screens/qrcode.dart';
 import 'firebase_options.dart';
 import 'package:pick_pega/screens/bag.dart';
 import 'package:pick_pega/screens/homepage.dart';
@@ -54,12 +55,17 @@ class MyApp extends StatelessWidget {
         switch (settings.name) {
           case '/homepage':
             return MaterialPageRoute(builder: (context) => const Homepage());
+          case '/qrcode':
+            return MaterialPageRoute(builder: (context) => const QRCode());
           case '/search_restaurant':
             return MaterialPageRoute(
                 builder: (context) => const SearchRestaurant());
           case '/location':
+            final List<Restaurant> restaurants = settings.arguments as List<Restaurant>;
             return MaterialPageRoute(
-                builder: (context) => const LocationScreen());
+              builder: (context) => LocationScreen(restaurants),
+            );
+
           case '/restaurant_menu':
             final Restaurant restaurant = settings.arguments as Restaurant;
             return MaterialPageRoute(

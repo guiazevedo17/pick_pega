@@ -14,24 +14,18 @@ import '../models/shopping_bag.dart';
 class SearchRestaurant extends StatefulWidget {
   const SearchRestaurant({Key? key}) : super(key: key);
 
+
   @override
   State<SearchRestaurant> createState() => _SearchRestaurantState();
 }
 
 class _SearchRestaurantState extends State<SearchRestaurant> {
+  SearchRestaurant? searchRestaurant;
+  List<Restaurant> closeRestaurant = [];
   double? latitude;
   double? longitude;
-  List<Restaurant> closeRes = [];
   List<Restaurant> sugestionRes = [];
-
-  late ShoppingBag shoppingBag;
-
-  @override
-  void initState() {
-    super.initState();
-    shoppingBag = context.read<ShoppingBag>();
-  }
-
+  List<Restaurant> allRestaurants = [];
   Future<List<Restaurant>> getAllRestaurants() async {
     final uri = Uri.parse(
         'https://southamerica-east1-pick-pega.cloudfunctions.net/api/getAllRestaurants');
@@ -49,7 +43,7 @@ class _SearchRestaurantState extends State<SearchRestaurant> {
       List<Map<String, dynamic>> listOfRestaurants =
           List<Map<String, dynamic>>.from(payload);
 
-      List<Restaurant> restaurants = listOfRestaurants.map((restaurantMap) {
+      allRestaurants = listOfRestaurants.map((restaurantMap) {
         return Restaurant(
           uid: restaurantMap['uid'],
           name: restaurantMap['name'],
@@ -66,18 +60,10 @@ class _SearchRestaurantState extends State<SearchRestaurant> {
           photo: restaurantMap['photo'],
         );
       }).toList();
-
-      funcCloseRestaurants(-22.8346193, -47.0560734, restaurants)
-          .then((proximos) {
-        closeRes = proximos;
-
-        print('ENTROU NO funcCloseRestaurants $closeRes');
-      }).catchError((error) {
-        print("Erro ao calcular os restaurantes próximos: $error");
-      });
-
-      print("TESTE: $restaurants");
-      return restaurants;
+      await pegarPosicao();
+      print("latitude: $latitude");
+      funcCloseRestaurants(latitude!, longitude!, allRestaurants);
+      return allRestaurants;
     } else {
       // Se a solicitação falhar, você pode lidar com o erro aqui.
       print('Request failed with status: ${response.statusCode}');
@@ -85,18 +71,17 @@ class _SearchRestaurantState extends State<SearchRestaurant> {
     }
   }
 
+
   pegarPosicao() async {
     LocationPermission permission = await Geolocator.requestPermission();
     Position position = await Geolocator.getCurrentPosition();
     latitude = position.latitude;
     longitude = position.longitude;
-    print(position);
+
   }
 
-  Future<List<Restaurant>> funcCloseRestaurants(
+  Future<void> funcCloseRestaurants(
       double lat, double lng, List<Restaurant> allRestaurants) async {
-    List<Restaurant> closeRestaurants = [];
-    sugestionRes = allRestaurants;
     for (var restaurant in allRestaurants) {
       double distancia = await Geolocator.distanceBetween(
         lat,
@@ -107,13 +92,11 @@ class _SearchRestaurantState extends State<SearchRestaurant> {
 
       if (distancia <= 2000) {
         // 2 km em metros
-        closeRestaurants.add(restaurant);
-        sugestionRes.remove(restaurant);
+        closeRestaurant.add(restaurant);
+      } else{
+        sugestionRes.add(restaurant);
       }
     }
-
-    print('closeRestaurants - $closeRestaurants');
-    return closeRestaurants;
   }
 
   @override
@@ -180,9 +163,10 @@ class _SearchRestaurantState extends State<SearchRestaurant> {
 
                           // Location Button
                           GestureDetector(
-                            onTap: () {
-                              Navigator.of(context).pushNamed('/location');
-                            },
+                            onTap: () => Navigator.of(context).pushNamed(
+                              '/location',
+                              arguments: restaurants,
+                            ),
                             child: Container(
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(10),
@@ -209,7 +193,7 @@ class _SearchRestaurantState extends State<SearchRestaurant> {
                       child: Column(
                         children: [
                           // Close Restaurants Section
-                          Section('Restaurantes Próximos', closeRes,
+                          Section('Restaurantes Próximos', closeRestaurant,
                               MediaQuery.of(context).size.height * 0.08),
 
                           // Sugestions Section
@@ -223,7 +207,7 @@ class _SearchRestaurantState extends State<SearchRestaurant> {
                           ),
 
                           // Sales Section
-                          Section('No precinho', shoppingBag.products,
+                          Section('No precinho', allRestaurants,
                               MediaQuery.of(context).size.height * 0.23)
                         ],
                       ),
