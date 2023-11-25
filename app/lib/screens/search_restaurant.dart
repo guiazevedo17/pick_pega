@@ -14,7 +14,6 @@ import '../models/shopping_bag.dart';
 class SearchRestaurant extends StatefulWidget {
   const SearchRestaurant({Key? key}) : super(key: key);
 
-
   @override
   State<SearchRestaurant> createState() => _SearchRestaurantState();
 }
@@ -71,15 +70,15 @@ class _SearchRestaurantState extends State<SearchRestaurant> {
     }
   }
 
-
+  // Pega posição autal do usuário
   pegarPosicao() async {
     LocationPermission permission = await Geolocator.requestPermission();
     Position position = await Geolocator.getCurrentPosition();
     latitude = position.latitude;
     longitude = position.longitude;
-
   }
 
+  //
   Future<void> funcCloseRestaurants(
       double lat, double lng, List<Restaurant> allRestaurants) async {
     for (var restaurant in allRestaurants) {
@@ -93,7 +92,7 @@ class _SearchRestaurantState extends State<SearchRestaurant> {
       if (distancia <= 2000) {
         // 2 km em metros
         closeRestaurant.add(restaurant);
-      } else{
+      } else {
         sugestionRes.add(restaurant);
       }
     }
@@ -144,16 +143,26 @@ class _SearchRestaurantState extends State<SearchRestaurant> {
                           Expanded(
                             child: Padding(
                               padding:
-                                  const EdgeInsets.fromLTRB(16.0, 0, 10.0, 0),
+                                  const EdgeInsets.symmetric(horizontal: 16.0),
                               child: Container(
+                                height:
+                                    MediaQuery.of(context).size.height * 0.03,
                                 decoration: BoxDecoration(
                                     color: lightgrey,
                                     borderRadius: BorderRadius.circular(20)),
                                 child: const TextField(
+                                  maxLines: 1,
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontFamily: 'Quicksand',
+                                  ),
                                   textAlignVertical: TextAlignVertical.center,
                                   decoration: InputDecoration(
                                     border: InputBorder.none,
-                                    hintText: 'Buscar...',
+                                    hintStyle: TextStyle(
+                                      fontSize: 16,
+                                      fontFamily: 'Quicksand',
+                                    ),
                                     prefixIcon: Icon(Icons.search),
                                   ),
                                 ),

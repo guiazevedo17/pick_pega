@@ -97,9 +97,71 @@ class _RestaurantMenuState extends State<RestaurantMenu> {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
-            return Center(child: Text('Erro: ${snapshot.error}'));
+            return Stack(
+              children: [
+                Center(
+                  child: Text('Erro: ${snapshot.error}'),
+                ),
+                Positioned(
+                  top: 0,
+                  left: 0,
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: Container(
+                      width: 40,
+                      height: 40,
+                      decoration: BoxDecoration(
+                          color: actionYellow,
+                          borderRadius: BorderRadius.circular(20)),
+                      margin: EdgeInsets.only(
+                        top: MediaQuery.of(context).size.height * 0.06,
+                        left: 8,
+                      ),
+                      child: Icon(
+                        Icons.arrow_back_ios_new_rounded,
+                        color: white,
+                        size: 20,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            );
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return const Center(child: Text('Nenhum produto disponível.'));
+            return Stack(
+              children: [
+                const Center(
+                  child: Text('Nenhum produto disponível'),
+                ),
+                Positioned(
+                  top: 0,
+                  left: 0,
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: Container(
+                      width: 40,
+                      height: 40,
+                      decoration: BoxDecoration(
+                          color: actionYellow,
+                          borderRadius: BorderRadius.circular(20)),
+                      margin: EdgeInsets.only(
+                        top: MediaQuery.of(context).size.height * 0.06,
+                        left: 8,
+                      ),
+                      child: Icon(
+                        Icons.arrow_back_ios_new_rounded,
+                        color: white,
+                        size: 20,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            );;
           } else {
             List<Category> categories = snapshot.data!;
 
