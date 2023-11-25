@@ -161,7 +161,8 @@ class _RestaurantMenuState extends State<RestaurantMenu> {
                   ),
                 ),
               ],
-            );;
+            );
+            ;
           } else {
             List<Category> categories = snapshot.data!;
 
@@ -279,13 +280,11 @@ class _RestaurantMenuState extends State<RestaurantMenu> {
                     ),
 
                     // Categories List
-                    SliverPadding(
-                      padding: const EdgeInsets.symmetric(vertical: 16),
-                      sliver: SliverPersistentHeader(
+                      SliverPersistentHeader(
                         delegate: RestaurantCategory(categories: categories),
                         pinned: true,
                       ),
-                    ),
+                    
 
                     // Products List
                     SliverList(

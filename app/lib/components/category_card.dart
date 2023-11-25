@@ -14,9 +14,11 @@ class RestaurantCategory extends SliverPersistentHeaderDelegate {
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
     return Container(
+      height: 300,
       color: white,
+      padding: const EdgeInsets.fromLTRB(16, 0, 0, 10),
       child: ListView.builder(
-        padding: const EdgeInsets.only(left: 16),
+        padding: EdgeInsets.zero,
         scrollDirection: Axis.horizontal,
         itemCount: categories.length,
         itemBuilder: (context, index) => CategoryCard(categories[index].name),
@@ -25,10 +27,10 @@ class RestaurantCategory extends SliverPersistentHeaderDelegate {
   }
 
   @override
-  double get maxExtent => 35;
+  double get maxExtent => 40;
 
   @override
-  double get minExtent => 35;
+  double get minExtent => 40;
 
   @override
   bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) {
@@ -50,20 +52,24 @@ class CategoryCard extends StatefulWidget {
 class _CategoryCardState extends State<CategoryCard> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 100,
-      margin: const EdgeInsets.only(right: 10),
-      decoration: BoxDecoration(
-        color: offWhite,
-        borderRadius: BorderRadius.circular(10),
-      ),
-      child: Center(
-        child: Text(
-          widget.name,
-          style: const TextStyle(
-              fontFamily: 'Quicksand',
-              fontSize: 16,
-              fontWeight: FontWeight.w600),
+    return Expanded(
+      child: Container(
+        margin: const EdgeInsets.only(right: 10),
+        decoration: BoxDecoration(
+          color: offWhite,
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 14.0),
+          child: Center(
+            child: Text(
+              widget.name,
+              style: const TextStyle(
+                  fontFamily: 'Quicksand',
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600),
+            ),
+          ),
         ),
       ),
     );

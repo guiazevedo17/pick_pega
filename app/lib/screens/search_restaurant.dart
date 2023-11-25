@@ -102,6 +102,7 @@ class _SearchRestaurantState extends State<SearchRestaurant> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: white,
+      resizeToAvoidBottomInset: true,
       body: FutureBuilder<List<Restaurant>>(
         future: getAllRestaurants(),
         builder: (context, snapshot) {
@@ -114,116 +115,123 @@ class _SearchRestaurantState extends State<SearchRestaurant> {
           } else {
             List<Restaurant> restaurants = snapshot.data!;
 
-            return SizedBox(
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height,
-              child: Column(
-                mainAxisSize: MainAxisSize.max,
-                children: [
-                  //App Bar
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: Container(
-                      margin: EdgeInsets.only(
-                        top: MediaQuery.of(context).size.height * 0.1,
-                        bottom: MediaQuery.of(context).size.height * 0.05,
-                      ),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.max,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          // Logo
-                          SizedBox(
-                              width: 40,
-                              height: 46,
-                              child: Image.asset('assets/images/logo.png')),
-
-                          // Search Bar
-                          Expanded(
-                            child: Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 16.0),
-                              child: Container(
-                                height:
-                                    MediaQuery.of(context).size.height * 0.03,
-                                decoration: BoxDecoration(
-                                    color: lightgrey,
-                                    borderRadius: BorderRadius.circular(20)),
-                                child: const TextField(
-                                  maxLines: 1,
-                                  style: TextStyle(
+            return CustomScrollView(
+              slivers: [
+                SliverAppBar(
+                  backgroundColor: white,
+                  elevation: 0,
+                  expandedHeight: MediaQuery.of(context).size.height * 0.1,
+                  floating: false,
+                  pinned: true,
+                  flexibleSpace: Container(
+                    height: MediaQuery.of(context).size.height * 0.25,
+                    padding: EdgeInsets.fromLTRB(
+                        16, MediaQuery.of(context).size.height * 0.06, 16, 0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        SizedBox(
+                          width: 40,
+                          height: 46,
+                          child: Image.asset('assets/images/logo.png'),
+                        ),
+                        Expanded(
+                          child: Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 16.0),
+                            child: Container(
+                              height: MediaQuery.of(context).size.height * 0.03,
+                              decoration: BoxDecoration(
+                                color: lightgrey,
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              child: const TextField(
+                                maxLines: 1,
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontFamily: 'Quicksand',
+                                ),
+                                textAlignVertical: TextAlignVertical.center,
+                                decoration: InputDecoration(
+                                  border: InputBorder.none,
+                                  hintStyle: TextStyle(
                                     fontSize: 16,
                                     fontFamily: 'Quicksand',
                                   ),
-                                  textAlignVertical: TextAlignVertical.center,
-                                  decoration: InputDecoration(
-                                    border: InputBorder.none,
-                                    hintStyle: TextStyle(
-                                      fontSize: 16,
-                                      fontFamily: 'Quicksand',
-                                    ),
-                                    prefixIcon: Icon(Icons.search),
-                                  ),
+                                  prefixIcon: Icon(Icons.search),
                                 ),
                               ),
                             ),
                           ),
-
-                          // Location Button
-                          GestureDetector(
-                            onTap: () => Navigator.of(context).pushNamed(
-                              '/location',
-                              arguments: restaurants,
+                        ),
+                        GestureDetector(
+                          onTap: () => Navigator.of(context).pushNamed(
+                            '/location',
+                            arguments: restaurants,
+                          ),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: actionYellow,
                             ),
-                            child: Container(
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  color: actionYellow),
-                              child: SizedBox(
-                                width: 40,
-                                height: 40,
-                                child: Icon(
-                                  Icons.location_pin,
-                                  color: white,
-                                ),
+                            child: SizedBox(
+                              width: 40,
+                              height: 40,
+                              child: Icon(
+                                Icons.location_pin,
+                                color: white,
                               ),
                             ),
-                          )
-                        ],
-                      ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-
-                  // Section Contents
-                  Expanded(
-                    child: SizedBox(
-                      width: double.infinity,
-                      child: Column(
-                        children: [
-                          // Close Restaurants Section
-                          Section('Restaurantes Próximos', closeRestaurant,
-                              MediaQuery.of(context).size.height * 0.08),
-
-                          // Sugestions Section
-                          Padding(
+                ),
+                SliverPadding(
+                  padding: EdgeInsets.only(
+                      top: MediaQuery.of(context).size.height * 0.02),
+                  sliver: SliverList(
+                    delegate: SliverChildBuilderDelegate(
+                      (BuildContext context, int index) {
+                        if (index == 0) {
+                          return const SizedBox
+                              .shrink(); // Espaço vazio para a altura do SliverAppBar
+                        } else if (index == 1) {
+                          return Section(
+                            'Restaurantes Próximos',
+                            closeRestaurant,
+                            MediaQuery.of(context).size.height * 0.08,
+                          );
+                        } else if (index == 2) {
+                          return Padding(
                             padding: EdgeInsets.only(
                               top: MediaQuery.of(context).size.height * 0.05,
                               bottom: MediaQuery.of(context).size.height * 0.05,
                             ),
-                            child: Section('Sugestões', sugestionRes,
-                                MediaQuery.of(context).size.height * 0.19),
-                          ),
-
-                          // Sales Section
-                          Section('No precinho', allRestaurants,
-                              MediaQuery.of(context).size.height * 0.23)
-                        ],
-                      ),
+                            child: Section(
+                              'Sugestões',
+                              sugestionRes,
+                              MediaQuery.of(context).size.height * 0.19,
+                            ),
+                          );
+                        } else if (index == 3) {
+                          return Section(
+                            'No precinho',
+                            allRestaurants,
+                            MediaQuery.of(context).size.height * 0.23,
+                          );
+                        } else {
+                          return const SizedBox.shrink();
+                        }
+                      },
+                      childCount:
+                          4, // Número total de seções (incluindo a SliverAppBar)
                     ),
-                  )
-                ],
-              ),
+                  ),
+                ),
+              ],
             );
           }
         },

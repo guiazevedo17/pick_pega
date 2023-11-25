@@ -72,7 +72,6 @@ class _CardPaymentState extends State<CardPayment> {
       body: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.max,
           children: [
             GestureDetector(
               onTap: () {
@@ -272,6 +271,8 @@ class _CardPaymentState extends State<CardPayment> {
               padding: const EdgeInsets.all(16.0),
               child: ElevatedButton(
                 onPressed: () {
+                  FocusScope.of(context).unfocus();
+
                   DateTime now = DateTime.now();
                   String formattedDate = '${now.day}/${now.month}/${now.year}';
                   String formattedTime = '${now.hour}:${now.minute}';
