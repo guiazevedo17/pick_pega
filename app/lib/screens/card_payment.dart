@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:pick_pega/models/order.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
@@ -6,6 +7,7 @@ import '../models/navigation_manager.dart';
 import '../models/shopping_bag.dart';
 import '../styles/color.dart';
 import 'dart:convert';
+import 'package:brasil_fields/brasil_fields.dart';
 
 class CardPayment extends StatefulWidget {
   final String paymentMethod;
@@ -32,6 +34,19 @@ class _CardPaymentState extends State<CardPayment> {
     _expiryDateController = TextEditingController();
     _cvvController = TextEditingController();
   }
+  bool _isCardNumberValid = true;
+
+  void validateCardNumber() {
+    setState(() {
+      if(_numberController.text.length == 16 && _numberController.text.isNotEmpty){
+        _isCardNumberValid = true;
+      }else{
+        _isCardNumberValid = false;
+      }
+      // _isCardNumberValid =
+      //     _numberController.text.length == 16 && _numberController.text.isNotEmpty;
+    });
+  }
 
   Future<OrderModel> createOrder(OrderModel order) async {
     final response = await http.post(
@@ -45,7 +60,6 @@ class _CardPaymentState extends State<CardPayment> {
     );
 
     if (response.statusCode == 200) {
-      print("ENTROU");
       // Se o servidor retornar uma resposta 201 CREATED,
       // então parseie o JSON.
       return OrderModel.fromJson(
@@ -147,18 +161,36 @@ class _CardPaymentState extends State<CardPayment> {
                     ),
                     TextField(
                       controller: _numberController,
+                      inputFormatters: [
+                        FilteringTextInputFormatter.digitsOnly,
+                        CartaoBancarioInputFormatter()
+                      ],
                       decoration: InputDecoration(
                         filled: true,
-                        fillColor: const Color(0xFFEAEAEA), // Cor EAEAEA
-                        contentPadding: const EdgeInsets.symmetric(
-                            horizontal: 16.0), // Padding lateral de 16px
+                        fillColor: const Color(0xFFEAEAEA),
+                        contentPadding: const EdgeInsets.symmetric(horizontal: 16.0),
                         border: OutlineInputBorder(
-                          // Borda ao redor do TextField
                           borderRadius: BorderRadius.circular(8.0),
-                          borderSide: BorderSide.none, // Borda circular de 8px
+                          borderSide: BorderSide.none
+                          //   color: _isCardNumberValid ? Color(0xFFEAEAEA) : Colors.red,
+                          // ),
                         ),
                       ),
+                      // onEditingComplete: () {
+                      //   // Função chamada quando o usuário pressiona "OK"
+                      //   validateCardNumber();
+                      //
+                      // },
+                      keyboardType: TextInputType.number,
                     ),
+                    // if (!_isCardNumberValid)
+                    //   Padding(
+                    //     padding: const EdgeInsets.only(top: 8.0),
+                    //     child: Text(
+                    //       'Número do cartão deve ter 16 dígitos',
+                    //       style: TextStyle(color: Colors.red),
+                    //     ),
+                    //   ),
                     const SizedBox(
                       height: 16,
                     ),
@@ -169,7 +201,7 @@ class _CardPaymentState extends State<CardPayment> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               const Text(
-                                'Data',
+                                'Data de Validade',
                                 style: TextStyle(
                                   fontFamily: 'Quicksand',
                                   fontSize: 12,
@@ -179,6 +211,11 @@ class _CardPaymentState extends State<CardPayment> {
                               ),
                               TextField(
                                 controller: _expiryDateController,
+                                inputFormatters: [
+                                  FilteringTextInputFormatter.digitsOnly,
+                                  ValidadeCartaoInputFormatter()
+                                ],
+                                keyboardType: TextInputType.number,
                                 decoration: InputDecoration(
                                   filled: true,
                                   fillColor:
@@ -215,6 +252,11 @@ class _CardPaymentState extends State<CardPayment> {
                               ),
                               TextField(
                                 controller: _cvvController,
+                                inputFormatters: [
+                                  LengthLimitingTextInputFormatter(4),
+                                  FilteringTextInputFormatter.digitsOnly,
+                                ],
+                                keyboardType: TextInputType.number,
                                 decoration: InputDecoration(
                                   filled: true,
                                   fillColor: lightgrey, // Cor EAEAEA

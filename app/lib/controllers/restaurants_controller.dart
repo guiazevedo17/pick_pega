@@ -51,6 +51,8 @@ class RestaurantsController extends ChangeNotifier {
           lat: restaurantMap['lat'],
           lng: restaurantMap['lng'],
           photo: restaurantMap['photo'],
+          openDays: restaurantMap['openDays'],
+          openHours: restaurantMap['openHours']
         );
       }).toList();
 

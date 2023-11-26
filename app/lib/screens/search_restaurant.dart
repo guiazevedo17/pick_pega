@@ -26,6 +26,34 @@ class _SearchRestaurantState extends State<SearchRestaurant> {
   double? longitude;
   List<Restaurant> sugestionRes = [];
   List<Restaurant> allRestaurants = [];
+
+  Future<double> calcularTempoAPe(double origemLat, double origemLng, double destinoLat, double destinoLng) async {
+    String apiUrl = 'https://maps.googleapis.com/maps/api/distancematrix/json?origins=$origemLat,$origemLng&destinations=$destinoLat,$destinoLng&mode=walking&key=AIzaSyDTN9yBqoVdrDor1gaBWxQkywlpCS9Wi_o';
+    final response = await http.get(Uri.parse(apiUrl));
+
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
+      final durationInSeconds = data['rows'][0]['elements'][0]['duration']['value'];
+      return durationInSeconds/60;
+    } else {
+      throw Exception('Erro ao calcular o tempo de viagem a pé.');
+    }
+  }
+
+  Future<double> calcularTempoDeCarro(double origemLat, double origemLng, double destinoLat, double destinoLng) async {
+    String apiUrl = 'https://maps.googleapis.com/maps/api/distancematrix/json?origins=$origemLat,$origemLng&destinations=$destinoLat,$destinoLng&mode=driving&key=AIzaSyDTN9yBqoVdrDor1gaBWxQkywlpCS9Wi_o';
+    final response = await http.get(Uri.parse(apiUrl));
+
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
+      final durationInSeconds = data['rows'][0]['elements'][0]['duration']['value'];
+      return durationInSeconds/60;
+    } else {
+      throw Exception('Erro ao calcular o tempo de viagem de carro.');
+    }
+  }
+
+
   Future<List<Restaurant>> getAllRestaurants() async {
     final uri = Uri.parse(
         'https://southamerica-east1-pick-pega.cloudfunctions.net/api/getAllRestaurants');
@@ -58,11 +86,14 @@ class _SearchRestaurantState extends State<SearchRestaurant> {
           lat: restaurantMap['lat'],
           lng: restaurantMap['lng'],
           photo: restaurantMap['photo'],
+          openDays: restaurantMap['openDays'],
+          openHours: restaurantMap['openHours']
         );
       }).toList();
       await pegarPosicao();
       print("latitude: $latitude");
       funcCloseRestaurants(latitude!, longitude!, allRestaurants);
+      await calcularTempo(latitude!, longitude!, allRestaurants);
       return allRestaurants;
     } else {
       // Se a solicitação falhar, você pode lidar com o erro aqui.
@@ -71,6 +102,29 @@ class _SearchRestaurantState extends State<SearchRestaurant> {
     }
   }
 
+  Future<void>calcularTempo( double lat, double lng,List<Restaurant> allRestaurants) async {
+    for (var restaurant in allRestaurants) {
+      double byFoot = await calcularTempoAPe(
+          lat, lng, restaurant.lat, restaurant.lng);
+      double byCar = await calcularTempoDeCarro(
+          lat, lng, restaurant.lat, restaurant.lng);
+      print(byCar);
+      double byFootHour = byFoot;
+      double byCarHour = byCar;
+      if(byFoot > 60) {
+        byFootHour = byFoot/60;
+        restaurant.distanceByFoot = "${byFootHour.toStringAsFixed(1)} h";
+      } else {
+        restaurant.distanceByFoot = "${byFoot.toStringAsFixed(1)} min";
+      }
+      if(byCar > 60) {
+        byCarHour = byCar/60;
+        restaurant.distanceByCar = "${byCarHour.toStringAsFixed(1)} h";
+      } else {
+        restaurant.distanceByCar = "${byCar.toStringAsFixed(1)} min";
+      }
+    }
+  }
 
   pegarPosicao() async {
     LocationPermission permission = await Geolocator.requestPermission();
@@ -89,7 +143,9 @@ class _SearchRestaurantState extends State<SearchRestaurant> {
         restaurant.lat ?? 0,
         restaurant.lng ?? 0,
       );
-
+      double distanciaKm = distancia/1000;
+      String distanciaFormatada = distanciaKm.toStringAsFixed(1);
+      restaurant.distance = distanciaFormatada;
       if (distancia <= 2000) {
         // 2 km em metros
         closeRestaurant.add(restaurant);
@@ -98,6 +154,8 @@ class _SearchRestaurantState extends State<SearchRestaurant> {
       }
     }
   }
+
+  TextEditingController _controller = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -149,9 +207,10 @@ class _SearchRestaurantState extends State<SearchRestaurant> {
                                 decoration: BoxDecoration(
                                     color: lightgrey,
                                     borderRadius: BorderRadius.circular(20)),
-                                child: const TextField(
+                                child: TextField(
+                                  controller: _controller,
                                   textAlignVertical: TextAlignVertical.center,
-                                  decoration: InputDecoration(
+                                  decoration: const InputDecoration(
                                     border: InputBorder.none,
                                     hintText: 'Buscar...',
                                     prefixIcon: Icon(Icons.search),

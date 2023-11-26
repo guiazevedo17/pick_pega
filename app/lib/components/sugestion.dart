@@ -42,13 +42,13 @@ class Sugestion extends StatelessWidget {
             ),
 
             // Restaurant Infos
-            const Row(
+            Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 // Distance km
                 Row(
                   children: [
-                    Padding(
+                    const Padding(
                       padding: EdgeInsets.only(right: 2.0),
                       child: Icon(
                         Icons.location_pin,
@@ -56,7 +56,7 @@ class Sugestion extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      '2.3km',
+                      '${restaurant.distance} km',
                       style: TextStyle(fontSize: 12, color: Color(0xFF333333)),
                     ),
                   ],
@@ -65,7 +65,7 @@ class Sugestion extends StatelessWidget {
                 // Walking Time
                 Row(
                   children: [
-                    Padding(
+                   const Padding(
                       padding: EdgeInsets.only(left: 8, right: 2.0),
                       child: Icon(
                         Icons.run_circle_outlined,
@@ -73,7 +73,7 @@ class Sugestion extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      '20min',
+                      '${restaurant.distanceByFoot}',
                       style: TextStyle(fontSize: 12, color: Color(0xFF333333)),
                     ),
                   ],
@@ -82,7 +82,7 @@ class Sugestion extends StatelessWidget {
                 // Driving Time
                 Row(
                   children: [
-                    Padding(
+                    const Padding(
                       padding: EdgeInsets.only(left: 8, right: 2.0),
                       child: Icon(
                         Icons.car_crash_outlined,
@@ -90,7 +90,7 @@ class Sugestion extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      '5min',
+                      '${restaurant.distanceByCar}',
                       style: TextStyle(fontSize: 12, color: Color(0xFF333333)),
                     ),
                   ],

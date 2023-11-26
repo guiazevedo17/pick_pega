@@ -16,6 +16,7 @@ class Section extends StatelessWidget {
 
   const Section(this.title, this.restaurants, this.size, {super.key});
 
+
   @override
   Widget build(BuildContext context) {
     return Column(

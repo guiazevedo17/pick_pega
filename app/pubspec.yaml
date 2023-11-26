@@ -28,6 +28,7 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
+  brasil_fields: ^1.14.0
   qr_code_scanner: ^1.0.1
   url_launcher: ^6.1.10
   http: ^0.13.3

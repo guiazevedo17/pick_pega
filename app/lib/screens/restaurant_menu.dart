@@ -16,7 +16,6 @@ import '../models/shopping_bag.dart';
 
 class RestaurantMenu extends StatefulWidget {
   final Restaurant restaurant;
-
   const RestaurantMenu(this.restaurant, {super.key});
 
   @override
@@ -28,6 +27,8 @@ class _RestaurantMenuState extends State<RestaurantMenu> {
 
   late ShoppingBag shoppingBag;
 
+
+
   @override
   void initState() {
     super.initState();
@@ -36,9 +37,11 @@ class _RestaurantMenuState extends State<RestaurantMenu> {
     shoppingBag.restaurantPhoto = widget.restaurant.photo;
     shoppingBag.restaurantName = widget.restaurant.name;
     shoppingBag.restaurantId = widget.restaurant.uid;
+
   }
 
   Future<List<Category>> getAllCategories() async {
+
     final uri = Uri.parse(
         'https://southamerica-east1-pick-pega.cloudfunctions.net/api/getRestaurantMenu/${widget.restaurant.uid}');
 
@@ -171,7 +174,7 @@ class _RestaurantMenuState extends State<RestaurantMenu> {
                                 ),
                               ),
 
-                              const Column(
+                              Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   // Operating Information
@@ -179,8 +182,8 @@ class _RestaurantMenuState extends State<RestaurantMenu> {
                                     padding:
                                         EdgeInsets.fromLTRB(16.0, 14.0, 0, 4),
                                     child: Text(
-                                      'Seg - Sex | 06 - 23h',
-                                      style: TextStyle(
+                                      '${widget.restaurant.openDays} | ${widget.restaurant.openHours}',
+                                      style: const TextStyle(
                                         fontSize: 13,
                                         fontFamily: 'Quicksand',
                                       ),

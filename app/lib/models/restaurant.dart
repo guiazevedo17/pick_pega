@@ -1,3 +1,5 @@
+import 'package:geolocator/geolocator.dart';
+
 import 'address.dart';
 
 class Restaurant {
@@ -8,6 +10,13 @@ class Restaurant {
   double lat;
   double lng;
   String photo;
+  String openDays;
+  String openHours;
+  String? distance;
+  double? userLat;
+  double? userLng;
+  String? distanceByFoot;
+  String? distanceByCar;
 
   Restaurant( {
    required this.uid,
@@ -17,32 +26,9 @@ class Restaurant {
    required this.lat,
    required this.lng,
    required this.photo,
+   required this.openDays,
+   required this.openHours,
   });
-
-
-  // factory Restaurant.fromJson(Map<String, dynamic> json) {
-  //   return Restaurant(
-  //       uid: json['uid'],
-  //       name: json['name'],
-  //       email: json['email'],
-  //       password: json['password'],
-  //       category: json['category'],
-  //       address: json['address'],
-  //       lat: json['lat'],
-  //       lng: json['lng'],
-  //       photo: json['photo'],
-  //       );
-  //   }
-
-    // Distância da localização atual
-    // double distance = currentDistance() -> return double dist
-
-    // Tempo a Pé partindo da localização atual
-    // double walking = walkingTime() -> return double walk
-
-
-    // Tempo de Carro partindo da localização atual
-    // double driving = drivingTime() -> return double drive
 
 }
 
