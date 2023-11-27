@@ -63,6 +63,8 @@ class _ProductSelectedState extends State<ProductSelected> {
         lat: jsonBody['lat'],
         lng: jsonBody['lng'],
         photo: jsonBody['photo'],
+        openDays: jsonBody['openDays'],
+        openHours: jsonBody['openHours']
       );
     } else {
       // Se a solicitação falhar, você pode lidar com o erro aqui.

@@ -16,7 +16,6 @@ import '../models/shopping_bag.dart';
 
 class RestaurantMenu extends StatefulWidget {
   final Restaurant restaurant;
-
   const RestaurantMenu(this.restaurant, {super.key});
 
   @override
@@ -29,6 +28,8 @@ class _RestaurantMenuState extends State<RestaurantMenu> {
   List<Category> categories = [];
 
   late ShoppingBag shoppingBag;
+  Product? searchItem;
+
 
   int selectedCategoryIndex = 0;
 
@@ -44,9 +45,44 @@ class _RestaurantMenuState extends State<RestaurantMenu> {
     scrollCrontroller.addListener(() {
       updateCategoryIndexOnScroll(scrollCrontroller.offset);
     });
+
+  }
+
+  Future<void> getItemByName(TextEditingController controller) async {
+    String nome = controller.text;
+    final uri = Uri.parse(
+        'https://southamerica-east1-pick-pega.cloudfunctions.net/api/getItemByName/$nome/${widget.restaurant.name}/${widget.restaurant.uid}');
+
+    final response = await http.get(uri);
+
+    if (response.statusCode == 200) {
+      // Parse o JSON a partir do corpo da resposta
+      final jsonBody = json.decode(response.body);
+
+      // Acesse o valor da chave 'payload' no JSON
+      final payload = jsonBody['payload'];
+
+      // Agora, 'payload' é uma lista de elementos
+      searchItem = Product(
+        active: payload[0]['active'],
+        restaurantId: payload[0]['restaurantId'],
+        category: payload[0]['category'],
+        itemId: payload[0]['itemId'],
+        name: payload[0]['name'],
+        description: payload[0]['description'],
+        price: payload[0]['price'],
+        time: payload[0]['time'],
+        picture: payload[0]['picture'],
+      );
+
+    } else {
+      // Se a solicitação falhar, você pode lidar com o erro aqui.
+      print('Request failed with status: ${response.statusCode}');
+    }
   }
 
   Future<List<Category>> getAllCategories() async {
+
     final uri = Uri.parse(
         'https://southamerica-east1-pick-pega.cloudfunctions.net/api/getRestaurantMenu/${widget.restaurant.uid}');
 
@@ -304,8 +340,8 @@ class _RestaurantMenuState extends State<RestaurantMenu> {
                                     padding:
                                         EdgeInsets.fromLTRB(16.0, 14.0, 0, 4),
                                     child: Text(
-                                      'Seg - Sex | 06 - 23h',
-                                      style: TextStyle(
+                                      '${widget.restaurant.openDays} | ${widget.restaurant.openHours}',
+                                      style: const TextStyle(
                                         fontSize: 13,
                                         fontFamily: 'Quicksand',
                                       ),

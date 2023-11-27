@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:pick_pega/models/order.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
@@ -6,6 +8,7 @@ import '../models/navigation_manager.dart';
 import '../models/shopping_bag.dart';
 import '../styles/color.dart';
 import 'dart:convert';
+import 'package:brasil_fields/brasil_fields.dart';
 
 class CardPayment extends StatefulWidget {
   final String paymentMethod;
@@ -22,7 +25,8 @@ class _CardPaymentState extends State<CardPayment> {
   late TextEditingController _numberController;
   late TextEditingController _expiryDateController;
   late TextEditingController _cvvController;
-
+  late TextEditingController _mesaController;
+  String? mesa;
   @override
   void initState() {
     super.initState();
@@ -31,8 +35,36 @@ class _CardPaymentState extends State<CardPayment> {
     _numberController = TextEditingController();
     _expiryDateController = TextEditingController();
     _cvvController = TextEditingController();
+    _mesaController = TextEditingController();
+  }
+  bool _isCardNumberValid = true;
+
+  bool validateCardNumber() {
+      if(_numberController.text.length >= 16){
+        return true;
+      }
+      return false;
   }
 
+  bool validateExperyDate() {
+    if(_expiryDateController.text.length >= 4){
+      return true;
+    }
+    return false;
+  }
+
+  bool validateCVV() {
+    if(_cvvController.text.length >= 3){
+      return true;
+    }
+    return false;
+  }
+  bool validadeFieldsNull() {
+    if(_numberController.text.isEmpty || _cvvController.text.isEmpty || _expiryDateController.text.isEmpty || _nameController.text.isEmpty){
+      return false;
+    }
+    return true;
+  }
   Future<OrderModel> createOrder(OrderModel order) async {
     final response = await http.post(
       Uri.parse(
@@ -45,7 +77,6 @@ class _CardPaymentState extends State<CardPayment> {
     );
 
     if (response.statusCode == 200) {
-      print("ENTROU");
       // Se o servidor retornar uma resposta 201 CREATED,
       // então parseie o JSON.
       return OrderModel.fromJson(
@@ -146,18 +177,82 @@ class _CardPaymentState extends State<CardPayment> {
                     ),
                     TextField(
                       controller: _numberController,
+                      inputFormatters: [
+                        FilteringTextInputFormatter.digitsOnly,
+                        CartaoBancarioInputFormatter()
+                      ],
                       decoration: InputDecoration(
                         filled: true,
-                        fillColor: const Color(0xFFEAEAEA), // Cor EAEAEA
-                        contentPadding: const EdgeInsets.symmetric(
-                            horizontal: 16.0), // Padding lateral de 16px
+                        fillColor: const Color(0xFFEAEAEA),
+                        contentPadding: const EdgeInsets.symmetric(horizontal: 16.0),
                         border: OutlineInputBorder(
-                          // Borda ao redor do TextField
                           borderRadius: BorderRadius.circular(8.0),
-                          borderSide: BorderSide.none, // Borda circular de 8px
+                          borderSide: BorderSide.none
                         ),
                       ),
+                      onEditingComplete: () {
+                        if(!validateCardNumber()) {
+                          showDialog(
+                            context: context,
+                            barrierDismissible: false,
+                            builder: (context) => AlertDialog(
+                              contentPadding:
+                              const EdgeInsets.fromLTRB(20, 20, 20, 25),
+                              actionsPadding:
+                              const EdgeInsets.fromLTRB(10, 25, 10, 15),
+                              icon: Icon(
+                                Icons.error,
+                                size: 60,
+                                color: actionYellow,
+                              ),
+                              iconPadding: EdgeInsets.all(20),
+                              content: const Text(
+                                'Campo Número deve ter 16 dígitos',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontFamily: 'Quicksand',
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              actions: [
+                                // Cancel
+                                OutlinedButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                  style: OutlinedButton.styleFrom(
+                                    elevation: 0,
+                                    foregroundColor: actionYellow,
+                                    side: BorderSide(color: actionYellow),
+                                    minimumSize: Size(
+                                        MediaQuery.of(context).size.width * 0.25, 40),
+                                  ),
+                                  child: const Text(
+                                    'Ok',
+                                    style: TextStyle(
+                                        fontFamily: 'Quicksand',
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ),
+
+                              ],
+                              actionsAlignment: MainAxisAlignment.spaceEvenly,
+                            ),
+                          );
+                        }
+                      },
+                      keyboardType: TextInputType.number,
                     ),
+                    // if (!_isCardNumberValid)
+                    //   Padding(
+                    //     padding: const EdgeInsets.only(top: 8.0),
+                    //     child: Text(
+                    //       'Número do cartão deve ter 16 dígitos',
+                    //       style: TextStyle(color: Colors.red),
+                    //     ),
+                    //   ),
                     const SizedBox(
                       height: 16,
                     ),
@@ -168,7 +263,7 @@ class _CardPaymentState extends State<CardPayment> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               const Text(
-                                'Data',
+                                'Data de Validade',
                                 style: TextStyle(
                                   fontFamily: 'Quicksand',
                                   fontSize: 12,
@@ -178,6 +273,11 @@ class _CardPaymentState extends State<CardPayment> {
                               ),
                               TextField(
                                 controller: _expiryDateController,
+                                inputFormatters: [
+                                  FilteringTextInputFormatter.digitsOnly,
+                                  ValidadeCartaoInputFormatter()
+                                ],
+                                keyboardType: TextInputType.number,
                                 decoration: InputDecoration(
                                   filled: true,
                                   fillColor:
@@ -192,6 +292,59 @@ class _CardPaymentState extends State<CardPayment> {
                                         .none, // Borda circular de 8px
                                   ),
                                 ),
+                                onEditingComplete: () {
+                                  if(!validateExperyDate()) {
+                                    showDialog(
+                                      context: context,
+                                      barrierDismissible: false,
+                                      builder: (context) => AlertDialog(
+                                        contentPadding:
+                                        const EdgeInsets.fromLTRB(20, 20, 20, 25),
+                                        actionsPadding:
+                                        const EdgeInsets.fromLTRB(10, 25, 10, 15),
+                                        icon: Icon(
+                                          Icons.error,
+                                          size: 60,
+                                          color: actionYellow,
+                                        ),
+                                        iconPadding: EdgeInsets.all(20),
+                                        content: const Text(
+                                          'Campo Data de Validade deve ter 4 dígitos',
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            fontFamily: 'Quicksand',
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                        actions: [
+                                          // Cancel
+                                          OutlinedButton(
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                            style: OutlinedButton.styleFrom(
+                                              elevation: 0,
+                                              foregroundColor: actionYellow,
+                                              side: BorderSide(color: actionYellow),
+                                              minimumSize: Size(
+                                                  MediaQuery.of(context).size.width * 0.25, 40),
+                                            ),
+                                            child: const Text(
+                                              'Ok',
+                                              style: TextStyle(
+                                                  fontFamily: 'Quicksand',
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                          ),
+
+                                        ],
+                                        actionsAlignment: MainAxisAlignment.spaceEvenly,
+                                      ),
+                                    );
+                                  }
+                                },
                               ),
                             ],
                           ),
@@ -214,6 +367,11 @@ class _CardPaymentState extends State<CardPayment> {
                               ),
                               TextField(
                                 controller: _cvvController,
+                                inputFormatters: [
+                                  LengthLimitingTextInputFormatter(4),
+                                  FilteringTextInputFormatter.digitsOnly,
+                                ],
+                                keyboardType: TextInputType.number,
                                 decoration: InputDecoration(
                                   filled: true,
                                   fillColor: lightgrey, // Cor EAEAEA
@@ -227,6 +385,59 @@ class _CardPaymentState extends State<CardPayment> {
                                         .none, // Borda circular de 8px
                                   ),
                                 ),
+                                onEditingComplete: () {
+                                  if(!validateCVV()) {
+                                    showDialog(
+                                      context: context,
+                                      barrierDismissible: false,
+                                      builder: (context) => AlertDialog(
+                                        contentPadding:
+                                        const EdgeInsets.fromLTRB(20, 20, 20, 25),
+                                        actionsPadding:
+                                        const EdgeInsets.fromLTRB(10, 25, 10, 15),
+                                        icon: Icon(
+                                          Icons.error,
+                                          size: 60,
+                                          color: actionYellow,
+                                        ),
+                                        iconPadding: EdgeInsets.all(20),
+                                        content: const Text(
+                                          'Campo CVV deve ter 3 ou 4 dígitos',
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            fontFamily: 'Quicksand',
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                        actions: [
+                                          // Cancel
+                                          OutlinedButton(
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                            style: OutlinedButton.styleFrom(
+                                              elevation: 0,
+                                              foregroundColor: actionYellow,
+                                              side: BorderSide(color: actionYellow),
+                                              minimumSize: Size(
+                                                  MediaQuery.of(context).size.width * 0.25, 40),
+                                            ),
+                                            child: const Text(
+                                              'Ok',
+                                              style: TextStyle(
+                                                  fontFamily: 'Quicksand',
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                          ),
+
+                                        ],
+                                        actionsAlignment: MainAxisAlignment.spaceEvenly,
+                                      ),
+                                    );
+                                  }
+                                },
                               ),
                             ],
                           ),
@@ -271,50 +482,170 @@ class _CardPaymentState extends State<CardPayment> {
               padding: const EdgeInsets.all(16.0),
               child: ElevatedButton(
                 onPressed: () {
-                  FocusScope.of(context).unfocus();
+                  print("MESA: $mesa");
+                  if(mesa == null) {
+                    showDialog(
+                      context: context,
+                      barrierDismissible: false,
+                      builder: (context) => AlertDialog(
+                        contentPadding:
+                        const EdgeInsets.fromLTRB(20, 20, 20, 25),
+                        actionsPadding:
+                        const EdgeInsets.fromLTRB(10, 25, 10, 15),
+                        icon: Icon(
+                          Icons.error,
+                          size: 60,
+                          color: actionYellow,
+                        ),
+                        iconPadding: EdgeInsets.all(20),
+                        content: const Text(
+                          'Digite  número da sua mesa (o número encontra-se em cima do qrcode): ',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontFamily: 'Quicksand',
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        actions: [
+                          TextField(
+                            controller: _mesaController,
+                            keyboardType: TextInputType.number,
+                            decoration: InputDecoration(
+                              filled: true,
+                              fillColor:
+                              const Color(0xFFEAEAEA), // Cor EAEAEA
+                              contentPadding: const EdgeInsets.symmetric(
+                                  horizontal:
+                                  16.0), // Padding lateral de 16px
+                              border: OutlineInputBorder(
+                                // Borda ao redor do TextField
+                                borderRadius: BorderRadius.circular(8.0),
+                                borderSide: BorderSide
+                                    .none, // Borda circular de 8px
+                              ),
+                            ),
+                          ),
+                          // Ok
+                          OutlinedButton(
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            style: OutlinedButton.styleFrom(
+                              elevation: 0,
+                              foregroundColor: actionYellow,
+                              side: BorderSide(color: actionYellow),
+                              minimumSize: Size(
+                                  MediaQuery.of(context).size.width * 0.25, 40),
+                            ),
+                            child: const Text(
+                              'Salvar',
+                              style: TextStyle(
+                                  fontFamily: 'Quicksand',
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ),
 
-                  DateTime now = DateTime.now();
-                  String formattedDate = '${now.day}/${now.month}/${now.year}';
-                  String formattedTime = '${now.hour}:${now.minute}';
-                  String name;
-
-                  if (widget.paymentMethod == 'Pix') {
-                    name =
-                        'No Pix foi tão rápido que não pudemos nos conhecer melhor';
-                  } else {
-                    name = _nameController.text;
+                        ],
+                        actionsAlignment: MainAxisAlignment.spaceEvenly,
+                      ),
+                    );
+                    mesa = _mesaController.text;
                   }
+                  else {
+                    if(validadeFieldsNull()){
+                      DateTime now = DateTime.now();
+                      print("DATETIMENOW: $now");
+                      String dataFormatada = now.toIso8601String().substring(0,23);
+                      print("DATETIMENOW: $dataFormatada");
+                      String formattedDate = '${now.day}/${now.month}/${now.year}';
+                      String formattedTime = '${now.hour}:${now.minute}';
+                      String name = _mesaController.text;
 
-                  int totalNecessaryTime = shoppingBag.updateTotalTime();
+                      int totalNecessaryTime = shoppingBag.updateTotalTime();
 
-                  int qntd;
+                      int qntd;
 
-                  for (var item in shoppingBag.bag) {
-                    qntd = 0;
+                      for (var item in shoppingBag.bag) {
+                        qntd = 0;
 
-                    for (var prod in shoppingBag.products) {
-                      if (item == prod) {
-                        qntd++;
-                      }
-                    }
+                        for (var prod in shoppingBag.products) {
+                          if (item == prod) {
+                            qntd++;
+                          }
+                        }
 
                     item.qntd = qntd;
                   }
 
-                  var order = OrderModel(
-                      status: 'Em espera',
-                      date: formattedDate,
-                      time: formattedTime,
-                      name: name,
-                      payment: widget.paymentMethod,
-                      products: shoppingBag.bag,
-                      necessaryTime: totalNecessaryTime,
-                      price: shoppingBag.totalPrice);
+                      var order = OrderModel(
+                          status: 'Em espera',
+                          date: dataFormatada,
+                          time: formattedTime,
+                          name: name,
+                          payment: widget.paymentMethod,
+                          products: shoppingBag.bag,
+                          necessaryTime: totalNecessaryTime,
+                          price: shoppingBag.totalPrice);
 
-                  createOrder(order);
+                      createOrder(order);
 
-                  Navigator.of(context).pushReplacementNamed('/order', arguments: order);
-                  NavigationManager.history.add('/order');
+                      Navigator.of(context).pushReplacementNamed('/order', arguments: order);
+                      NavigationManager.history.add('/order');
+                    }else {
+                      showDialog(
+                        context: context,
+                        barrierDismissible: false,
+                        builder: (context) => AlertDialog(
+                          contentPadding:
+                          const EdgeInsets.fromLTRB(20, 20, 20, 25),
+                          actionsPadding:
+                          const EdgeInsets.fromLTRB(10, 25, 10, 15),
+                          icon: Icon(
+                            Icons.error,
+                            size: 60,
+                            color: actionYellow,
+                          ),
+                          iconPadding: EdgeInsets.all(20),
+                          content: const Text(
+                            'Existem campos vazios',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontFamily: 'Quicksand',
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          actions: [
+                            // Cancel
+                            OutlinedButton(
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                              style: OutlinedButton.styleFrom(
+                                elevation: 0,
+                                foregroundColor: actionYellow,
+                                side: BorderSide(color: actionYellow),
+                                minimumSize: Size(
+                                    MediaQuery.of(context).size.width * 0.25, 40),
+                              ),
+                              child: const Text(
+                                'Ok',
+                                style: TextStyle(
+                                    fontFamily: 'Quicksand',
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ),
+
+                          ],
+                          actionsAlignment: MainAxisAlignment.spaceEvenly,
+                        ),
+                      );
+                    }
+                  }
+
                 },
                 style: ElevatedButton.styleFrom(
                   minimumSize: Size(MediaQuery.of(context).size.width, 50),

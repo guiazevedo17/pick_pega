@@ -57,7 +57,7 @@ class Sugestion extends StatelessWidget {
                     ),
                     Text(
                       '${restaurant.distance} km',
-                      style: const TextStyle(fontSize: 12, color: Color(0xFF333333)),
+                      style: TextStyle(fontSize: 12, color: Color(0xFF333333)),
                     ),
                   ],
                 ),
@@ -65,7 +65,7 @@ class Sugestion extends StatelessWidget {
                 // Walking Time
                 Row(
                   children: [
-                    const Padding(
+                   const Padding(
                       padding: EdgeInsets.only(left: 8, right: 2.0),
                       child: Icon(
                         Icons.run_circle_outlined,
@@ -73,8 +73,8 @@ class Sugestion extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      '${restaurant.walking} min',
-                      style: const TextStyle(fontSize: 12, color: Color(0xFF333333)),
+                      '${restaurant.distanceByFoot}',
+                      style: TextStyle(fontSize: 12, color: Color(0xFF333333)),
                     ),
                   ],
                 ),
@@ -90,8 +90,8 @@ class Sugestion extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      '${restaurant.driving} min',
-                      style: const TextStyle(fontSize: 12, color: Color(0xFF333333)),
+                      '${restaurant.distanceByCar}',
+                      style: TextStyle(fontSize: 12, color: Color(0xFF333333)),
                     ),
                   ],
                 ),

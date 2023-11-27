@@ -21,11 +21,13 @@ class QRCode extends StatefulWidget {
 
 class _QRCodeState extends State<QRCode> {
   String result = '';
+  // String id = '';
+  // String table = '';
   Restaurant? restaurant;
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
   QRViewController? controller;
 
-  Future<void> restaurante() async {
+  Future<void> getRestaurantById() async {
     final uri = Uri.parse(
         'https://southamerica-east1-pick-pega.cloudfunctions.net/api/getRestaurantById/$result');
 
@@ -52,6 +54,8 @@ class _QRCodeState extends State<QRCode> {
         lat: jsonBody['lat'],
         lng: jsonBody['lng'],
         photo: jsonBody['photo'],
+        openDays: jsonBody['openDays'],
+        openHours: jsonBody['openHours']
       );
     } else {
       // Se a solicitação falhar, você pode lidar com o erro aqui.
@@ -65,18 +69,38 @@ class _QRCodeState extends State<QRCode> {
     super.dispose();
   }
 
+  // Map<String, String> splitIdTable(String qrCode) {
+  //   List<String> resultSplit = qrCode.split('/');
+  //   String idSplit = resultSplit[0];
+  //   String tableSplit = resultSplit[1];
+  //
+  //   Map<String, String> resultado = {'id': idSplit, 'table': tableSplit};
+  //   return resultado;
+  // }
+
   Future<void> _onQRViewCreated(QRViewController controller) async {
     this.controller = controller;
     controller.scannedDataStream.listen((scanData) async {
       setState(() {
         result = scanData.code!;
       });
-      await restaurante();
+      // Map<String, String> resultSplit = splitIdTable(result);
+      // id = resultSplit['id']!;
+      // table = resultSplit['table']!;
+      //
+      // print('ID do restaurante: $id');
+      // print('Número da mesa: $table');
+      await getRestaurantById();
+      // Map<String, dynamic> arguments = {
+      //   'restaurant': restaurant,
+      //   'table': table,
+      // };
       if(restaurant != null) {
         Navigator.of(context).pushNamed(
           '/restaurant_menu',
-          arguments: restaurant,);
+          arguments: restaurant);
       }
+      dispose();
     });
   }
 
@@ -114,13 +138,13 @@ class _QRCodeState extends State<QRCode> {
               ),
             ),
           ),
-          Positioned(
-            top: 0,
-            left: 0,
-            child: Padding(
-              padding: EdgeInsets.only(left: (MediaQuery.of(context).size.width / 2) - 100, top: MediaQuery.of(context).size.height * 0.2),
-              child: SvgPicture.asset('assets/icons/scan.svg', width: 200, height: 200,),
-            ),),
+          // Positioned(
+          //   top: 0,
+          //   left: 0,
+          //   child: Padding(
+          //     padding: EdgeInsets.only(left: (MediaQuery.of(context).size.width / 2) - 100, top: MediaQuery.of(context).size.height * 0.2),
+          //     child: SvgPicture.asset('assets/icons/scan.svg', width: 200, height: 200,),
+          //   ),),
           Positioned(
             top: 0,
             left: 0,
