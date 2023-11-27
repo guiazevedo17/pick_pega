@@ -25,6 +25,7 @@ class _OrderScreenState extends State<OrderScreen> {
   void initState() {
     super.initState();
     shoppingBag = context.read<ShoppingBag>();
+
   }
 
   @override
@@ -161,7 +162,7 @@ class _OrderScreenState extends State<OrderScreen> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                widget.order.date,
+                                "${widget.order.date}",
                                 style: const TextStyle(
                                     fontFamily: 'Quicksand',
                                     fontSize: 15,

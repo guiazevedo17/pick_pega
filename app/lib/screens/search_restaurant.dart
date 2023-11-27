@@ -26,11 +26,57 @@ class _SearchRestaurantState extends State<SearchRestaurant> {
   double? longitude;
   List<Restaurant> sugestionRes = [];
   List<Restaurant> allRestaurants = [];
+  Restaurant? searchRestaurantByName;
+  Future<void> getRestaurantByName(TextEditingController controller) async {
+    String nome = controller.text;
+    print("getRestaurantByName: $nome");
+    final uri = Uri.parse(
+        'https://southamerica-east1-pick-pega.cloudfunctions.net/api/getRestaurantByName/$nome');
+
+    final response = await http.get(uri);
+
+    if (response.statusCode == 200) {
+      // Parse o JSON a partir do corpo da resposta
+      final jsonBody = json.decode(response.body);
+
+      // Acesse o valor da chave 'payload' no JSON
+      final payload = jsonBody['payload'];
+
+      // Agora, 'payload' é uma lista de elementos
+
+      print(payload);
+      searchRestaurantByName = Restaurant(
+            uid: payload[0]['uid'],
+            name: payload[0]['name'],
+            category: payload[0]['category'],
+            address: Address(
+                zip: payload[0]['address[zip]'],
+                number: payload[0]['address[number]'],
+                uf: payload[0]['address[uf]'],
+                city: payload[0]['address[city]'],
+                street: payload[0]['address[street]'],
+                neighborhood: payload[0]['address[neighborhood]']),
+            lat: payload[0]['lat'],
+            lng: payload[0]['lng'],
+            photo: payload[0]['photo'],
+            openDays: payload[0]['openDays'],
+            openHours: payload[0]['openHours']
+        );
+
+      Navigator.of(context).pushNamed(
+        '/restaurant_menu',
+        arguments: searchRestaurantByName,
+      );
+    } else {
+      // Se a solicitação falhar, você pode lidar com o erro aqui.
+      print('Request failed with status: ${response.statusCode}');
+    }
+  }
 
   Future<double> calcularTempoAPe(double origemLat, double origemLng, double destinoLat, double destinoLng) async {
     String apiUrl = 'https://maps.googleapis.com/maps/api/distancematrix/json?origins=$origemLat,$origemLng&destinations=$destinoLat,$destinoLng&mode=walking&key=AIzaSyDTN9yBqoVdrDor1gaBWxQkywlpCS9Wi_o';
     final response = await http.get(Uri.parse(apiUrl));
-
+    print(apiUrl);
     if (response.statusCode == 200) {
       final data = json.decode(response.body);
       final durationInSeconds = data['rows'][0]['elements'][0]['duration']['value'];
@@ -215,6 +261,9 @@ class _SearchRestaurantState extends State<SearchRestaurant> {
                                     hintText: 'Buscar...',
                                     prefixIcon: Icon(Icons.search),
                                   ),
+                                  onEditingComplete: () async {
+                                    await getRestaurantByName(_controller);
+                                  },
                                 ),
                               ),
                             ),
