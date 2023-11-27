@@ -26,6 +26,7 @@ class _SearchRestaurantState extends State<SearchRestaurant> {
   List<Restaurant> sugestionRes = [];
   List<Restaurant> allRestaurants = [];
   Restaurant? searchRestaurantByName;
+
   Future<void> getRestaurantByName(TextEditingController controller) async {
     String nome = controller.text;
     print("getRestaurantByName: $nome");
@@ -190,10 +191,10 @@ class _SearchRestaurantState extends State<SearchRestaurant> {
         restaurant.lat ?? 0,
         restaurant.lng ?? 0,
       );
-      double distanciaKm = distancia/1000;
+      double distanciaKm = distance/1000;
       String distanciaFormatada = distanciaKm.toStringAsFixed(1);
       restaurant.distance = distanciaFormatada;
-      if (distancia <= 2000) {
+      if (distance <= 2000) {
         // 2 km em metros
         closeRestaurant.add(restaurant);
       } else {
@@ -252,24 +253,24 @@ class _SearchRestaurantState extends State<SearchRestaurant> {
                                 color: lightgrey,
                                 borderRadius: BorderRadius.circular(20),
                               ),
-                              child: const TextField(
+                              child: TextField(
                                 maxLines: 1,
-                                style: TextStyle(
+                                style: const TextStyle(
                                   fontSize: 16,
                                   fontFamily: 'Quicksand',
                                 ),
                                 textAlignVertical: TextAlignVertical.center,
-                                decoration: InputDecoration(
+                                decoration: const InputDecoration(
                                   border: InputBorder.none,
                                   hintStyle: TextStyle(
                                     fontSize: 16,
                                     fontFamily: 'Quicksand',
                                   ),
-                                  onEditingComplete: () async {
-                                    await getRestaurantByName(_controller);
-                                  },
                                   prefixIcon: Icon(Icons.search),
                                 ),
+                                onEditingComplete: () async {
+                                    await getRestaurantByName(_controller);
+                                  },
                               ),
                             ),
                           ),

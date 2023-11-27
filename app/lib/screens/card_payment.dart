@@ -37,34 +37,40 @@ class _CardPaymentState extends State<CardPayment> {
     _cvvController = TextEditingController();
     _mesaController = TextEditingController();
   }
+
   bool _isCardNumberValid = true;
 
   bool validateCardNumber() {
-      if(_numberController.text.length >= 16){
-        return true;
-      }
-      return false;
+    if (_numberController.text.length >= 16) {
+      return true;
+    }
+    return false;
   }
 
   bool validateExperyDate() {
-    if(_expiryDateController.text.length >= 4){
+    if (_expiryDateController.text.length >= 4) {
       return true;
     }
     return false;
   }
 
   bool validateCVV() {
-    if(_cvvController.text.length >= 3){
+    if (_cvvController.text.length >= 3) {
       return true;
     }
     return false;
   }
+
   bool validadeFieldsNull() {
-    if(_numberController.text.isEmpty || _cvvController.text.isEmpty || _expiryDateController.text.isEmpty || _nameController.text.isEmpty){
+    if (_numberController.text.isEmpty ||
+        _cvvController.text.isEmpty ||
+        _expiryDateController.text.isEmpty ||
+        _nameController.text.isEmpty) {
       return false;
     }
     return true;
   }
+
   Future<OrderModel> createOrder(OrderModel order) async {
     final response = await http.post(
       Uri.parse(
@@ -184,22 +190,22 @@ class _CardPaymentState extends State<CardPayment> {
                       decoration: InputDecoration(
                         filled: true,
                         fillColor: const Color(0xFFEAEAEA),
-                        contentPadding: const EdgeInsets.symmetric(horizontal: 16.0),
+                        contentPadding:
+                            const EdgeInsets.symmetric(horizontal: 16.0),
                         border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8.0),
-                          borderSide: BorderSide.none
-                        ),
+                            borderRadius: BorderRadius.circular(8.0),
+                            borderSide: BorderSide.none),
                       ),
                       onEditingComplete: () {
-                        if(!validateCardNumber()) {
+                        if (!validateCardNumber()) {
                           showDialog(
                             context: context,
                             barrierDismissible: false,
                             builder: (context) => AlertDialog(
                               contentPadding:
-                              const EdgeInsets.fromLTRB(20, 20, 20, 25),
+                                  const EdgeInsets.fromLTRB(20, 20, 20, 25),
                               actionsPadding:
-                              const EdgeInsets.fromLTRB(10, 25, 10, 15),
+                                  const EdgeInsets.fromLTRB(10, 25, 10, 15),
                               icon: Icon(
                                 Icons.error,
                                 size: 60,
@@ -226,7 +232,9 @@ class _CardPaymentState extends State<CardPayment> {
                                     foregroundColor: actionYellow,
                                     side: BorderSide(color: actionYellow),
                                     minimumSize: Size(
-                                        MediaQuery.of(context).size.width * 0.25, 40),
+                                        MediaQuery.of(context).size.width *
+                                            0.25,
+                                        40),
                                   ),
                                   child: const Text(
                                     'Ok',
@@ -236,7 +244,6 @@ class _CardPaymentState extends State<CardPayment> {
                                         fontWeight: FontWeight.bold),
                                   ),
                                 ),
-
                               ],
                               actionsAlignment: MainAxisAlignment.spaceEvenly,
                             ),
@@ -293,15 +300,17 @@ class _CardPaymentState extends State<CardPayment> {
                                   ),
                                 ),
                                 onEditingComplete: () {
-                                  if(!validateExperyDate()) {
+                                  if (!validateExperyDate()) {
                                     showDialog(
                                       context: context,
                                       barrierDismissible: false,
                                       builder: (context) => AlertDialog(
                                         contentPadding:
-                                        const EdgeInsets.fromLTRB(20, 20, 20, 25),
+                                            const EdgeInsets.fromLTRB(
+                                                20, 20, 20, 25),
                                         actionsPadding:
-                                        const EdgeInsets.fromLTRB(10, 25, 10, 15),
+                                            const EdgeInsets.fromLTRB(
+                                                10, 25, 10, 15),
                                         icon: Icon(
                                           Icons.error,
                                           size: 60,
@@ -326,9 +335,14 @@ class _CardPaymentState extends State<CardPayment> {
                                             style: OutlinedButton.styleFrom(
                                               elevation: 0,
                                               foregroundColor: actionYellow,
-                                              side: BorderSide(color: actionYellow),
+                                              side: BorderSide(
+                                                  color: actionYellow),
                                               minimumSize: Size(
-                                                  MediaQuery.of(context).size.width * 0.25, 40),
+                                                  MediaQuery.of(context)
+                                                          .size
+                                                          .width *
+                                                      0.25,
+                                                  40),
                                             ),
                                             child: const Text(
                                               'Ok',
@@ -338,9 +352,9 @@ class _CardPaymentState extends State<CardPayment> {
                                                   fontWeight: FontWeight.bold),
                                             ),
                                           ),
-
                                         ],
-                                        actionsAlignment: MainAxisAlignment.spaceEvenly,
+                                        actionsAlignment:
+                                            MainAxisAlignment.spaceEvenly,
                                       ),
                                     );
                                   }
@@ -386,15 +400,17 @@ class _CardPaymentState extends State<CardPayment> {
                                   ),
                                 ),
                                 onEditingComplete: () {
-                                  if(!validateCVV()) {
+                                  if (!validateCVV()) {
                                     showDialog(
                                       context: context,
                                       barrierDismissible: false,
                                       builder: (context) => AlertDialog(
                                         contentPadding:
-                                        const EdgeInsets.fromLTRB(20, 20, 20, 25),
+                                            const EdgeInsets.fromLTRB(
+                                                20, 20, 20, 25),
                                         actionsPadding:
-                                        const EdgeInsets.fromLTRB(10, 25, 10, 15),
+                                            const EdgeInsets.fromLTRB(
+                                                10, 25, 10, 15),
                                         icon: Icon(
                                           Icons.error,
                                           size: 60,
@@ -419,9 +435,14 @@ class _CardPaymentState extends State<CardPayment> {
                                             style: OutlinedButton.styleFrom(
                                               elevation: 0,
                                               foregroundColor: actionYellow,
-                                              side: BorderSide(color: actionYellow),
+                                              side: BorderSide(
+                                                  color: actionYellow),
                                               minimumSize: Size(
-                                                  MediaQuery.of(context).size.width * 0.25, 40),
+                                                  MediaQuery.of(context)
+                                                          .size
+                                                          .width *
+                                                      0.25,
+                                                  40),
                                             ),
                                             child: const Text(
                                               'Ok',
@@ -431,9 +452,9 @@ class _CardPaymentState extends State<CardPayment> {
                                                   fontWeight: FontWeight.bold),
                                             ),
                                           ),
-
                                         ],
-                                        actionsAlignment: MainAxisAlignment.spaceEvenly,
+                                        actionsAlignment:
+                                            MainAxisAlignment.spaceEvenly,
                                       ),
                                     );
                                   }
@@ -483,15 +504,15 @@ class _CardPaymentState extends State<CardPayment> {
               child: ElevatedButton(
                 onPressed: () {
                   print("MESA: $mesa");
-                  if(mesa == null) {
+                  if (mesa == null) {
                     showDialog(
                       context: context,
                       barrierDismissible: false,
                       builder: (context) => AlertDialog(
                         contentPadding:
-                        const EdgeInsets.fromLTRB(20, 20, 20, 25),
+                            const EdgeInsets.fromLTRB(20, 20, 20, 25),
                         actionsPadding:
-                        const EdgeInsets.fromLTRB(10, 25, 10, 15),
+                            const EdgeInsets.fromLTRB(10, 25, 10, 15),
                         icon: Icon(
                           Icons.error,
                           size: 60,
@@ -513,16 +534,14 @@ class _CardPaymentState extends State<CardPayment> {
                             keyboardType: TextInputType.number,
                             decoration: InputDecoration(
                               filled: true,
-                              fillColor:
-                              const Color(0xFFEAEAEA), // Cor EAEAEA
+                              fillColor: const Color(0xFFEAEAEA), // Cor EAEAEA
                               contentPadding: const EdgeInsets.symmetric(
-                                  horizontal:
-                                  16.0), // Padding lateral de 16px
+                                  horizontal: 16.0), // Padding lateral de 16px
                               border: OutlineInputBorder(
                                 // Borda ao redor do TextField
                                 borderRadius: BorderRadius.circular(8.0),
-                                borderSide: BorderSide
-                                    .none, // Borda circular de 8px
+                                borderSide:
+                                    BorderSide.none, // Borda circular de 8px
                               ),
                             ),
                           ),
@@ -546,22 +565,28 @@ class _CardPaymentState extends State<CardPayment> {
                                   fontWeight: FontWeight.bold),
                             ),
                           ),
-
                         ],
                         actionsAlignment: MainAxisAlignment.spaceEvenly,
                       ),
                     );
                     mesa = _mesaController.text;
-                  }
-                  else {
-                    if(validadeFieldsNull()){
+                  } else {
+                    if (validadeFieldsNull()) {
                       DateTime now = DateTime.now();
                       print("DATETIMENOW: $now");
-                      String dataFormatada = now.toIso8601String().substring(0,23);
+                      String dataFormatada =
+                          now.toIso8601String().substring(0, 23);
                       print("DATETIMENOW: $dataFormatada");
-                      String formattedDate = '${now.day}/${now.month}/${now.year}';
+
+                      String formattedDate =
+                          '${now.day}/${now.month}/${now.year}';
                       String formattedTime = '${now.hour}:${now.minute}';
-                      String name = _mesaController.text;
+
+                      shoppingBag.customerName = _nameController.text;
+                      shoppingBag.orderDate = formattedDate;
+                      shoppingBag.orderHour = formattedTime;
+
+                      String table = _mesaController.text;
 
                       int totalNecessaryTime = shoppingBag.updateTotalTime();
 
@@ -576,14 +601,14 @@ class _CardPaymentState extends State<CardPayment> {
                           }
                         }
 
-                    item.qntd = qntd;
-                  }
+                        item.qntd = qntd;
+                      }
 
                       var order = OrderModel(
                           status: 'Em espera',
                           date: dataFormatada,
                           time: formattedTime,
-                          name: name,
+                          name: table,
                           payment: widget.paymentMethod,
                           products: shoppingBag.bag,
                           necessaryTime: totalNecessaryTime,
@@ -591,17 +616,18 @@ class _CardPaymentState extends State<CardPayment> {
 
                       createOrder(order);
 
-                      Navigator.of(context).pushReplacementNamed('/order', arguments: order);
+                      Navigator.of(context)
+                          .pushReplacementNamed('/order', arguments: order);
                       NavigationManager.history.add('/order');
-                    }else {
+                    } else {
                       showDialog(
                         context: context,
                         barrierDismissible: false,
                         builder: (context) => AlertDialog(
                           contentPadding:
-                          const EdgeInsets.fromLTRB(20, 20, 20, 25),
+                              const EdgeInsets.fromLTRB(20, 20, 20, 25),
                           actionsPadding:
-                          const EdgeInsets.fromLTRB(10, 25, 10, 15),
+                              const EdgeInsets.fromLTRB(10, 25, 10, 15),
                           icon: Icon(
                             Icons.error,
                             size: 60,
@@ -628,7 +654,8 @@ class _CardPaymentState extends State<CardPayment> {
                                 foregroundColor: actionYellow,
                                 side: BorderSide(color: actionYellow),
                                 minimumSize: Size(
-                                    MediaQuery.of(context).size.width * 0.25, 40),
+                                    MediaQuery.of(context).size.width * 0.25,
+                                    40),
                               ),
                               child: const Text(
                                 'Ok',
@@ -638,14 +665,12 @@ class _CardPaymentState extends State<CardPayment> {
                                     fontWeight: FontWeight.bold),
                               ),
                             ),
-
                           ],
                           actionsAlignment: MainAxisAlignment.spaceEvenly,
                         ),
                       );
                     }
                   }
-
                 },
                 style: ElevatedButton.styleFrom(
                   minimumSize: Size(MediaQuery.of(context).size.width, 50),

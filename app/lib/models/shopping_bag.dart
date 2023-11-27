@@ -11,33 +11,9 @@ class ShoppingBag extends ChangeNotifier {
   final List<Product> bag = []; // coca, calabreso
   double totalPrice = 0;
 
-  // ShoppingBag(
-  //   {
-
-  //   }
-  // );
-
-  // ShoppingBag(
-  //   {
-  //     required this.bag
-  //   }
-  // );
-  // Adicione este método para converter a instância de OrderModel em um mapa
-  // Map<String, dynamic> toJson() {
-  //   return {
-
-  //     'bag': bag.map((bag) => bag.toJson()).toList(),
-  //   };
-  // }
-
-  // // Adicione este método para criar uma instância de OrderModel a partir de um mapa
-  // factory ShoppingBag.fromJson(Map<String, dynamic> json) {
-  //   return ShoppingBag(
-  //     bag: (json['bag'] as List<dynamic>)
-  //         .map((bagJson) => Product.fromJson(bagJson))
-  //         .toList(),
-  //   );
-  // }
+  late String customerName;
+  late String orderDate;
+  late String orderHour;
 
   void updateBag() {
     for (var prod in products) {

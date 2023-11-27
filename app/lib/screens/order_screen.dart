@@ -25,7 +25,6 @@ class _OrderScreenState extends State<OrderScreen> {
   void initState() {
     super.initState();
     shoppingBag = context.read<ShoppingBag>();
-
   }
 
   @override
@@ -73,45 +72,60 @@ class _OrderScreenState extends State<OrderScreen> {
               ),
             ),
 
-            // ProgressBar
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 16.0),
-              child: LinearPercentIndicator(
-                alignment: MainAxisAlignment.center,
-                animation: true,
-                animationDuration: 1000,
-                width: MediaQuery.of(context).size.width * 0.9,
-                lineHeight: 10,
-                percent: 0.5,
-                barRadius: const Radius.circular(20),
-                progressColor: actionYellow,
-                backgroundColor: lightYellow,
-              ),
-            ),
+            // // ProgressBar
+            // Padding(
+            //   padding: const EdgeInsets.symmetric(vertical: 16.0),
+            //   child: LinearPercentIndicator(
+            //     alignment: MainAxisAlignment.center,
+            //     animation: true,
+            //     animationDuration: 1000,
+            //     width: MediaQuery.of(context).size.width * 0.9,
+            //     lineHeight: 10,
+            //     percent: 0.5,
+            //     barRadius: const Radius.circular(20),
+            //     progressColor: actionYellow,
+            //     backgroundColor: lightYellow,
+            //   ),
+            // ),
 
-            // Remaining Time
-            Text(
-              '05:00',
-              style: TextStyle(
-                  color: black,
-                  fontFamily: 'Quicksand',
-                  fontSize: 14,
-                  fontWeight: FontWeight.w600),
-            ),
+            // // Remaining Time
+            // Text(
+            //   '05:00',
+            //   style: TextStyle(
+            //       color: black,
+            //       fontFamily: 'Quicksand',
+            //       fontSize: 14,
+            //       fontWeight: FontWeight.w600),
+            // ),
 
             // Code
             Expanded(
               flex: 1,
-              child: Center(
-                child: Text(
-                  '0127',
-                  style: TextStyle(
-                    color: actionYellow,
-                    fontFamily: 'Quicksand',
-                    fontSize: 32,
-                    fontWeight: FontWeight.bold,
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
+                    child: Text(
+                      'Mesa',
+                      style: TextStyle(
+                          color: lightBlue,
+                          fontFamily: 'Quicksand',
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold),
+                    ),
                   ),
-                ),
+                  Center(
+                    child: Text(
+                      widget.order.name,
+                      style: TextStyle(
+                        color: actionYellow,
+                        fontFamily: 'Quicksand',
+                        fontSize: 32,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
 
@@ -162,14 +176,14 @@ class _OrderScreenState extends State<OrderScreen> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                "${widget.order.date}",
+                                shoppingBag.orderDate,
                                 style: const TextStyle(
                                     fontFamily: 'Quicksand',
                                     fontSize: 15,
                                     fontWeight: FontWeight.w500),
                               ),
                               Text(
-                                widget.order.time,
+                                shoppingBag.orderHour,
                                 style: const TextStyle(
                                     fontFamily: 'Quicksand',
                                     fontSize: 15,
@@ -198,7 +212,7 @@ class _OrderScreenState extends State<OrderScreen> {
                                             fontWeight: FontWeight.bold),
                                       ),
                                       Text(
-                                        widget.order.name,
+                                        shoppingBag.customerName,
                                         style: const TextStyle(
                                             fontFamily: 'Quicksand',
                                             fontSize: 18,

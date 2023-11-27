@@ -336,7 +336,7 @@ class _RestaurantMenuState extends State<RestaurantMenu> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   // Operating Information
-                                  const Padding(
+                                  Padding(
                                     padding:
                                         EdgeInsets.fromLTRB(16.0, 14.0, 0, 4),
                                     child: Text(
