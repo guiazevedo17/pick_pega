@@ -24,9 +24,13 @@ class RestaurantMenu extends StatefulWidget {
 }
 
 class _RestaurantMenuState extends State<RestaurantMenu> {
+  final scrollCrontroller = ScrollController();
+
   List<Category> categories = [];
 
   late ShoppingBag shoppingBag;
+
+  int selectedCategoryIndex = 0;
 
   @override
   void initState() {
@@ -36,6 +40,10 @@ class _RestaurantMenuState extends State<RestaurantMenu> {
     shoppingBag.restaurantPhoto = widget.restaurant.photo;
     shoppingBag.restaurantName = widget.restaurant.name;
     shoppingBag.restaurantId = widget.restaurant.uid;
+
+    scrollCrontroller.addListener(() {
+      updateCategoryIndexOnScroll(scrollCrontroller.offset);
+    });
   }
 
   Future<List<Category>> getAllCategories() async {
@@ -80,11 +88,64 @@ class _RestaurantMenuState extends State<RestaurantMenu> {
         categories.add(cat);
       });
 
+
       return categories;
     } else {
       // Se a solicitação falhar, você pode lidar com o erro aqui.
       print('Request failed with status: ${response.statusCode}');
       return [];
+    }
+  }
+
+  scrollTo(int index) {
+    if (selectedCategoryIndex != index) {
+      int totalItens = 0;
+
+      for (var i = 0; i < index; i++) {
+        totalItens += categories[index].products.length;
+      }
+
+      scrollCrontroller.animateTo(
+          MediaQuery.of(context).size.height * 0.35 +
+              (totalItens * 110) +
+              (42 * index) -
+              kToolbarHeight,
+          duration: Duration(milliseconds: 500),
+          curve: Curves.ease);
+    }
+  }
+
+  List<double> breakPoints = [];
+
+  void createBreakPoints() {
+    double firstBreakPoint = MediaQuery.of(context).size.height * 0.35 +
+        42 +
+        (110 * categories[0].products.length);
+
+    breakPoints.add(firstBreakPoint);
+
+    for (var i = 0; i < categories.length; i++) {
+      double breakPoint =
+          breakPoints.last + 42 + (110 * categories[0].products.length);
+      breakPoints.add(breakPoint);
+    }
+  }
+
+  void updateCategoryIndexOnScroll(double offset) {
+    for (var i = 0; i < categories.length; i++) {
+      if (i == 0) {
+        if ((offset < breakPoints.first) & (selectedCategoryIndex != 0)) {
+          setState(() {
+            selectedCategoryIndex = 0;
+          });
+        }
+      } else if ((breakPoints[i - 1] <= offset) & (offset < breakPoints[i])) {
+        if (selectedCategoryIndex != i) {
+          setState(() {
+            selectedCategoryIndex = i;
+          });
+        }
+      }
     }
   }
 
@@ -164,12 +225,13 @@ class _RestaurantMenuState extends State<RestaurantMenu> {
             );
             ;
           } else {
-            List<Category> categories = snapshot.data!;
+            categories = snapshot.data!;
 
             return Stack(
               children: [
                 // Restaurant Menu Content
                 CustomScrollView(
+                  controller: scrollCrontroller,
                   slivers: [
                     SliverAppBar(
                       backgroundColor: white,
@@ -234,11 +296,11 @@ class _RestaurantMenuState extends State<RestaurantMenu> {
                                 ),
                               ),
 
-                              const Column(
+                              Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   // Operating Information
-                                  Padding(
+                                  const Padding(
                                     padding:
                                         EdgeInsets.fromLTRB(16.0, 14.0, 0, 4),
                                     child: Text(
@@ -250,10 +312,10 @@ class _RestaurantMenuState extends State<RestaurantMenu> {
                                     ),
                                   ),
                                   Padding(
-                                    padding: EdgeInsets.only(left: 16.0),
+                                    padding: const EdgeInsets.only(left: 16.0),
                                     child: Row(
                                       children: [
-                                        Padding(
+                                        const Padding(
                                           padding: EdgeInsets.only(right: 4.0),
                                           child: Icon(
                                             Icons.location_on,
@@ -261,8 +323,8 @@ class _RestaurantMenuState extends State<RestaurantMenu> {
                                           ),
                                         ),
                                         Text(
-                                          '1.5 km ',
-                                          style: TextStyle(
+                                          '${widget.restaurant.distance.toString()} km ',
+                                          style: const TextStyle(
                                             fontSize: 13,
                                             fontFamily: 'Quicksand',
                                           ),
@@ -280,11 +342,13 @@ class _RestaurantMenuState extends State<RestaurantMenu> {
                     ),
 
                     // Categories List
-                      SliverPersistentHeader(
-                        delegate: RestaurantCategory(categories: categories),
-                        pinned: true,
+                    SliverPersistentHeader(
+                      delegate: RestaurantCategory(
+                        categories: categories,
+                        onChanged: scrollTo,
                       ),
-                    
+                      pinned: true,
+                    ),
 
                     // Products List
                     SliverList(

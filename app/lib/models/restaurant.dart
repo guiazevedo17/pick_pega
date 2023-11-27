@@ -1,3 +1,4 @@
+import 'package:geolocator/geolocator.dart';
 import 'address.dart';
 
 class Restaurant {
@@ -9,40 +10,43 @@ class Restaurant {
   double lng;
   String photo;
 
-  Restaurant( {
-   required this.uid,
-   required this.name,
-   required this.category,
-   required this.address,
-   required this.lat,
-   required this.lng,
-   required this.photo,
+  double? userLat;
+  double? userLng;
+
+  double? distance;
+
+  double? walking;
+  double? driving;
+
+  Restaurant({
+    required this.uid,
+    required this.name,
+    required this.category,
+    required this.address,
+    required this.lat,
+    required this.lng,
+    required this.photo,
   });
 
+  getPosition() async {
+    Position position = await Geolocator.getCurrentPosition();
+    userLat = position.latitude;
+    userLng = position.longitude;
+  }
 
-  // factory Restaurant.fromJson(Map<String, dynamic> json) {
-  //   return Restaurant(
-  //       uid: json['uid'],
-  //       name: json['name'],
-  //       email: json['email'],
-  //       password: json['password'],
-  //       category: json['category'],
-  //       address: json['address'],
-  //       lat: json['lat'],
-  //       lng: json['lng'],
-  //       photo: json['photo'],
-  //       );
-  //   }
+  // Distância da localização atual
+  Future<void> defineDistance() async {
+    distance = await Geolocator.distanceBetween(
+      lat,
+      lng,
+      userLat ?? 0,
+      userLng ?? 0,
+    );
+  }
 
-    // Distância da localização atual
-    // double distance = currentDistance() -> return double dist
+  // Tempo a Pé partindo da localização atual
+  // double walking = walkingTime() -> return double walk
 
-    // Tempo a Pé partindo da localização atual
-    // double walking = walkingTime() -> return double walk
-
-
-    // Tempo de Carro partindo da localização atual
-    // double driving = drivingTime() -> return double drive
-
+  // Tempo de Carro partindo da localização atual
+  // double driving = drivingTime() -> return double drive
 }
-

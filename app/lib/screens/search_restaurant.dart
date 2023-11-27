@@ -78,18 +78,22 @@ class _SearchRestaurantState extends State<SearchRestaurant> {
     longitude = position.longitude;
   }
 
-  //
+  // 
+
+  // Adicionar Restaurantes as listas
   Future<void> funcCloseRestaurants(
       double lat, double lng, List<Restaurant> allRestaurants) async {
     for (var restaurant in allRestaurants) {
-      double distancia = await Geolocator.distanceBetween(
+      double distance = await Geolocator.distanceBetween(
         lat,
         lng,
         restaurant.lat ?? 0,
         restaurant.lng ?? 0,
       );
 
-      if (distancia <= 2000) {
+      restaurant.distance = distance;
+
+      if (distance <= 2000) {
         // 2 km em metros
         closeRestaurant.add(restaurant);
       } else {

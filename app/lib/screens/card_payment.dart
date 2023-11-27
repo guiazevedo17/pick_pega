@@ -299,7 +299,6 @@ class _CardPaymentState extends State<CardPayment> {
                     }
 
                     item.qntd = qntd;
-                    print("ITEM: ${item.name}    QUANT: ${item.qntd}");
                   }
 
                   var order = OrderModel(
@@ -314,7 +313,7 @@ class _CardPaymentState extends State<CardPayment> {
 
                   createOrder(order);
 
-                  Navigator.of(context).pushNamed('/order', arguments: order);
+                  Navigator.of(context).pushReplacementNamed('/order', arguments: order);
                   NavigationManager.history.add('/order');
                 },
                 style: ElevatedButton.styleFrom(

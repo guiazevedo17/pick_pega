@@ -5,25 +5,14 @@ import '../models/category.dart';
 
 class RestaurantCategory extends SliverPersistentHeaderDelegate {
   final List<Category> categories;
-  // final ValueChanged<int> onChanged;
-  // final int selectedIndex;
+  final ValueChanged<int> onChanged;
 
-  RestaurantCategory({required this.categories});
+  RestaurantCategory({required this.categories, required this.onChanged});
 
   @override
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
-    return Container(
-      height: 300,
-      color: white,
-      padding: const EdgeInsets.fromLTRB(16, 0, 0, 10),
-      child: ListView.builder(
-        padding: EdgeInsets.zero,
-        scrollDirection: Axis.horizontal,
-        itemCount: categories.length,
-        itemBuilder: (context, index) => CategoryCard(categories[index].name),
-      ),
-    );
+    return Categories(categories, onChanged, 0);
   }
 
   @override
@@ -38,12 +27,76 @@ class RestaurantCategory extends SliverPersistentHeaderDelegate {
   }
 }
 
+// ignore: must_be_immutable
+class Categories extends StatefulWidget {
+  final List<Category> categories;
+
+  final ValueChanged<int> onChanged;
+
+  int selectedIndex;
+
+  Categories(this.categories, this.onChanged, this.selectedIndex, {super.key});
+
+  @override
+  State<Categories> createState() => _CategoriesState();
+}
+
+class _CategoriesState extends State<Categories> {
+  late ScrollController controller;
+
+  @override
+  void initState() {
+    controller = ScrollController();
+
+    super.initState();
+  }
+
+  @override
+  void didUpdateWidget(covariant Categories oldWidget) {
+    controller.animateTo(80,
+        duration: Duration(microseconds: 200), curve: Curves.ease);
+
+    super.didUpdateWidget(oldWidget);
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 50,
+      color: white,
+      padding: const EdgeInsets.fromLTRB(16, 0, 0, 10),
+      child: ListView.builder(
+        padding: EdgeInsets.zero,
+        scrollDirection: Axis.horizontal,
+        itemCount: widget.categories.length,
+        itemBuilder: (context, index) => InkWell(
+          onTap: () {
+            widget.onChanged(index);
+            setState(() {
+              widget.selectedIndex = index;
+            });
+          },
+          child: CategoryCard(
+            widget.categories[index].name,
+            widget.selectedIndex == index,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 class CategoryCard extends StatefulWidget {
   final String name;
-  // final onChanged;
-  // final selectedIndex;
+  final bool selected;
 
-  const CategoryCard(this.name, {super.key});
+  const CategoryCard(this.name, this.selected, {super.key});
 
   @override
   State<CategoryCard> createState() => _CategoryCardState();
@@ -64,10 +117,13 @@ class _CategoryCardState extends State<CategoryCard> {
           child: Center(
             child: Text(
               widget.name,
-              style: const TextStyle(
+              style: TextStyle(
                   fontFamily: 'Quicksand',
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600),
+                  fontSize: widget.selected == true ? 18 : 16,
+                  fontWeight: widget.selected == true
+                      ? FontWeight.bold
+                      : FontWeight.w600,
+                  color: widget.selected == true ? lightBlue : black),
             ),
           ),
         ),
