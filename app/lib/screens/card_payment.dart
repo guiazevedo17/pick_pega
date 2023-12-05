@@ -504,7 +504,129 @@ class _CardPaymentState extends State<CardPayment> {
               child: ElevatedButton(
                 onPressed: () {
                   print("MESA: $mesa");
-                  if (mesa == null) {
+
+                  if (validadeFieldsNull()) {
+                    DateTime now = DateTime.now();
+                    print("DATETIMENOW: $now");
+                    String dataFormatada =
+                        now.toIso8601String().substring(0, 23);
+                    print("DATETIMENOW: $dataFormatada");
+
+                    String formattedDate =
+                        '${now.day}/${now.month}/${now.year}';
+                    String formattedTime = '${now.hour}:${now.minute}';
+
+                    shoppingBag.customerName = _nameController.text;
+                    shoppingBag.orderDate = formattedDate;
+                    shoppingBag.orderHour = formattedTime;
+
+                    String table = _mesaController.text;
+
+                    int totalNecessaryTime = shoppingBag.updateTotalTime();
+
+                    int qntd;
+
+                    for (var item in shoppingBag.bag) {
+                      qntd = 0;
+
+                      for (var prod in shoppingBag.products) {
+                        if (item == prod) {
+                          qntd++;
+                        }
+                      }
+
+                      item.qntd = qntd;
+                    }
+
+                    if (mesa == null) {
+                      showDialog(
+                        context: context,
+                        barrierDismissible: false,
+                        builder: (context) => AlertDialog(
+                          actionsOverflowAlignment: OverflowBarAlignment.center,
+                          contentPadding:
+                              const EdgeInsets.fromLTRB(20, 20, 20, 25),
+                          actionsPadding:
+                              const EdgeInsets.fromLTRB(10, 25, 10, 15),
+                          icon: Icon(
+                            Icons.error,
+                            size: 60,
+                            color: actionYellow,
+                          ),
+                          iconPadding: EdgeInsets.all(20),
+                          content: const Text(
+                            'Digite  número da sua mesa (o número encontra-se em cima do qrcode): ',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontFamily: 'Quicksand',
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          actions: [
+                            TextField(
+                              controller: _mesaController,
+                              keyboardType: TextInputType.number,
+                              decoration: InputDecoration(
+                                filled: true,
+                                fillColor:
+                                    const Color(0xFFEAEAEA), // Cor EAEAEA
+                                contentPadding: const EdgeInsets.symmetric(
+                                    horizontal:
+                                        16.0), // Padding lateral de 16px
+                                border: OutlineInputBorder(
+                                  // Borda ao redor do TextField
+                                  borderRadius: BorderRadius.circular(8.0),
+                                  borderSide:
+                                      BorderSide.none, // Borda circular de 8px
+                                ),
+                              ),
+                            ),
+                            // Ok
+                            OutlinedButton(
+                              onPressed: () {
+                                Navigator.of(context).pop();
+
+                                table = _mesaController.text;
+                                var order = OrderModel(
+                                    status: 'Em espera',
+                                    date: dataFormatada,
+                                    time: formattedTime,
+                                    name: table,
+                                    payment: widget.paymentMethod,
+                                    products: shoppingBag.bag,
+                                    necessaryTime: totalNecessaryTime,
+                                    price: shoppingBag.totalPrice);
+
+                                createOrder(order);
+
+                                Navigator.of(context).pushReplacementNamed(
+                                    '/order',
+                                    arguments: order);
+                                NavigationManager.history.add('/order');
+                              },
+                              style: OutlinedButton.styleFrom(
+                                elevation: 0,
+                                foregroundColor: actionYellow,
+                                side: BorderSide(color: actionYellow),
+                                minimumSize: Size(
+                                    MediaQuery.of(context).size.width * 0.25,
+                                    40),
+                              ),
+                              child: const Text(
+                                'Salvar',
+                                style: TextStyle(
+                                    fontFamily: 'Quicksand',
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                          ],
+                          actionsAlignment: MainAxisAlignment.spaceEvenly,
+                        ),
+                      );
+                    }
+                  } else {
                     showDialog(
                       context: context,
                       barrierDismissible: false,
@@ -520,7 +642,7 @@ class _CardPaymentState extends State<CardPayment> {
                         ),
                         iconPadding: EdgeInsets.all(20),
                         content: const Text(
-                          'Digite  número da sua mesa (o número encontra-se em cima do qrcode): ',
+                          'Existem campos vazios',
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             fontFamily: 'Quicksand',
@@ -529,23 +651,7 @@ class _CardPaymentState extends State<CardPayment> {
                           ),
                         ),
                         actions: [
-                          TextField(
-                            controller: _mesaController,
-                            keyboardType: TextInputType.number,
-                            decoration: InputDecoration(
-                              filled: true,
-                              fillColor: const Color(0xFFEAEAEA), // Cor EAEAEA
-                              contentPadding: const EdgeInsets.symmetric(
-                                  horizontal: 16.0), // Padding lateral de 16px
-                              border: OutlineInputBorder(
-                                // Borda ao redor do TextField
-                                borderRadius: BorderRadius.circular(8.0),
-                                borderSide:
-                                    BorderSide.none, // Borda circular de 8px
-                              ),
-                            ),
-                          ),
-                          // Ok
+                          // Cancel
                           OutlinedButton(
                             onPressed: () {
                               Navigator.of(context).pop();
@@ -558,7 +664,7 @@ class _CardPaymentState extends State<CardPayment> {
                                   MediaQuery.of(context).size.width * 0.25, 40),
                             ),
                             child: const Text(
-                              'Salvar',
+                              'Ok',
                               style: TextStyle(
                                   fontFamily: 'Quicksand',
                                   fontSize: 16,
@@ -569,107 +675,6 @@ class _CardPaymentState extends State<CardPayment> {
                         actionsAlignment: MainAxisAlignment.spaceEvenly,
                       ),
                     );
-                    mesa = _mesaController.text;
-                  } else {
-                    if (validadeFieldsNull()) {
-                      DateTime now = DateTime.now();
-                      print("DATETIMENOW: $now");
-                      String dataFormatada =
-                          now.toIso8601String().substring(0, 23);
-                      print("DATETIMENOW: $dataFormatada");
-
-                      String formattedDate =
-                          '${now.day}/${now.month}/${now.year}';
-                      String formattedTime = '${now.hour}:${now.minute}';
-
-                      shoppingBag.customerName = _nameController.text;
-                      shoppingBag.orderDate = formattedDate;
-                      shoppingBag.orderHour = formattedTime;
-
-                      String table = _mesaController.text;
-
-                      int totalNecessaryTime = shoppingBag.updateTotalTime();
-
-                      int qntd;
-
-                      for (var item in shoppingBag.bag) {
-                        qntd = 0;
-
-                        for (var prod in shoppingBag.products) {
-                          if (item == prod) {
-                            qntd++;
-                          }
-                        }
-
-                        item.qntd = qntd;
-                      }
-
-                      var order = OrderModel(
-                          status: 'Em espera',
-                          date: dataFormatada,
-                          time: formattedTime,
-                          name: table,
-                          payment: widget.paymentMethod,
-                          products: shoppingBag.bag,
-                          necessaryTime: totalNecessaryTime,
-                          price: shoppingBag.totalPrice);
-
-                      createOrder(order);
-
-                      Navigator.of(context)
-                          .pushReplacementNamed('/order', arguments: order);
-                      NavigationManager.history.add('/order');
-                    } else {
-                      showDialog(
-                        context: context,
-                        barrierDismissible: false,
-                        builder: (context) => AlertDialog(
-                          contentPadding:
-                              const EdgeInsets.fromLTRB(20, 20, 20, 25),
-                          actionsPadding:
-                              const EdgeInsets.fromLTRB(10, 25, 10, 15),
-                          icon: Icon(
-                            Icons.error,
-                            size: 60,
-                            color: actionYellow,
-                          ),
-                          iconPadding: EdgeInsets.all(20),
-                          content: const Text(
-                            'Existem campos vazios',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontFamily: 'Quicksand',
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          actions: [
-                            // Cancel
-                            OutlinedButton(
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                              },
-                              style: OutlinedButton.styleFrom(
-                                elevation: 0,
-                                foregroundColor: actionYellow,
-                                side: BorderSide(color: actionYellow),
-                                minimumSize: Size(
-                                    MediaQuery.of(context).size.width * 0.25,
-                                    40),
-                              ),
-                              child: const Text(
-                                'Ok',
-                                style: TextStyle(
-                                    fontFamily: 'Quicksand',
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                            ),
-                          ],
-                          actionsAlignment: MainAxisAlignment.spaceEvenly,
-                        ),
-                      );
-                    }
                   }
                 },
                 style: ElevatedButton.styleFrom(

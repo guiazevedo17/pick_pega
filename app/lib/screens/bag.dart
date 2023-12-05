@@ -80,7 +80,7 @@ class _BagScreenState extends State<BagScreen> {
                           width: 100,
                           height: 100,
                         ),
-                        iconPadding: EdgeInsets.all(20),
+                        iconPadding: const EdgeInsets.all(20),
                         content: const Text(
                           'Quer mesmo LIMPAR a Sacola?',
                           textAlign: TextAlign.center,
@@ -171,34 +171,38 @@ class _BagScreenState extends State<BagScreen> {
                     // Restaurant
                     SizedBox(
                       width: MediaQuery.of(context).size.width * 0.6,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          // Restaurant Logo
-                          Expanded(
-                            flex: 1,
-                            child: Image.network(
-                              shoppingBag.restaurantPhoto,
-                              width: 70,
-                              height: 70,
-                            ),
-                          ),
-
-                          // Restaurant Name
-                          Expanded(
-                            flex: 2,
-                            child: Padding(
-                              padding: const EdgeInsets.only(left: 16.0),
-                              child: Text(
-                                shoppingBag.restaurantName,
-                                style: const TextStyle(
-                                    fontFamily: 'Quicksand',
-                                    fontSize: 22,
-                                    fontWeight: FontWeight.bold),
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 10.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            // Restaurant Logo
+                            ClipOval(
+                              child: SizedBox(
+                                width: 70,
+                                height: 70,
+                                child: Image.network(
+                                  shoppingBag.restaurantPhoto,
+                                  fit: BoxFit.cover,
+                                ),
                               ),
                             ),
-                          )
-                        ],
+
+                            // Restaurant Name
+                            Expanded(
+                              child: Padding(
+                                padding: const EdgeInsets.only(left: 16.0),
+                                child: Text(
+                                  shoppingBag.restaurantName,
+                                  style: const TextStyle(
+                                      fontFamily: 'Quicksand',
+                                      fontSize: 22,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
                       ),
                     ),
 
@@ -230,14 +234,38 @@ class _BagScreenState extends State<BagScreen> {
 
                               // Itens List
                               Expanded(
-                                child: ListView.builder(
-                                  scrollDirection: Axis.vertical,
-                                  padding: EdgeInsets.zero,
-                                  itemCount: shoppingBag.bag.length,
-                                  itemBuilder: (context, index) {
-                                    return BagProduct(shoppingBag.bag[index]);
-                                  },
-                                ),
+                                child: shoppingBag.bag.isEmpty
+                                    ? SizedBox(
+                                        width: double.infinity,
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            SvgPicture.asset(
+                                              'assets/icons/unhappy-bag.svg',
+                                              width: 130,
+                                              height: 130,
+                                            ),
+                                            Text(
+                                              'Sacola Vazia',
+                                              style: TextStyle(
+                                                  fontFamily: 'Quicksand',
+                                                  fontSize: 22,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: lightBlue),
+                                            )
+                                          ],
+                                        ),
+                                      )
+                                    : ListView.builder(
+                                        scrollDirection: Axis.vertical,
+                                        padding: EdgeInsets.zero,
+                                        itemCount: shoppingBag.bag.length,
+                                        itemBuilder: (context, index) {
+                                          return BagProduct(
+                                              shoppingBag.bag[index]);
+                                        },
+                                      ),
                               ),
 
                               // Necessery Time
@@ -337,10 +365,119 @@ class _BagScreenState extends State<BagScreen> {
                       padding: const EdgeInsets.all(16.0),
                       child: ElevatedButton(
                         onPressed: () {
-                          if (selectedIndex > -1) {
-                            Navigator.of(context).pushNamed('/card_payment',
-                                arguments: paymentMethods[selectedIndex]);
-                            NavigationManager.history.add('/card_payment');
+                          if (shoppingBag.bag.isEmpty) {
+                            showDialog(
+                              context: context,
+                              barrierDismissible: false,
+                              builder: (context) => AlertDialog(
+                                actionsOverflowAlignment:
+                                    OverflowBarAlignment.center,
+                                contentPadding:
+                                    const EdgeInsets.fromLTRB(20, 20, 20, 25),
+                                actionsPadding:
+                                    const EdgeInsets.fromLTRB(10, 25, 10, 15),
+                                icon: Icon(
+                                  Icons.error,
+                                  size: 60,
+                                  color: actionYellow,
+                                ),
+                                iconPadding: EdgeInsets.all(20),
+                                content: const Text(
+                                  'A sua Sacola esta Vazia!',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontFamily: 'Quicksand',
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                actions: [
+                                  // Ok
+                                  OutlinedButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    style: OutlinedButton.styleFrom(
+                                      elevation: 0,
+                                      foregroundColor: actionYellow,
+                                      side: BorderSide(color: actionYellow),
+                                      minimumSize: Size(
+                                          MediaQuery.of(context).size.width *
+                                              0.25,
+                                          40),
+                                    ),
+                                    child: const Text(
+                                      'Ok',
+                                      style: TextStyle(
+                                          fontFamily: 'Quicksand',
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ),
+                                ],
+                                actionsAlignment: MainAxisAlignment.spaceEvenly,
+                              ),
+                            );
+                          } else {
+                            if (selectedIndex > -1) {
+                              Navigator.of(context).pushNamed('/card_payment',
+                                  arguments: paymentMethods[selectedIndex]);
+                              NavigationManager.history.add('/card_payment');
+                            } else {
+                              showDialog(
+                                context: context,
+                                barrierDismissible: false,
+                                builder: (context) => AlertDialog(
+                                  actionsOverflowAlignment:
+                                      OverflowBarAlignment.center,
+                                  contentPadding:
+                                      const EdgeInsets.fromLTRB(20, 20, 20, 25),
+                                  actionsPadding:
+                                      const EdgeInsets.fromLTRB(10, 25, 10, 15),
+                                  icon: Icon(
+                                    Icons.error,
+                                    size: 60,
+                                    color: actionYellow,
+                                  ),
+                                  iconPadding: EdgeInsets.all(20),
+                                  content: const Text(
+                                    'Selecione uma Forma de Pagamento',
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      fontFamily: 'Quicksand',
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  actions: [
+                                    // Ok
+                                    OutlinedButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                      style: OutlinedButton.styleFrom(
+                                        elevation: 0,
+                                        foregroundColor: actionYellow,
+                                        side: BorderSide(color: actionYellow),
+                                        minimumSize: Size(
+                                            MediaQuery.of(context).size.width *
+                                                0.25,
+                                            40),
+                                      ),
+                                      child: const Text(
+                                        'Ok',
+                                        style: TextStyle(
+                                            fontFamily: 'Quicksand',
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ),
+                                  ],
+                                  actionsAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                ),
+                              );
+                            }
                           }
                         },
                         style: ElevatedButton.styleFrom(

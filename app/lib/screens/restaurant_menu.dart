@@ -30,7 +30,6 @@ class _RestaurantMenuState extends State<RestaurantMenu> {
   late ShoppingBag shoppingBag;
   Product? searchItem;
 
-
   int selectedCategoryIndex = 0;
 
   @override
@@ -45,7 +44,6 @@ class _RestaurantMenuState extends State<RestaurantMenu> {
     scrollCrontroller.addListener(() {
       updateCategoryIndexOnScroll(scrollCrontroller.offset);
     });
-
   }
 
   Future<void> getItemByName(TextEditingController controller) async {
@@ -74,7 +72,6 @@ class _RestaurantMenuState extends State<RestaurantMenu> {
         time: payload[0]['time'],
         picture: payload[0]['picture'],
       );
-
     } else {
       // Se a solicitação falhar, você pode lidar com o erro aqui.
       print('Request failed with status: ${response.statusCode}');
@@ -82,7 +79,6 @@ class _RestaurantMenuState extends State<RestaurantMenu> {
   }
 
   Future<List<Category>> getAllCategories() async {
-
     final uri = Uri.parse(
         'https://southamerica-east1-pick-pega.cloudfunctions.net/api/getRestaurantMenu/${widget.restaurant.uid}');
 
@@ -123,7 +119,6 @@ class _RestaurantMenuState extends State<RestaurantMenu> {
 
         categories.add(cat);
       });
-
 
       return categories;
     } else {
@@ -188,6 +183,7 @@ class _RestaurantMenuState extends State<RestaurantMenu> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: white,
       body: FutureBuilder<List<Category>>(
         future: getAllCategories(),
         builder: (context, snapshot) {
@@ -229,8 +225,151 @@ class _RestaurantMenuState extends State<RestaurantMenu> {
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
             return Stack(
               children: [
-                const Center(
-                  child: Text('Nenhum produto disponível'),
+                CustomScrollView(
+                  controller: scrollCrontroller,
+                  slivers: [
+                    SliverAppBar(
+                      backgroundColor: white,
+                      elevation: 0,
+                      pinned: true,
+                      expandedHeight: MediaQuery.of(context).size.height * 0.35,
+                      flexibleSpace: FlexibleSpaceBar(
+                        background: Padding(
+                          padding: EdgeInsets.only(
+                            top: MediaQuery.of(context).size.height * 0.1,
+                          ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              // Restaurant Logo
+                              ClipOval(
+                                child: Container(
+                                  width: 80,
+                                  height: 80,
+                                  child: Image.network(
+                                    widget.restaurant.photo,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                              ),
+
+// Restaurant Name
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 14.0),
+                                child: Text(
+                                  widget.restaurant.name,
+                                  style: const TextStyle(
+                                    fontFamily: 'Quicksand',
+                                    fontSize: 22,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+
+                              // Search Bar
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 16.0),
+                                child: Container(
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.03,
+                                  decoration: BoxDecoration(
+                                      color: lightgrey,
+                                      borderRadius: BorderRadius.circular(20)),
+                                  child: const TextField(
+                                    maxLines: 1,
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      fontFamily: 'Quicksand',
+                                    ),
+                                    textAlignVertical: TextAlignVertical.center,
+                                    decoration: InputDecoration(
+                                      border: InputBorder.none,
+                                      hintStyle: TextStyle(
+                                        fontSize: 16,
+                                        fontFamily: 'Quicksand',
+                                      ),
+                                      prefixIcon: Icon(Icons.search),
+                                    ),
+                                  ),
+                                ),
+                              ),
+
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  // Operating Information
+                                  Padding(
+                                    padding:
+                                        EdgeInsets.fromLTRB(16.0, 14.0, 0, 4),
+                                    child: Text(
+                                      '${widget.restaurant.openDays} | ${widget.restaurant.openHours}',
+                                      style: const TextStyle(
+                                        fontSize: 13,
+                                        fontFamily: 'Quicksand',
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 16.0),
+                                    child: Row(
+                                      children: [
+                                        const Padding(
+                                          padding: EdgeInsets.only(right: 4.0),
+                                          child: Icon(
+                                            Icons.location_on,
+                                            size: 14,
+                                          ),
+                                        ),
+                                        Text(
+                                          '${widget.restaurant.distance.toString()} km ',
+                                          style: const TextStyle(
+                                            fontSize: 13,
+                                            fontFamily: 'Quicksand',
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      leading: null,
+                    ),
+                    SliverToBoxAdapter(
+                      child: Padding(
+                        padding: EdgeInsets.only(
+                            top: MediaQuery.of(context).size.height * 0.1),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            SvgPicture.asset(
+                              'assets/icons/menu.svg',
+                              width: 100,
+                              height: 100,
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(top: 12),
+                              child: Text(
+                                'Cardápio fora do ar ...',
+                                style: TextStyle(
+                                    fontFamily: 'Quicksand',
+                                    fontSize: 22,
+                                    fontWeight: FontWeight.bold,
+                                    color: lightBlue),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    )
+                  ],
                 ),
                 Positioned(
                   top: 0,

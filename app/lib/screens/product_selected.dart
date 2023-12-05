@@ -28,7 +28,7 @@ class _ProductSelectedState extends State<ProductSelected> {
 
   late ShoppingBag shoppingBag;
   late Restaurant restaurant;
-  String? telaAnterior = NavigationManager.getPreviousScreen();
+  // String? telaAnterior = NavigationManager.getPreviousScreen();
 
   @override
   void initState() {
@@ -36,43 +36,43 @@ class _ProductSelectedState extends State<ProductSelected> {
     shoppingBag = context.read<ShoppingBag>();
   }
 
-  Future<Restaurant> getRestaurant(String uid) async {
-    final uri = Uri.parse(
-        'https://southamerica-east1-pick-pega.cloudfunctions.net/api/getRestaurantById/$uid');
+  // Future<Restaurant> getRestaurant(String uid) async {
+  //   final uri = Uri.parse(
+  //       'https://southamerica-east1-pick-pega.cloudfunctions.net/api/getRestaurantById/$uid');
 
-    final response = await http.get(uri);
+  //   final response = await http.get(uri);
 
-    if (response.statusCode == 200) {
-      // Parse o JSON a partir do corpo da resposta
-      final jsonBody = json.decode(response.body);
-      //print("jsonBody: $jsonBody");
-      // Acesse o valor da chave 'payload' no JSON
-      final payload = jsonBody['payload'];
+  //   if (response.statusCode == 200) {
+  //     // Parse o JSON a partir do corpo da resposta
+  //     final jsonBody = json.decode(response.body);
+  //     //print("jsonBody: $jsonBody");
+  //     // Acesse o valor da chave 'payload' no JSON
+  //     final payload = jsonBody['payload'];
 
-      restaurant = Restaurant(
-        uid: jsonBody['uid'],
-        name: jsonBody['name'],
-        category: jsonBody['category'],
-        address: Address(
-            zip: jsonBody['address[zip]'],
-            number: jsonBody['address[number]'],
-            uf: jsonBody['address[uf]'],
-            city: jsonBody['address[city]'],
-            street: jsonBody['address[street]'],
-            neighborhood: jsonBody['address[neighborhood]']),
-        lat: jsonBody['lat'],
-        lng: jsonBody['lng'],
-        photo: jsonBody['photo'],
-        openDays: jsonBody['openDays'],
-        openHours: jsonBody['openHours']
-      );
-    } else {
-      // Se a solicitação falhar, você pode lidar com o erro aqui.
-      print('Request failed with status: ${response.statusCode}');
-    }
+  //     restaurant = Restaurant(
+  //       uid: jsonBody['uid'],
+  //       name: jsonBody['name'],
+  //       category: jsonBody['category'],
+  //       address: Address(
+  //           zip: jsonBody['address[zip]'],
+  //           number: jsonBody['address[number]'],
+  //           uf: jsonBody['address[uf]'],
+  //           city: jsonBody['address[city]'],
+  //           street: jsonBody['address[street]'],
+  //           neighborhood: jsonBody['address[neighborhood]']),
+  //       lat: jsonBody['lat'],
+  //       lng: jsonBody['lng'],
+  //       photo: jsonBody['photo'],
+  //       openDays: jsonBody['openDays'],
+  //       openHours: jsonBody['openHours']
+  //     );
+  //   } else {
+  //     // Se a solicitação falhar, você pode lidar com o erro aqui.
+  //     print('Request failed with status: ${response.statusCode}');
+  //   }
 
-    return restaurant;
-  }
+  //   return restaurant;
+  // }
 
   void _incrementCounter() {
     setState(() {
@@ -95,17 +95,7 @@ class _ProductSelectedState extends State<ProductSelected> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: FutureBuilder<Restaurant>(
-        future: getRestaurant(widget.product.restaurantId),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasError) {
-            return Center(child: Text('Erro: ${snapshot.error}'));
-          } else if (!snapshot.hasData) {
-            return const Center(child: Text('Nenhum produto disponível.'));
-          } else {
-            return SafeArea(
+      body: SafeArea(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -335,37 +325,36 @@ class _ProductSelectedState extends State<ProductSelected> {
                               // Okay
                               IconButton(
                                 onPressed: () async {
-                                  print(telaAnterior);
 
-                                  if (telaAnterior == '/search_restaurant') {
-                                    print('entrou no search');
-                                    Navigator.of(context)
-                                        .pop(); // Sai do Alert Dialog
+                                  // if (telaAnterior == '/search_restaurant') {
+                                  //   print('entrou no search');
+                                  //   Navigator.of(context)
+                                  //       .pop(); // Sai do Alert Dialog
 
-                                    // Buscar restaurante por restaurantId, como no QR Code
+                                  //   // Buscar restaurante por restaurantId, como no QR Code
 
-                                    print('restaurant - ${restaurant?.name}');
+                                  //   print('restaurant - ${restaurant?.name}');
 
-                                    if (restaurant != null) {
-                                      Navigator.of(context).pushNamed(
-                                        '/restaurant_menu',
-                                        arguments: restaurant,
-                                      );
-                                    }
+                                  //   if (restaurant != null) {
+                                  //     Navigator.of(context).pushNamed(
+                                  //       '/restaurant_menu',
+                                  //       arguments: restaurant,
+                                  //     );
+                                  //   }
 
-                                    print(
-                                        'depois do await - ${restaurant?.name}');
+                                  //   print(
+                                  //       'depois do await - ${restaurant?.name}');
 
-                                    NavigationManager.history
-                                        .add('/restaurant_menu');
-                                    // Redireciona para tela do restaurante correspondente ao produto
-                                  } else {
+                                  //   NavigationManager.history
+                                  //       .add('/restaurant_menu');
+                                  //   // Redireciona para tela do restaurante correspondente ao produto
+                                  // } else {
                                     // Pop to the Product Selected Screen
                                     Navigator.of(context).pop();
 
                                     // Pop to the Restaurant Menu Screen
                                     Navigator.of(context).pop();
-                                  }
+                                  
                                 },
                                 icon: Icon(
                                   Icons.done,
@@ -397,10 +386,7 @@ class _ProductSelectedState extends State<ProductSelected> {
                   ),
                 ],
               ),
-            );
-          }
-        },
-      ),
+            )
     );
   }
 }

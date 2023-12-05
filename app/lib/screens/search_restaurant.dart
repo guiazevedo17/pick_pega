@@ -46,22 +46,21 @@ class _SearchRestaurantState extends State<SearchRestaurant> {
 
       print(payload);
       searchRestaurantByName = Restaurant(
-            uid: payload[0]['uid'],
-            name: payload[0]['name'],
-            category: payload[0]['category'],
-            address: Address(
-                zip: payload[0]['address[zip]'],
-                number: payload[0]['address[number]'],
-                uf: payload[0]['address[uf]'],
-                city: payload[0]['address[city]'],
-                street: payload[0]['address[street]'],
-                neighborhood: payload[0]['address[neighborhood]']),
-            lat: payload[0]['lat'],
-            lng: payload[0]['lng'],
-            photo: payload[0]['photo'],
-            openDays: payload[0]['openDays'],
-            openHours: payload[0]['openHours']
-        );
+          uid: payload[0]['uid'],
+          name: payload[0]['name'],
+          category: payload[0]['category'],
+          address: Address(
+              zip: payload[0]['address[zip]'],
+              number: payload[0]['address[number]'],
+              uf: payload[0]['address[uf]'],
+              city: payload[0]['address[city]'],
+              street: payload[0]['address[street]'],
+              neighborhood: payload[0]['address[neighborhood]']),
+          lat: payload[0]['lat'],
+          lng: payload[0]['lng'],
+          photo: payload[0]['photo'],
+          openDays: payload[0]['openDays'],
+          openHours: payload[0]['openHours']);
 
       Navigator.of(context).pushNamed(
         '/restaurant_menu',
@@ -73,32 +72,37 @@ class _SearchRestaurantState extends State<SearchRestaurant> {
     }
   }
 
-  Future<double> calcularTempoAPe(double origemLat, double origemLng, double destinoLat, double destinoLng) async {
-    String apiUrl = 'https://maps.googleapis.com/maps/api/distancematrix/json?origins=$origemLat,$origemLng&destinations=$destinoLat,$destinoLng&mode=walking&key=AIzaSyDTN9yBqoVdrDor1gaBWxQkywlpCS9Wi_o';
+  Future<double> calcularTempoAPe(double origemLat, double origemLng,
+      double destinoLat, double destinoLng) async {
+    String apiUrl =
+        'https://maps.googleapis.com/maps/api/distancematrix/json?origins=$origemLat,$origemLng&destinations=$destinoLat,$destinoLng&mode=walking&key=AIzaSyDTN9yBqoVdrDor1gaBWxQkywlpCS9Wi_o';
     final response = await http.get(Uri.parse(apiUrl));
     print(apiUrl);
     if (response.statusCode == 200) {
       final data = json.decode(response.body);
-      final durationInSeconds = data['rows'][0]['elements'][0]['duration']['value'];
-      return durationInSeconds/60;
+      final durationInSeconds =
+          data['rows'][0]['elements'][0]['duration']['value'];
+      return durationInSeconds / 60;
     } else {
       throw Exception('Erro ao calcular o tempo de viagem a pé.');
     }
   }
 
-  Future<double> calcularTempoDeCarro(double origemLat, double origemLng, double destinoLat, double destinoLng) async {
-    String apiUrl = 'https://maps.googleapis.com/maps/api/distancematrix/json?origins=$origemLat,$origemLng&destinations=$destinoLat,$destinoLng&mode=driving&key=AIzaSyDTN9yBqoVdrDor1gaBWxQkywlpCS9Wi_o';
+  Future<double> calcularTempoDeCarro(double origemLat, double origemLng,
+      double destinoLat, double destinoLng) async {
+    String apiUrl =
+        'https://maps.googleapis.com/maps/api/distancematrix/json?origins=$origemLat,$origemLng&destinations=$destinoLat,$destinoLng&mode=driving&key=AIzaSyDTN9yBqoVdrDor1gaBWxQkywlpCS9Wi_o';
     final response = await http.get(Uri.parse(apiUrl));
 
     if (response.statusCode == 200) {
       final data = json.decode(response.body);
-      final durationInSeconds = data['rows'][0]['elements'][0]['duration']['value'];
-      return durationInSeconds/60;
+      final durationInSeconds =
+          data['rows'][0]['elements'][0]['duration']['value'];
+      return durationInSeconds / 60;
     } else {
       throw Exception('Erro ao calcular o tempo de viagem de carro.');
     }
   }
-
 
   Future<List<Restaurant>> getAllRestaurants() async {
     final uri = Uri.parse(
@@ -119,22 +123,21 @@ class _SearchRestaurantState extends State<SearchRestaurant> {
 
       allRestaurants = listOfRestaurants.map((restaurantMap) {
         return Restaurant(
-          uid: restaurantMap['uid'],
-          name: restaurantMap['name'],
-          category: restaurantMap['category'],
-          address: Address(
-              zip: restaurantMap['address[zip]'],
-              number: restaurantMap['address[number]'],
-              uf: restaurantMap['address[uf]'],
-              city: restaurantMap['address[city]'],
-              street: restaurantMap['address[street]'],
-              neighborhood: restaurantMap['address[neighborhood]']),
-          lat: restaurantMap['lat'],
-          lng: restaurantMap['lng'],
-          photo: restaurantMap['photo'],
-          openDays: restaurantMap['openDays'],
-          openHours: restaurantMap['openHours']
-        );
+            uid: restaurantMap['uid'],
+            name: restaurantMap['name'],
+            category: restaurantMap['category'],
+            address: Address(
+                zip: restaurantMap['address[zip]'],
+                number: restaurantMap['address[number]'],
+                uf: restaurantMap['address[uf]'],
+                city: restaurantMap['address[city]'],
+                street: restaurantMap['address[street]'],
+                neighborhood: restaurantMap['address[neighborhood]']),
+            lat: restaurantMap['lat'],
+            lng: restaurantMap['lng'],
+            photo: restaurantMap['photo'],
+            openDays: restaurantMap['openDays'],
+            openHours: restaurantMap['openHours']);
       }).toList();
       await pegarPosicao();
       print("latitude: $latitude");
@@ -148,23 +151,24 @@ class _SearchRestaurantState extends State<SearchRestaurant> {
     }
   }
 
-  Future<void>calcularTempo( double lat, double lng,List<Restaurant> allRestaurants) async {
+  Future<void> calcularTempo(
+      double lat, double lng, List<Restaurant> allRestaurants) async {
     for (var restaurant in allRestaurants) {
-      double byFoot = await calcularTempoAPe(
-          lat, lng, restaurant.lat, restaurant.lng);
-      double byCar = await calcularTempoDeCarro(
-          lat, lng, restaurant.lat, restaurant.lng);
+      double byFoot =
+          await calcularTempoAPe(lat, lng, restaurant.lat, restaurant.lng);
+      double byCar =
+          await calcularTempoDeCarro(lat, lng, restaurant.lat, restaurant.lng);
       print(byCar);
       double byFootHour = byFoot;
       double byCarHour = byCar;
-      if(byFoot > 60) {
-        byFootHour = byFoot/60;
+      if (byFoot > 60) {
+        byFootHour = byFoot / 60;
         restaurant.distanceByFoot = "${byFootHour.toStringAsFixed(1)} h";
       } else {
         restaurant.distanceByFoot = "${byFoot.toStringAsFixed(1)} min";
       }
-      if(byCar > 60) {
-        byCarHour = byCar/60;
+      if (byCar > 60) {
+        byCarHour = byCar / 60;
         restaurant.distanceByCar = "${byCarHour.toStringAsFixed(1)} h";
       } else {
         restaurant.distanceByCar = "${byCar.toStringAsFixed(1)} min";
@@ -179,7 +183,7 @@ class _SearchRestaurantState extends State<SearchRestaurant> {
     longitude = position.longitude;
   }
 
-  // 
+  //
 
   // Adicionar Restaurantes as listas
   Future<void> funcCloseRestaurants(
@@ -191,7 +195,7 @@ class _SearchRestaurantState extends State<SearchRestaurant> {
         restaurant.lat ?? 0,
         restaurant.lng ?? 0,
       );
-      double distanciaKm = distance/1000;
+      double distanciaKm = distance / 1000;
       String distanciaFormatada = distanciaKm.toStringAsFixed(1);
       restaurant.distance = distanciaFormatada;
       if (distance <= 2000) {
@@ -238,10 +242,13 @@ class _SearchRestaurantState extends State<SearchRestaurant> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        SizedBox(
-                          width: 40,
-                          height: 46,
-                          child: Image.asset('assets/images/logo.png'),
+                        GestureDetector(
+                          onTap: () => Navigator.of(context).pop(),
+                          child: SizedBox(
+                            width: 40,
+                            height: 46,
+                            child: Image.asset('assets/images/logo.png'),
+                          ),
                         ),
                         Expanded(
                           child: Padding(
@@ -269,8 +276,8 @@ class _SearchRestaurantState extends State<SearchRestaurant> {
                                   prefixIcon: Icon(Icons.search),
                                 ),
                                 onEditingComplete: () async {
-                                    await getRestaurantByName(_controller);
-                                  },
+                                  await getRestaurantByName(_controller);
+                                },
                               ),
                             ),
                           ),
@@ -330,7 +337,7 @@ class _SearchRestaurantState extends State<SearchRestaurant> {
                           return Section(
                             'No precinho',
                             allRestaurants,
-                            MediaQuery.of(context).size.height * 0.23,
+                            MediaQuery.of(context).size.height * 0.24,
                           );
                         } else {
                           return const SizedBox.shrink();

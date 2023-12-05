@@ -15,7 +15,7 @@ class _HomepageState extends State<Homepage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFEBD381),
+      backgroundColor: lightYellow,
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -138,7 +138,7 @@ class _HomepageState extends State<Homepage> {
                         GestureDetector(
                           onTap: () {
                             Navigator.of(context)
-                                .pushReplacementNamed('/search_restaurant');
+                                .pushNamed('/search_restaurant');
                             NavigationManager.history.add('/search_restaurant');
 
                           },

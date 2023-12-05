@@ -40,35 +40,38 @@ class _OrderScreenState extends State<OrderScreen> {
             // Restaurant Info
             SizedBox(
               width: MediaQuery.of(context).size.width * 0.6,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  // Restaurant Logo
-                  Expanded(
-                    flex: 1,
-                    child: Image.network(
-                      shoppingBag.restaurantPhoto,
-                      width: 70,
-                      height: 70,
-                    ),
-                  ),
-
-                  // Restaurant Name
-                  Expanded(
-                    flex: 2,
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 16.0),
-                      child: Text(
-                        shoppingBag.restaurantName,
-                        style: TextStyle(
-                            color: black,
-                            fontFamily: 'Quicksand',
-                            fontSize: 22,
-                            fontWeight: FontWeight.bold),
+              child: Padding(
+                padding: const EdgeInsets.only(left: 10.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    // Restaurant Logo
+                    ClipOval(
+                      child: Image.network(
+                        shoppingBag.restaurantPhoto,
+                        width: 70,
+                        height: 70,
+                        fit: BoxFit.cover,
                       ),
                     ),
-                  )
-                ],
+
+                    // Restaurant Name
+                    Expanded(
+                      flex: 2,
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 16.0),
+                        child: Text(
+                          shoppingBag.restaurantName,
+                          style: TextStyle(
+                              color: black,
+                              fontFamily: 'Quicksand',
+                              fontSize: 22,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                    )
+                  ],
+                ),
               ),
             ),
 

@@ -22,11 +22,11 @@ class Sugestion extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             // Restaurant Logo
-            SizedBox(
-              width: 60,
-              height: 60,
+            ClipOval(
               child: Image.network(
                 restaurant.photo,
+                width: 60,
+                height: 60,
                 fit: BoxFit.cover,
               ),
             ),
@@ -65,7 +65,7 @@ class Sugestion extends StatelessWidget {
                 // Walking Time
                 Row(
                   children: [
-                   const Padding(
+                    const Padding(
                       padding: EdgeInsets.only(left: 8, right: 2.0),
                       child: Icon(
                         Icons.run_circle_outlined,
